@@ -15,9 +15,5 @@
     "email": "unity@example.com",
     "url": "https://www.unity3d.com"
   },
-  "description": "hahahaha",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Helin777/UnityFxEditor.git",
-  }
+  "description": "hahahaha"
 }
