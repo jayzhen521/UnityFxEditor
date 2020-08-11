@@ -15,8 +15,7 @@
     "email": "Helin777@outlook.com",
     "url": "https://www.unity3d.com"
   },
-  "description": "nothing!!!",
-  "dependencies": {
-    "com.nbox.fxeditor": "https://github.com/Helin777/UnityFxEditor.git"
+  "description": "nothing!!!"
   }
+  
 }
