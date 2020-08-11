@@ -1,6 +1,6 @@
 {
   "name": "com.nbox.fxeditor",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "displayName": "FxEditor",
   "type": "template",
   "unity": "2020.1",
@@ -12,8 +12,11 @@
   ],
   "author": {
     "name": "Unity",
-    "email": "unity@example.com",
+    "email": "Helin777@outlook.com",
     "url": "https://www.unity3d.com"
   },
-  "description": "nothing!!!"
+  "description": "nothing!!!",
+  "dependencies": {
+    "com.nbox.fxeditor": "https://github.com/Helin777/UnityFxEditor.git"
+  }
 }
