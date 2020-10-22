@@ -55,6 +55,7 @@ namespace Packages.FxEditor
             //return;
             //if (Application.isPlaying) return;
             
+            if(_uiRenderer==null)_uiRenderer=new UIRenderer();
             
             GlobalUtility.UpdateCanvasNodeOrder();
             if(showCanvasUI)_uiRenderer.DrawCanvasUIS();
