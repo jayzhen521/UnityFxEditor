@@ -53,11 +53,18 @@ namespace Packages.FxEditor
             var obj=new GameObject("Node");
             var cam=obj.AddComponent<Camera>();
             cam.orthographic = true;
-            obj.AddComponent<FxCanvasObject>();
+            var canvasObject = obj.AddComponent<FxCanvasObject>();
             var qual = GameObject.CreatePrimitive(PrimitiveType.Quad);
             qual.transform.parent=cam.gameObject.transform;
             qual.transform.position=new Vector3(0,0,1);
             qual.transform.localScale=new Vector3(cam.orthographicSize*2,cam.orthographicSize*2,1);
+            Material mat=new Material("");
+            var render = qual.GetComponent<Renderer>();
+            render.material = mat;
+            canvasObject.root = qual;
+
+            Selection.activeObject = obj;
+
         }
         [MenuItem("FxEditor/创建物体/节点/输入效果节点")]
         public static void OnCreateFxNodeInput()
@@ -65,15 +72,19 @@ namespace Packages.FxEditor
             var obj=new GameObject("Node");
             var cam=obj.AddComponent<Camera>();
             cam.orthographic = true;
-            obj.AddComponent<FxCanvasObject>();
+            var canvasObject = obj.AddComponent<FxCanvasObject>();
             var qual = GameObject.CreatePrimitive(PrimitiveType.Quad);
             qual.transform.parent=cam.gameObject.transform;
             qual.transform.position=new Vector3(0,0,1);
             qual.transform.localScale=new Vector3(cam.orthographicSize*2,cam.orthographicSize*2,1);
-            
+            Material mat=new Material("");
+            var render = qual.GetComponent<Renderer>();
+            render.material = mat;
+            canvasObject.root = qual;
             //------------------------------
             
             var slot = qual.AddComponent<FxCanvasSlot>();
+            Selection.activeObject = obj;
             
         }
         

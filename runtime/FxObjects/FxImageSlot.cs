@@ -30,6 +30,8 @@ namespace Packages.FxEditor
         private void OnDrawGizmos()
         {
             if (Application.isPlaying) return;
+            
+            
             var mat = GetComponent<Renderer>().sharedMaterial;
             UpdateNames(mat.shader);
             mat.SetTexture(names[channelName],Texture2D.redTexture);

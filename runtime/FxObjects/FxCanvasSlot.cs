@@ -48,16 +48,14 @@ namespace Packages.FxEditor
 
         private void OnDrawGizmos()
         {
-            var ob = UnityEngine.Object.FindObjectOfType<SceneConfig>();
-            if (ob == null || !ob.showCanvasUI) return;
-            
             if (GlobalConfig.isPlaying)
             {
                 Debug.Log("playing");
                 return;
             }
-
+            
             var mat = GetComponent<Renderer>().sharedMaterial;
+            if (mat == null) return;
             UpdateNames(mat.shader);
             UpdateTexture();
         }
