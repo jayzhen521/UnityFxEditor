@@ -1,0 +1,35 @@
+#version 300 es
+
+precision highp float;
+precision highp int;
+
+uniform 	vec4 _Center;
+uniform 	float _Zoom;
+uniform 	float _Power;
+uniform 	float _Offset;
+uniform mediump sampler2D _MainTex;
+in highp vec2 vs_TEXCOORD0;
+out highp vec4 SV_Target0;
+vec2 u_xlat0;
+bool u_xlatb0;
+bvec2 u_xlatb1;
+vec4 u_xlat2;
+bvec2 u_xlatb6;
+void main()
+{
+    u_xlat0.xy = vs_TEXCOORD0.xy + (-_Center.xy);
+    u_xlat0.x = dot(u_xlat0.xy, u_xlat0.xy);
+    u_xlat0.x = sqrt(u_xlat0.x);
+    u_xlat0.x = u_xlat0.x * _Zoom + _Offset;
+    u_xlat0.x = sin(u_xlat0.x);
+    u_xlat0.x = u_xlat0.x * _Power;
+    u_xlat0.xy = u_xlat0.xx * vec2(-0.707106769, -0.707106769) + vs_TEXCOORD0.xy;
+    u_xlatb6.xy = lessThan(u_xlat0.xyxy, vec4(0.0, 0.0, 0.0, 0.0)).xy;
+    u_xlatb6.x = u_xlatb6.y || u_xlatb6.x;
+    u_xlatb1.xy = lessThan(vec4(1.0, 1.0, 0.0, 0.0), u_xlat0.xyxx).xy;
+    u_xlat2 = texture(_MainTex, u_xlat0.xy);
+    u_xlatb0 = u_xlatb6.x || u_xlatb1.x;
+    u_xlatb0 = u_xlatb1.y || u_xlatb0;
+    SV_Target0 = (bool(u_xlatb0)) ? vec4(0.0, 0.0, 0.0, 1.0) : u_xlat2;
+    return;
+}

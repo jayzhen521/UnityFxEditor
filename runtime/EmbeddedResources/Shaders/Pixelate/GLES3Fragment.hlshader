@@ -1,0 +1,28 @@
+#version 300 es
+
+precision highp float;
+precision highp int;
+
+uniform 	float _hPixels;
+uniform 	float _vPixels;
+uniform mediump sampler2D _WeightTex;
+uniform mediump sampler2D _MainTex;
+in highp vec2 vs_TEXCOORD0;
+in highp vec2 vs_TEXCOORD1;
+ out highp vec4 SV_Target0;
+vec2 u_xlat0;
+mediump vec2 u_xlat16_0;
+vec2 u_xlat2;
+void main()
+{
+    u_xlat16_0.xy = texture(_WeightTex, vs_TEXCOORD1.xy).xy;
+    u_xlat0.xy = u_xlat16_0.xy + vec2(0.5, 0.5);
+    u_xlat2.xy = vec2(1.0, 1.0) / vec2(_hPixels, _vPixels);
+    u_xlat0.xy = u_xlat0.xy * u_xlat2.xy;
+    u_xlat2.xy = vs_TEXCOORD0.xy + vec2(-0.5, -0.5);
+    u_xlat2.xy = u_xlat2.xy / u_xlat0.xy;
+    u_xlat2.xy = floor(u_xlat2.xy);
+    u_xlat0.xy = u_xlat2.xy * u_xlat0.xy + vec2(0.5, 0.5);
+    SV_Target0 = texture(_MainTex, u_xlat0.xy);
+    return;
+}

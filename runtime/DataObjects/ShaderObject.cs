@@ -99,14 +99,16 @@ namespace Packages.FxEditor
         
         public static void RegisterShaders()
         {
-            {
+            Int64 startID = 100;
+            startID++;
+            { //HLFx/TextureColorMask
                 var name = "HLFx/TextureColorMask";
                 var regobject=new ShaderRegisterInformation(
-                    100
+                    startID
                 );
                 
                 //-source
-                var source = GlobalUtility.GetShaderCode("TextureColorMask/GLES3Vertex.hlshader");
+                var source = GlobalUtility.GetShaderCode("Common/GLES3Vertex.hlshader");
                 regobject.sources[ShaderObject.SourceTypeGLES3Vertex] = source;
                 regobject.sources[ShaderObject.SourceTypeGLCoreVertex] = source.Replace(GLES3Header, GLCoreHeader);
                 
@@ -114,7 +116,6 @@ namespace Packages.FxEditor
                 regobject.sources[ShaderObject.SourceTypeGLES3Fragment] = source;
                 regobject.sources[ShaderObject.SourceTypeGLCoreFragment] = source.Replace(GLES3Header,GLCoreHeader);
                 
-
                 //-----------------------------
 
                 regobject.states[ShaderObject.StateIndexBlendEnable] = 1;
@@ -122,6 +123,175 @@ namespace Packages.FxEditor
                 regobject.states[ShaderObject.StateBlendFactorDstColor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
                 shaders[name] = regobject;
             }
+            
+            startID++;
+            { //HLFx/BumpMap
+                var name = "HLFx/BumpMap";
+                var regobject=new ShaderRegisterInformation(
+                    startID
+                );
+                
+                //-source
+                var source = GlobalUtility.GetShaderCode("BumpMap/GLES3Vertex.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Vertex] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreVertex] = source.Replace(GLES3Header, GLCoreHeader);
+                
+                source = GlobalUtility.GetShaderCode("BumpMap/GLES3Fragment.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Fragment] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreFragment] = source.Replace(GLES3Header,GLCoreHeader);
+                
+                //-----------------------------
+
+                regobject.states[ShaderObject.StateIndexBlendEnable] = 1;
+                regobject.states[ShaderObject.StateBlendFactorSrcColor] = ShaderObject.StateBlendFactorOne;
+                regobject.states[ShaderObject.StateBlendFactorDstColor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
+                shaders[name] = regobject;
+            }
+            
+            startID++;
+            { //HLFx/DirectionalBlur
+                var name = "HLFx/DirectionalBlur";
+                var regobject=new ShaderRegisterInformation(
+                    startID
+                );
+                
+                //-source
+                var source = GlobalUtility.GetShaderCode("Common/GLES3Vertex.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Vertex] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreVertex] = source.Replace(GLES3Header, GLCoreHeader);
+                
+                source = GlobalUtility.GetShaderCode("DirectionalBlur/GLES3Fragment.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Fragment] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreFragment] = source.Replace(GLES3Header,GLCoreHeader);
+                
+                //-----------------------------
+
+                regobject.states[ShaderObject.StateIndexBlendEnable] = 1;
+                regobject.states[ShaderObject.StateBlendFactorSrcColor] = ShaderObject.StateBlendFactorOne;
+                regobject.states[ShaderObject.StateBlendFactorDstColor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
+                shaders[name] = regobject;
+            }
+            
+            startID++;
+            { //HLFx/ZoomBlur
+                var name = "HLFx/ZoomBlur";
+                var regobject=new ShaderRegisterInformation(
+                    startID
+                );
+                
+                //-source
+                var source = GlobalUtility.GetShaderCode("Common/GLES3Vertex.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Vertex] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreVertex] = source.Replace(GLES3Header, GLCoreHeader);
+                
+                source = GlobalUtility.GetShaderCode("ZoomBlur/GLES3Fragment.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Fragment] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreFragment] = source.Replace(GLES3Header,GLCoreHeader);
+                
+                //-----------------------------
+
+                regobject.states[ShaderObject.StateIndexBlendEnable] = 1;
+                regobject.states[ShaderObject.StateBlendFactorSrcColor] = ShaderObject.StateBlendFactorOne;
+                regobject.states[ShaderObject.StateBlendFactorDstColor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
+                shaders[name] = regobject;
+            }
+            
+            startID++;
+            { //HLFx/RadiusBlur
+                var name = "HLFx/RadiusBlur";
+                var regobject=new ShaderRegisterInformation(
+                    startID
+                );
+                
+                //-source
+                var source = GlobalUtility.GetShaderCode("Common/GLES3Vertex.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Vertex] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreVertex] = source.Replace(GLES3Header, GLCoreHeader);
+                
+                source = GlobalUtility.GetShaderCode("RadiusBlur/GLES3Fragment.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Fragment] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreFragment] = source.Replace(GLES3Header,GLCoreHeader);
+                
+                //-----------------------------
+
+                regobject.states[ShaderObject.StateIndexBlendEnable] = 1;
+                regobject.states[ShaderObject.StateBlendFactorSrcColor] = ShaderObject.StateBlendFactorOne;
+                regobject.states[ShaderObject.StateBlendFactorDstColor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
+                shaders[name] = regobject;
+            }
+            
+            startID++;
+            { //HLFx/Droplet
+                var name = "HLFx/Droplet";
+                var regobject=new ShaderRegisterInformation(
+                    startID
+                );
+                
+                //-source
+                var source = GlobalUtility.GetShaderCode("Common/GLES3Vertex.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Vertex] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreVertex] = source.Replace(GLES3Header, GLCoreHeader);
+                
+                source = GlobalUtility.GetShaderCode("Droplet/GLES3Fragment.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Fragment] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreFragment] = source.Replace(GLES3Header,GLCoreHeader);
+                
+                //-----------------------------
+
+                regobject.states[ShaderObject.StateIndexBlendEnable] = 1;
+                regobject.states[ShaderObject.StateBlendFactorSrcColor] = ShaderObject.StateBlendFactorOne;
+                regobject.states[ShaderObject.StateBlendFactorDstColor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
+                shaders[name] = regobject;
+            }
+            
+            startID++;
+            { //HLFx/Wave
+                var name = "HLFx/Wave";
+                var regobject=new ShaderRegisterInformation(
+                    startID
+                );
+                
+                //-source
+                var source = GlobalUtility.GetShaderCode("Common/GLES3Vertex.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Vertex] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreVertex] = source.Replace(GLES3Header, GLCoreHeader);
+                
+                source = GlobalUtility.GetShaderCode("Wave/GLES3Fragment.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Fragment] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreFragment] = source.Replace(GLES3Header,GLCoreHeader);
+                
+                //-----------------------------
+
+                regobject.states[ShaderObject.StateIndexBlendEnable] = 1;
+                regobject.states[ShaderObject.StateBlendFactorSrcColor] = ShaderObject.StateBlendFactorOne;
+                regobject.states[ShaderObject.StateBlendFactorDstColor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
+                shaders[name] = regobject;
+            }
+            
+            startID++;
+            { //HLFx/Pixelate
+                var name = "HLFx/Pixelate";
+                var regobject=new ShaderRegisterInformation(
+                    startID
+                );
+                
+                //-source
+                var source = GlobalUtility.GetShaderCode("Common/GLES3Vertex.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Vertex] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreVertex] = source.Replace(GLES3Header, GLCoreHeader);
+                
+                source = GlobalUtility.GetShaderCode("Pixelate/GLES3Fragment.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Fragment] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreFragment] = source.Replace(GLES3Header,GLCoreHeader);
+                
+                //-----------------------------
+
+                regobject.states[ShaderObject.StateIndexBlendEnable] = 1;
+                regobject.states[ShaderObject.StateBlendFactorSrcColor] = ShaderObject.StateBlendFactorOne;
+                regobject.states[ShaderObject.StateBlendFactorDstColor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
+                shaders[name] = regobject;
+            }
+            
             
             // //--------------------------------------
             // {

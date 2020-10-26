@@ -1,0 +1,52 @@
+#version 300 es
+
+precision highp float;
+precision highp int;
+
+uniform 	float _Power;
+uniform 	float _Samplers;
+uniform 	float _Angle;
+uniform mediump sampler2D _MainTex;
+in highp vec2 vs_TEXCOORD0;
+out highp vec4 SV_Target0;
+float u_xlat0;
+vec2 u_xlat1;
+vec4 u_xlat2;
+mediump vec4 u_xlat16_3;
+vec3 u_xlat4;
+int u_xlati8;
+vec2 u_xlat9;
+bool u_xlatb13;
+void main()
+{
+    u_xlat0 = _Power / _Samplers;
+    u_xlat4.xy = vec2(_Angle, _Power) * vec2(0.0174532924, 0.5);
+    u_xlat1.x = sin(u_xlat4.x);
+    u_xlat2.x = cos(u_xlat4.x);
+    u_xlat1.y = u_xlat2.x;
+    u_xlat4.x = dot(u_xlat1.xy, u_xlat1.xy);
+    u_xlat4.x = inversesqrt(u_xlat4.x);
+    u_xlat4.xz = u_xlat4.xx * u_xlat1.xy;
+    u_xlat1.xy = u_xlat4.yy * u_xlat4.xz + vs_TEXCOORD0.xy;
+    u_xlat2.x = float(0.0);
+    u_xlat2.y = float(0.0);
+    u_xlat2.z = float(0.0);
+    u_xlat2.w = float(0.0);
+    u_xlati8 = 0;
+    while(true){
+        u_xlat9.x = float(u_xlati8);
+#ifdef UNITY_ADRENO_ES3
+        u_xlatb13 = !!(u_xlat9.x>=_Samplers);
+#else
+        u_xlatb13 = u_xlat9.x>=_Samplers;
+#endif
+        if(u_xlatb13){break;}
+        u_xlat9.x = u_xlat0 * u_xlat9.x;
+        u_xlat9.xy = u_xlat9.xx * u_xlat4.xz + u_xlat1.xy;
+        u_xlat16_3 = texture(_MainTex, u_xlat9.xy);
+        u_xlat2 = u_xlat2 + u_xlat16_3;
+        u_xlati8 = u_xlati8 + 1;
+    }
+    SV_Target0 = u_xlat2 / vec4(vec4(_Samplers, _Samplers, _Samplers, _Samplers));
+    return;
+}

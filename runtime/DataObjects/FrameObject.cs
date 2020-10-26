@@ -141,6 +141,7 @@ namespace Packages.FxEditor
 
             //-------------------draw mesh command
             {
+                //commandlist.Add(new DrawMeshCommand(Camera.main, obj.gameObject, exporter));
                 commandlist.Add(new DrawMeshCommand(SceneConfig.currentCamera, obj.gameObject, exporter));
             }
         }

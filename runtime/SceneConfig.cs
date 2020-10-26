@@ -2,6 +2,7 @@ using System;
 
 using UnityEditor;
 using UnityEngine;
+using Object = System.Object;
 
 namespace Packages.FxEditor
 {
@@ -23,13 +24,14 @@ namespace Packages.FxEditor
             GlobalConfig.isPlaying = true;
             Time.captureFramerate = frameRate;
             outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
-            //currentCamera=Camera.main;
-            currentCamera=SceneConfig.currentCamera;
+            currentCamera=Camera.main;
+            //currentCamera=SceneConfig.currentCamera;
         }
 
 
         private void Update()
         {
+            return;
             if (Time.time >= duration)
             {
                 if (Application.isPlaying||outputPath==null||outputPath=="")
@@ -46,21 +48,30 @@ namespace Packages.FxEditor
             else
             {
                 _exporter.AddFrame();
-                
             }
         }
 
         private void OnDrawGizmos()
         {
+            if(_uiRenderer==null)_uiRenderer=new UIRenderer();
+            //------timeline ui---
+            {
+                var tl = FindObjectOfType<Timeline>();
+                if (tl != null)
+                {
+                    foreach(var c in tl.clips)
+                    {
+                        if(c.camera==null)continue;
+                        _uiRenderer.DrawCameraBound(c.camera,Color.white);
+                    }
+                }
+            }
             //return;
             //if (Application.isPlaying) return;
-            
-            if(_uiRenderer==null)_uiRenderer=new UIRenderer();
             
             GlobalUtility.UpdateCanvasNodeOrder();
             if(showCanvasUI)_uiRenderer.DrawCanvasUIS();
             //_uiRenderer.DrawString(Camera.main.transform.position,"hello" );
-            
         }
     }
 }

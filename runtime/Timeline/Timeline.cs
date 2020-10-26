@@ -92,6 +92,8 @@ namespace Packages.FxEditor
             float time = 0;
             foreach (var timelineClip in clips)
             {
+                if (timelineClip.camera == null) continue;
+                
                 float endtime = time + timelineClip.duration;
                 if (Time.time >= time && Time.time < endtime)
                 {

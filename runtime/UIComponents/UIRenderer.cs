@@ -40,7 +40,7 @@ namespace Packages.FxEditor
             Vector3 s = new Vector3(w, h, 0.1f);
             return new Bounds(c,s);
         }
-        private void DrawCameraBound(Camera camera,Color color)
+        public void DrawCameraBound(Camera camera,Color color)
         {
             if (camera == null) return;
 
@@ -71,7 +71,7 @@ namespace Packages.FxEditor
                 DrawCanvasUI(fxCanvasObject);    
             }
             
-            DrawCameraBound(SceneConfig.currentCamera, Color.white);
+            DrawCameraBound(Camera.main, Color.white);
         }
 
         private void DrawNodeLinkLine(FxCanvasSlot slot)
