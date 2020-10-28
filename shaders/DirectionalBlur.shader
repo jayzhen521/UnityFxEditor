@@ -4,8 +4,8 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Power("power",Float)=0.1
-        _Samplers("sampler",Float)=32
-        _Directional("directinal",Vector)=(0.5,0.5,0,0)
+        _Samplers("samplers",Float)=32
+        _Angle("angle",Float)=0
     }
     SubShader
     {
@@ -40,7 +40,7 @@
             
             float _Power;
             float _Samplers;
-            float4 _Directional;
+            float _Angle;
 
             v2f vert (appdata v)
             {
@@ -52,14 +52,14 @@
             }
 
             float4 frag (v2f i) : SV_Target
-            {
-                
+            {   
                 float d=_Power/_Samplers;
                 float4 color=float4(0,0,0,0);
-                
-                float2 dir=normalize(_Directional.xy);
-                
-                float2 uv=i.uv-_Power*0.5*dir;
+                float r=(_Angle*3.1415926)/180.0;
+                float dy=cos(r);
+                float dx=sin(r);
+                float2 dir=normalize(float2(dx,dy));
+                float2 uv=i.uv+_Power*0.5*dir;
                 
                 // sample the texture
                 for(int i=0;i<_Samplers;i++)
