@@ -1,14 +1,17 @@
 using System;
 
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using Object = System.Object;
+using UnityEditor;
+using PackageInfo = UnityEditor.PackageInfo;
 
 namespace Packages.FxEditor
 {
     public class SceneConfig : MonoBehaviour
     {
-        private readonly Exporter _exporter = new Exporter();
+        private Exporter _exporter = null;//new Exporter();
         private bool isSaved = false;
         private UIRenderer _uiRenderer=new UIRenderer();
 
@@ -29,6 +32,7 @@ namespace Packages.FxEditor
             outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
             currentCamera=Camera.main;
             //currentCamera=SceneConfig.currentCamera;
+            //_exporter=new Exporter();
         }
 
         public void Prepare()
@@ -63,6 +67,7 @@ namespace Packages.FxEditor
 
         public void AddFrame()
         {
+            if(_exporter==null)_exporter=new Exporter();
             
             _exporter.AddFrame();
         }
@@ -73,6 +78,9 @@ namespace Packages.FxEditor
         }
         private void OnDrawGizmos()
         {
+            
+            
+            
             forExport = false;
             
             if(_uiRenderer==null)_uiRenderer=new UIRenderer();

@@ -120,7 +120,8 @@ namespace Packages.FxEditor
                 return;
             }
         
-            var filepath = EditorUtility.SaveFilePanel("", "", "", "videofx");
+            //var filepath = EditorUtility.SaveFilePanel("", "", "", "videofx");
+            var filepath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
             if (filepath == null) return;
             obj.outputPath = filepath;
             obj.forExport = true;

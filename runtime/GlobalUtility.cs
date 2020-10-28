@@ -12,7 +12,8 @@ namespace Packages.FxEditor
         protected static Int64 IDCounter = 0; 
         public static string GetShaderCode(string path)
         {
-            var name = "Packages/FxEditor/runtime/EmbeddedResources/Shaders/" + path; // "Package.FxEditor.runtime." + path;
+            
+            var name = Application.dataPath+"/../Packages/FxEditor/runtime/EmbeddedResources/Shaders/" + path; // "Package.FxEditor.runtime." + path;
             var file = new FileInfo(name);
             return File.ReadAllText(name);
             // var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name);
