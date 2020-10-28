@@ -113,6 +113,7 @@ namespace Packages.FxEditor
         [MenuItem("FxEditor/导出数据")]
         public static void OnExport()
         {
+            
             var obj = Object.FindObjectOfType<SceneConfig>();
             if (obj == null)
             {

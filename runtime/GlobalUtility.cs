@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 using Object = System.Object;
 
@@ -13,7 +14,7 @@ namespace Packages.FxEditor
         public static string GetShaderCode(string path)
         {
             
-            var name = Application.dataPath+"/../Packages/FxEditor/runtime/EmbeddedResources/Shaders/" + path; // "Package.FxEditor.runtime." + path;
+            var name = "Packages/com.nbox.fxeditor/runtime/EmbeddedResources/Shaders/" + path; // "Package.FxEditor.runtime." + path;
             var file = new FileInfo(name);
             return File.ReadAllText(name);
             // var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name);
