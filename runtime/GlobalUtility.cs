@@ -71,5 +71,14 @@ namespace Packages.FxEditor
                  }
             }
         }
+
+        public static Material GetObjectMaterial(GameObject obj)
+        {
+            var render = obj.GetComponent<Renderer>();
+            
+            var mat = render.sharedMaterial;
+            if (mat == null) mat = render.material;
+            return mat;
+        }
     }
 }

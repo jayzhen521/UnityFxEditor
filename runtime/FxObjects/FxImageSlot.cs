@@ -33,6 +33,7 @@ namespace Packages.FxEditor
             
             
             var mat = GetComponent<Renderer>().sharedMaterial;
+            if(mat==null) mat=GetComponent<Renderer>().material;
             UpdateNames(mat.shader);
             mat.SetTexture(names[channelName],Texture2D.redTexture);
         }

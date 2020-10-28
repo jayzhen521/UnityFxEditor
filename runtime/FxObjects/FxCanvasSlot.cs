@@ -48,14 +48,17 @@ namespace Packages.FxEditor
 
         private void OnDrawGizmos()
         {
+            
             if (GlobalConfig.isPlaying)
             {
                 Debug.Log("playing");
                 return;
             }
             
-            var mat = GetComponent<Renderer>().sharedMaterial;
-            if (mat == null) return;
+            
+            var mat = GlobalUtility.GetObjectMaterial(this.gameObject);
+            // if(mat==null)mat=GetComponent<Renderer>().material;
+            // if (mat == null) return;
             UpdateNames(mat.shader);
             UpdateTexture();
         }

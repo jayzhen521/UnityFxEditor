@@ -19,26 +19,36 @@ namespace Packages.FxEditor
         
         
         public static Camera currentCamera=null;
+
+        public bool forExport = false;
+        
         private void Start()
         {
-            GlobalConfig.isPlaying = true;
+            //isExporting = true;
             Time.captureFramerate = frameRate;
             outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
             currentCamera=Camera.main;
             //currentCamera=SceneConfig.currentCamera;
         }
 
+        public void Prepare()
+        {
+            currentCamera=Camera.main;
+            outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
+        }
 
         private void Update()
         {
-            return;
+            if (!forExport) return;
+            
+            
             if (Time.time >= duration)
             {
                 if (Application.isPlaying||outputPath==null||outputPath=="")
                 {
                     //if(!isSaved)_exporter.SaveToFile("/Volumes/TmpSpace/testdata/test.videofx");
                     //if (!isSaved) _exporter.SaveToFile(outputPath);
-                    if (!isSaved) _exporter.SaveToFile(outputPath);
+                    if (!isSaved) SaveTotFile();
                     isSaved = true;
                     GlobalConfig.isPlaying = false;
                     EditorApplication.ExecuteMenuItem("Edit/Play");
@@ -47,12 +57,24 @@ namespace Packages.FxEditor
             }
             else
             {
-                _exporter.AddFrame();
+                AddFrame();
             }
         }
 
+        public void AddFrame()
+        {
+            
+            _exporter.AddFrame();
+        }
+
+        public void SaveTotFile()
+        {
+            _exporter.SaveToFile(outputPath);
+        }
         private void OnDrawGizmos()
         {
+            forExport = false;
+            
             if(_uiRenderer==null)_uiRenderer=new UIRenderer();
             //------timeline ui---
             {

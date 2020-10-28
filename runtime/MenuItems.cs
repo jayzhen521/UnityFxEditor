@@ -21,22 +21,7 @@ namespace Packages.FxEditor
             gameObject.AddComponent<SceneConfig>();
         }
 
-        // [MenuItem("FxEditor/导出数据")]
-        // public static void OnExport()
-        // {
-        //     var obj = Object.FindObjectOfType<SceneConfig>();
-        //     if (obj == null)
-        //     {
-        //         Debug.LogError("没有创建场景配置对象");
-        //         return;
-        //     }
-        //
-        //     var filepath = EditorUtility.SaveFilePanel("", "", "", "videofx");
-        //     if (filepath == null) return;
-        //     obj.outputPath = filepath;
-        //     EditorApplication.ExecuteMenuItem("Edit/Play");
-        //
-        // }
+        
         
         [MenuItem("FxEditor/创建物体/节点/空节点")]
         public static void OnCreateNode()
@@ -124,6 +109,24 @@ namespace Packages.FxEditor
         //     var checker=new SceneInformation();
         //     checker.ShowModal();
         // }
+        
+        [MenuItem("FxEditor/导出数据")]
+        public static void OnExport()
+        {
+            var obj = Object.FindObjectOfType<SceneConfig>();
+            if (obj == null)
+            {
+                Debug.LogError("没有创建场景配置对象");
+                return;
+            }
+        
+            var filepath = EditorUtility.SaveFilePanel("", "", "", "videofx");
+            if (filepath == null) return;
+            obj.outputPath = filepath;
+            obj.forExport = true;
+            EditorApplication.ExecuteMenuItem("Edit/Play");
+        
+        }
         
         [MenuItem("FxEditor/更新")]
         public static void OnUpdate()
