@@ -111,6 +111,10 @@ namespace Packages.FxEditor
             //-------------Flush the data to file------------------
             var resData = dataMS.ToArray();
             ms.Write(resData, 0, resData.Length);
+            
+            var info=new FileInfo(path);
+            if(info.Exists)info.Delete();
+            
             File.WriteAllBytes(path, ms.ToArray());
             Debug.Log("count:" + objects.Count);
             Debug.Log(message: "frames:" + framesData.Count);

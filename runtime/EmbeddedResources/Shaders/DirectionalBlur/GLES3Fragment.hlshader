@@ -27,7 +27,7 @@ void main()
     u_xlat4.x = dot(u_xlat1.xy, u_xlat1.xy);
     u_xlat4.x = inversesqrt(u_xlat4.x);
     u_xlat4.xz = u_xlat4.xx * u_xlat1.xy;
-    u_xlat1.xy = u_xlat4.yy * u_xlat4.xz + vs_TEXCOORD0.xy;
+    u_xlat1.xy = (-u_xlat4.yy) * u_xlat4.xz + vs_TEXCOORD0.xy;
     u_xlat2.x = float(0.0);
     u_xlat2.y = float(0.0);
     u_xlat2.z = float(0.0);

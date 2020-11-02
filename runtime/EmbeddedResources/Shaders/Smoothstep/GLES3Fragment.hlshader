@@ -1,0 +1,32 @@
+#version 300 es
+
+
+precision highp float;
+precision highp int;
+
+
+uniform 	vec4 _ColorStart;
+uniform 	vec4 _ColorEnd;
+uniform mediump sampler2D _MainTex;
+in highp vec2 vs_TEXCOORD0;
+out highp vec4 SV_Target0;
+vec4 u_xlat0;
+mediump vec4 u_xlat16_0;
+vec4 u_xlat1;
+void main()
+{
+    u_xlat16_0 = texture(_MainTex, vs_TEXCOORD0.xy);
+    u_xlat0 = u_xlat16_0 + (-_ColorStart);
+    u_xlat1 = (-_ColorStart) + _ColorEnd;
+    u_xlat1 = vec4(1.0, 1.0, 1.0, 1.0) / u_xlat1;
+    u_xlat0 = u_xlat0 * u_xlat1;
+#ifdef UNITY_ADRENO_ES3
+    u_xlat0 = min(max(u_xlat0, 0.0), 1.0);
+#else
+    u_xlat0 = clamp(u_xlat0, 0.0, 1.0);
+#endif
+    u_xlat1 = u_xlat0 * vec4(-2.0, -2.0, -2.0, -2.0) + vec4(3.0, 3.0, 3.0, 3.0);
+    u_xlat0 = u_xlat0 * u_xlat0;
+    SV_Target0 = u_xlat0 * u_xlat1;
+    return;
+}

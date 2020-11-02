@@ -123,7 +123,7 @@ namespace Packages.FxEditor
         
             var filepath = EditorUtility.SaveFilePanel("", "", "", "videofx");
             //var filepath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
-            if (filepath == null) return;
+            if (filepath == null||filepath=="") return;
             obj.outputPath = filepath;
             obj.forExport = true;
             EditorApplication.ExecuteMenuItem("Edit/Play");

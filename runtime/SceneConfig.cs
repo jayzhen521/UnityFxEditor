@@ -79,9 +79,7 @@ namespace Packages.FxEditor
         private void OnDrawGizmos()
         {
             
-            
-            
-            forExport = false;
+            //forExport = false;
             
             if(_uiRenderer==null)_uiRenderer=new UIRenderer();
             //------timeline ui---

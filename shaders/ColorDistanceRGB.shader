@@ -1,11 +1,9 @@
-﻿Shader "HLFx/DirectionalBlur"
+﻿Shader "HLFx/ColorDistanceRGB"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Power("power",Float)=0.1
-        _Samplers("samplers",Float)=32
-        _Angle("angle",Float)=0
+        _Color("color",Color)=(1,1,1,1)
     }
     SubShader
     {
@@ -31,16 +29,16 @@
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                float2 uv1 : TEXCOORD1;
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
             };
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            float4 _Color;
+
             
-            float _Power;
-            float _Samplers;
-            float _Angle;
 
             v2f vert (appdata v)
             {
@@ -51,25 +49,19 @@
                 return o;
             }
 
+            
             float4 frag (v2f i) : SV_Target
-            {   
-                float d=_Power/_Samplers;
-                float4 color=float4(0,0,0,0);
-                float r=(_Angle*3.1415926)/180.0;
-                float dy=cos(r);
-                float dx=sin(r);
-                float2 dir=normalize(float2(dx,dy));
-                float2 uv=i.uv-_Power*0.5*dir;
+            {
                 
+                float2 uv=i.uv;
                 // sample the texture
-                for(int i=0;i<_Samplers;i++)
-                {   
-                    color+= tex2D(_MainTex, uv+i*d*dir);    
-                }
-                color/=_Samplers;
-                // apply fog
+                float4 col = tex2D(_MainTex, uv);
+                float d=distance(col.xyz,_Color.xyz);
+                //col.xyz=float3(wd.x,0,0);
                 
-                return color;
+                // apply fog
+                d=clamp(d*0.577,0,1);
+                return float4(d,d,d,1);
             }
             ENDCG
         }
