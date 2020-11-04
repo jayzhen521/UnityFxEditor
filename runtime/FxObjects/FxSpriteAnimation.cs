@@ -54,8 +54,9 @@ namespace Packages.FxEditor
             
             var maxCount = widthSlices * heightSlices;
             var index = spriteIndex % maxCount;
-            var x = Mathf.Round( index % widthSlices)*delta.x;
-            var y = Mathf.Floor(index/heightSlices);//delta.y);//(heightSlices-Mathf.Floor(spriteIndex / heightSlices))*delta.y;
+            var x = Mathf.Floor( index % widthSlices)*delta.x;
+            var y = Mathf.Floor(index/widthSlices);//delta.y);//(heightSlices-Mathf.Floor(spriteIndex / heightSlices))*delta.y;
+            
             y = heightSlices - y-1;
             y *= delta.y;
             
