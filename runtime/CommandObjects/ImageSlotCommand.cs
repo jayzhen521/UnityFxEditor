@@ -12,7 +12,6 @@ namespace Packages.FxEditor
             //----------------------------------
             id = obj.slotID;
             channelName = obj.names[obj.channelName];
-            
         }
 
         protected override void Write(Stream stream)

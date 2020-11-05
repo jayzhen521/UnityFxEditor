@@ -1,7 +1,10 @@
+using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace Packages.FxEditor
 {
+    
     public class FxCanvasObject : MonoBehaviour
     {
         public int width = 128;
@@ -10,11 +13,15 @@ namespace Packages.FxEditor
 
         public bool show_bounds = true;
         public Color bounds_color = Color.yellow;
+        
         public GameObject root = null;
 
 
         public int nodeOrder = 0;
         private RenderTexture canvasTexture = null;
+
+
+        private GameObject titleObject = null;
 
 
         private void UpdateCanvas()
@@ -71,16 +78,57 @@ namespace Packages.FxEditor
 
             Gizmos.color = bounds_color;
             Gizmos.DrawWireCube(c, s);
+            
         }
 
+        Bounds CameraBound(Camera camera)
+        {
+            Vector3 c = camera.transform.position;
+            float h = camera.orthographicSize * 2;
+            float w = h * camera.aspect;
+            Vector3 s = new Vector3(w, h, 0.1f);
+            
+            return new Bounds(c, s);
+        }
+        
+        
+        
+        
+
+        void UpdateTitleObject()
+        {
+            string name = gameObject.name;
+            
+            if (titleObject == null)
+            {
+                var obj=new GameObject("title");
+                obj.transform.parent = gameObject.transform;
+                
+                 obj.AddComponent<TextMesh>();
+                 titleObject = obj;
+                 titleObject.tag = "EditorOnly";
+            }
+            var textMesh = titleObject.GetComponentInChildren<TextMesh>();
+            
+            
+            textMesh.text = name;
+            textMesh.color = bounds_color;
+            textMesh.fontSize = 32;
+            textMesh.characterSize = 0.25f;
+
+            
+            
+        }
         private void OnDrawGizmos()
         {
+            
+            UpdateTitleObject();
             var ob = Object.FindObjectOfType<SceneConfig>();
             if (ob == null || !ob.showCanvasUI) return;
             
             if (Application.isPlaying) return;
              UpdateCanvas();
-            // if (show_bounds) DrawBounds();
+            
         }
     }
 }

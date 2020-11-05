@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.UnityLinker;
 using UnityEngine;
 using Object = System.Object;
 
@@ -81,6 +82,50 @@ namespace Packages.FxEditor
             var mat = render.sharedMaterial;
             if (mat == null) mat = render.material;
             return mat;
+        }
+
+        public static string GetUniqueName(string name)
+        {
+            var objects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+            List<string > names=new List<string>();
+            foreach (var gameObject in objects)
+            {
+                names.Add(gameObject.name);
+            }
+
+            string newname = ObjectNames.GetUniqueName(names.ToArray(), name);
+            return newname;
+        }
+
+        public static Material CreateNewMaterialForNode()
+        {
+            string[] filters = {"shader","shader"};
+            
+            string file=EditorUtility.OpenFilePanelWithFilters("","Packages/com.nbox.fxeditor/shaders/",filters);
+            if (file == null) return null;
+            
+            
+            FileInfo fileinfo=new FileInfo(file);
+            string shaderName = "HLFx/" + fileinfo.Name.Replace(".shader","");
+            Debug.Log(shaderName);
+            
+            Material material = new Material(Shader.Find(shaderName));
+            
+
+            SaveNewMaterialFile(material);
+            
+            return material;
+        }
+
+        public static void SaveNewMaterialFile(Material material)
+        {
+            //--------------------------------------
+            string dir = "Assets/materialsCache";
+            Directory.CreateDirectory(dir);
+            
+            string filename = dir+"/"+Guid.NewGuid().ToString() + ".mat";
+            AssetDatabase.CreateAsset(material, filename);
+            //--------------------------------------
         }
     }
 }

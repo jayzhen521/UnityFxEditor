@@ -38,7 +38,7 @@ namespace Packages.FxEditor
                 foreach (var obj in objs)
                 {
                     if(!obj.transform.IsChildOf(c.root.transform))continue;
-                    
+                    Debug.Log(c.gameObject.name+"="+obj.name);
                     DrawObject(cam,obj, exporter);
                 }
 
@@ -83,6 +83,9 @@ namespace Packages.FxEditor
         //-----------------------------------------
         void DrawObject(Camera cam,GameObject obj, Exporter exporter)
         {
+            //
+            if (obj.tag == "EditorOnly") return;
+            
             //mesh
             {
                 var meshrenderer = obj.GetComponent<MeshRenderer>();
@@ -97,9 +100,22 @@ namespace Packages.FxEditor
                     DrawParticleSystem(cam,ps,exporter);;
                 
             }
+            
+            //textFx
+            {
+                var textFx = obj.GetComponent<TextFx>();
+                if (textFx != null)
+                {
+                    DrawTextFx(cam,obj,exporter);
+                }
+                
+            }
         }
 
-        
+        void DrawTextFx(Camera cam, GameObject obj, Exporter exporter)
+        {
+            commandlist.Add(new TextFxSlotCommand(cam,obj,exporter));
+        }
         void DrawParticleSystem(Camera cam, ParticleSystem obj, Exporter exporter)
         {
             
@@ -145,6 +161,8 @@ namespace Packages.FxEditor
                 commandlist.Add(new DrawMeshCommand(SceneConfig.currentCamera, obj.gameObject, exporter));
             }
         }
+
+        
 
         static int SortByPosition(GameObject a, GameObject b)
         {

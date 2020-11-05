@@ -16,6 +16,15 @@ namespace Packages.FxEditor
         {
             ShaderObject.RegisterShaders();
             TextureObject.RegisterFormat();
+
+
+            
+            //-----------time--------------------
+            {
+                var obj = Object.FindObjectOfType<SceneConfig>();
+                var dataobject = new TimeInformation(obj);
+                objects[obj] = dataobject;    
+            }
         }
 
         //-------------------
@@ -34,7 +43,6 @@ namespace Packages.FxEditor
         //----------------------------------------
         public DataObjectBase GetObject(Object obj)
         {
-            
             if (objects.ContainsKey(obj))
                 return objects[obj];
             

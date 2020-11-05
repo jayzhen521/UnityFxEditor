@@ -14,6 +14,7 @@ namespace Packages.FxEditor
         public const int CommandTypeImageSlot=5;
         public const int CommandTypeCanvasSlot=6;
         public const int CommandTypeParticleSystem=7;
+        public const int CommandTypeTextFxSlot=8;
         
         //-------------------------------------------------
 

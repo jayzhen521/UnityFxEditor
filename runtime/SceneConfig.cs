@@ -29,7 +29,7 @@ namespace Packages.FxEditor
         {
             //isExporting = true;
             Time.captureFramerate = frameRate;
-            outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
+            //outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
             currentCamera=Camera.main;
             //currentCamera=SceneConfig.currentCamera;
             //_exporter=new Exporter();

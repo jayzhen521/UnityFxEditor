@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Object = System.Object;
 
 namespace Packages.FxEditor
 {
@@ -26,6 +27,7 @@ namespace Packages.FxEditor
             }
         }
 
+        
         private void Update()
         {
             updateCamera();
@@ -102,6 +104,26 @@ namespace Packages.FxEditor
                 }
                 time = endtime;
             }
+        }
+
+
+        void UpdateDuration()
+        {
+            var cfg = UnityEngine.Object.FindObjectOfType<SceneConfig>();
+            if (cfg == null) return;
+            
+            float duraiton = 0.0f;
+            foreach (var timelineClip in clips)
+            {
+                duraiton += timelineClip.duration;
+            }
+
+            cfg.duration = duraiton;
+        }
+        private void OnDrawGizmos()
+        {
+            UpdateDuration();
+            
         }
     }
 }

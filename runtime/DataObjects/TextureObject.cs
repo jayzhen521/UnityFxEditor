@@ -37,8 +37,6 @@ namespace Packages.FxEditor
             registeredFormat[TextureFormat.Alpha8] = 15;
             registeredFormat[TextureFormat.ETC2_RGB] = 16;
             registeredFormat[TextureFormat.ETC2_RGBA8] = 16;
-            
-            
 
             //filter
             registeredFilter[FilterMode.Point] = 0;
