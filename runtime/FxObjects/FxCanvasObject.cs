@@ -97,18 +97,20 @@ namespace Packages.FxEditor
 
         void UpdateTitleObject()
         {
-            string name = gameObject.name;
             
-            if (titleObject == null)
+            
+            var textMesh = gameObject.GetComponentInChildren<TextMesh>();
+            if (textMesh == null)
             {
                 var obj=new GameObject("title");
                 obj.transform.parent = gameObject.transform;
                 
-                 obj.AddComponent<TextMesh>();
+                 textMesh=obj.AddComponent<TextMesh>();
                  titleObject = obj;
                  titleObject.tag = "EditorOnly";
+                 titleObject.transform.position = gameObject.transform.position;
             }
-            var textMesh = titleObject.GetComponentInChildren<TextMesh>();
+            
             
             
             textMesh.text = name;

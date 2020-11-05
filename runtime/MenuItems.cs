@@ -86,6 +86,19 @@ namespace Packages.FxEditor
             obj.name = GlobalUtility.GetUniqueName(mat.shader.name);
         }
 
+        [MenuItem("FxEditor/创建物体/效果图片")]
+        public static void OnCreateFxQuad()
+        {
+            var qual = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            
+            //Material mat=new Material("");
+            Material mat = GlobalUtility.CreateNewMaterialForNode();
+            var render = qual.GetComponent<Renderer>();
+            render.material = mat;
+            qual.name = GlobalUtility.GetUniqueName(mat.shader.name);
+            Selection.activeObject = qual;
+        }
+
         [MenuItem("FxEditor/创建物体/时间线")]
         public static void OnCreateTimeline()
         {
