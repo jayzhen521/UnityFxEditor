@@ -65,6 +65,9 @@ namespace Packages.FxEditor
             {
                 var dataobject = new TextureObject(obj as Texture);
                 objects[obj] = dataobject;
+                
+                Texture2D tex=obj as Texture2D;
+                Debug.Log("T:"+tex.width);
                 return dataobject;
             }
 

@@ -16,6 +16,7 @@ namespace Packages.FxEditor
         public const uint ObjectTypeSound = 7;
         public const uint ObjectTypeFrame = 8;
         public const uint ObjectTypeHostInformation = 9;
+        public const uint ObjectTypeAnimationClip = 10;
         //-----------------------------------------
 
 

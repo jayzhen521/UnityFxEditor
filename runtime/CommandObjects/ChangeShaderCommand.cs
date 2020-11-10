@@ -31,7 +31,7 @@ namespace Packages.FxEditor
             //------------------
             var renderer = gameObject.GetComponent<Renderer>();
             
-            var shader = renderer.sharedMaterial.shader;
+            var shader = renderer.material.shader;
             
             _shaderObject = exporter.GetObject(shader) as ShaderObject;
 

@@ -33,7 +33,7 @@ namespace Packages.FxEditor
             Int64 id = (((((((now.Year * 365 + now.DayOfYear) * 24) + now.Hour) * 60) + now.Minute) * 60 + now.Second) *
                 1000 + now.Millisecond);
             IDCounter++;
-            return IDCounter;
+            return IDCounter+id;
         }
 
 

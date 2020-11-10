@@ -1,4 +1,6 @@
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor;
 using UnityEngine;
 
 namespace Packages.FxEditor
@@ -9,11 +11,18 @@ namespace Packages.FxEditor
         public string text = "";
         public float size = 1.0f;
         public TextAlignment align = TextAlignment.Left;
+        public Material material = null;
 
+        public float effectDuration = 5;
+        
+        public AnimationClip clip = null;
         //"Helvetica"
         private Font font = null;
-        private string lastText = "";
         
+        private string fontName="Helvetica";
+        private string lastText = "";
+        private float lastSize = 1.0f;
+        private Vector3[] transforms = null;
 
         void RebuildMesh()
         {
@@ -58,13 +67,17 @@ namespace Packages.FxEditor
 
         void UpdateTextNodes()
         {
-            if (lastText == text) return;
+            if (lastText == text&&
+                lastSize==size
+            ) return;
+            
+            
 
-            int fontSize = 128;
+            int fontSize = 256;
             float factor = 1.0f / fontSize;
-            font = Font.CreateDynamicFontFromOSFont("Helvetica", fontSize);
+            font = Font.CreateDynamicFontFromOSFont(fontName, fontSize);
             font.RequestCharactersInTexture(text);
-            lastText = text;
+            
 
             for (var j = 0; j < 10; j++)
             {
@@ -155,19 +168,88 @@ namespace Packages.FxEditor
                 
                 pos += ch.advance * size*factor;
             }
+            
+            //-----------
+            lastText = text;
+            lastSize = size;
+            
+            
+            
         }
 
+
+
+        void ComputeAnimation()
+        {
+            if (clip == null) return;
+            int count = gameObject.transform.childCount;
+            if (count == 0) return;
+
+            if (transforms == null)
+            {
+                
+                transforms=new Vector3[count];
+                for (int i = 0; i < count; i++)
+                {
+                    var t = gameObject.transform.GetChild(i);
+
+                    transforms[i] = t.position;
+                }    
+            }
+            
+            
+            
+            float delta = effectDuration / count;
+            float time = Time.time%effectDuration;
+            
+            for (int i = 0; i < count; i++)
+            {
+                var obj = gameObject.transform.GetChild(i).gameObject;
+                if (time < 0.1f)
+                {
+                    clip.SampleAnimation(obj,0.0f);
+                }
+
+                if (time > i * delta&&time<=(i+1)*delta)
+                {
+                    float t = time - i * delta;
+                    t /= delta;
+                    t *= clip.length;
+                    clip.SampleAnimation(obj,t);
+                    Vector3 p = obj.transform.position;
+                    p += transforms[i];
+                    obj.transform.position = p;    
+                }
+                
+            }
+
+        }
         private void Start()
         {
+
+            transforms = null;
+            //lastSize = -1;
             
+            var ac=new AnimationClipObject(clip,material.shader);
+            ac.SamplerData(1200);
         }
 
         private void Update()
         {
+            
+            UpdateTextNodes();
+            ComputeAnimation();
         }
 
         private void OnDrawGizmos()
         {
+            //Debug.Log("------------------------------");
+            // var cbs = AnimationUtility.GetCurveBindings(clip);
+            // foreach (var cb in cbs)
+            // {
+            //     //Debug.Log(cb.propertyName);
+            // }
+            // return;
             UpdateTextNodes();
         }
     }
