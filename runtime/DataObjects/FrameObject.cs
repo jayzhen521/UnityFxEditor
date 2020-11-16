@@ -7,6 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace Packages.FxEditor
 {
+    
     public class FrameObject : DataObjectBase
     {
         
@@ -21,6 +22,7 @@ namespace Packages.FxEditor
             var objs = Object.FindObjectsOfType<GameObject>();
             if (objs == null) return;
             Array.Sort(objs, SortByPosition);
+            
             
             
             //===================================================canvas
@@ -171,6 +173,23 @@ namespace Packages.FxEditor
             var tb = b.transform.TransformPoint(b.transform.position);
             
             if (ta.z > tb.z)
+            {
+                return -1;
+            }
+            else
+            {
+                return 1;
+            }
+            return 0;
+        }
+        
+        static int SortByMaterial(GameObject a, GameObject b)
+        {
+            var ta = a.GetComponent<Renderer>().material.renderQueue;
+            
+            var tb = b.GetComponent<Renderer>().material.renderQueue;
+            
+            if (ta> tb)
             {
                 return -1;
             }

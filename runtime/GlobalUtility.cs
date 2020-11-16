@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEditor.UnityLinker;
 using UnityEngine;
 using Object = System.Object;
+using Random = System.Random;
 
 namespace Packages.FxEditor
 {
@@ -127,5 +128,39 @@ namespace Packages.FxEditor
             AssetDatabase.CreateAsset(material, filename);
             //--------------------------------------
         }
+
+        private static Random rnd = null;
+        public static int[] RandomSample(int count)
+        {
+            rnd= new Random();
+            
+            int[] randomizePos = new int[count];
+            randomizePos[0] = 0;
+            int pos = 1;
+            
+            while (pos<count)
+            {
+                
+                bool have = false;
+                int v = rnd.Next(count);
+                for (int i = 0; i < pos; i++)
+                {
+                    if (randomizePos[i] == v)
+                    {
+                        have = true;
+                        break;
+                    }
+                }
+
+                if (!have)
+                {
+                    randomizePos[pos] = v;
+                    pos++;
+                }
+            }
+
+            return randomizePos;
+        }
+            
     }
 }

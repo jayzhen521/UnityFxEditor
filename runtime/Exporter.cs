@@ -17,8 +17,6 @@ namespace Packages.FxEditor
             ShaderObject.RegisterShaders();
             TextureObject.RegisterFormat();
 
-
-            
             //-----------time--------------------
             {
                 var obj = Object.FindObjectOfType<SceneConfig>();
@@ -74,6 +72,13 @@ namespace Packages.FxEditor
             if (obj is FxCanvasObject)
             {
                 var dataobject = new CanvasObject(obj as FxCanvasObject);
+                objects[obj] = dataobject;
+                return dataobject;
+            }
+
+            if (obj is AnimationClip)
+            {
+                var dataobject = new AnimationClipObject(obj as AnimationClip);
                 objects[obj] = dataobject;
                 return dataobject;
             }

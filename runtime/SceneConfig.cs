@@ -37,7 +37,7 @@ namespace Packages.FxEditor
 
         public void Prepare()
         {
-            //currentCamera=Camera.main;
+            currentCamera=Camera.main;
             //outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
         }
 
