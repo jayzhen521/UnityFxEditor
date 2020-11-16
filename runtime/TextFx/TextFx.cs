@@ -22,10 +22,10 @@ namespace Packages.FxEditor
         public TextAlignment align = TextAlignment.Left;
         public Material material = null;
 
-        
-        [Header("Time")]
-        public float effectDuration = 5;
 
+        [Header("Time")] 
+        public float startTime = 0.0f;
+        public float effectDuration = 5;
         public float interval = 0.05f;
 
         [Tooltip("用于设置连个字符之间时间重叠率(0-2)")]
@@ -249,7 +249,7 @@ namespace Packages.FxEditor
             }
             //---------------
             
-            float t = Time.time%effectDuration;
+            float t = (Time.time-startTime)%effectDuration;
             if (t < 0.1)
             {
                 foreach (var node in nodes)
@@ -317,6 +317,14 @@ namespace Packages.FxEditor
 
         private void Update()
         {
+            // if (Time.time < startTime)
+            // {
+            //     gameObject.SetActive(false);
+            // }
+            // else
+            // {
+            //     gameObject.SetActive(true);
+            // }
             
             //UpdateTextNodes();
             ComputeAnimation();
