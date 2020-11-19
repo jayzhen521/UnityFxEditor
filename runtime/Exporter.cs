@@ -41,6 +41,7 @@ namespace Packages.FxEditor
         //----------------------------------------
         public DataObjectBase GetObject(Object obj)
         {
+            if (obj == null) return null;
             if (objects.ContainsKey(obj))
                 return objects[obj];
             
@@ -65,7 +66,7 @@ namespace Packages.FxEditor
                 objects[obj] = dataobject;
                 
                 Texture2D tex=obj as Texture2D;
-                Debug.Log("T:"+tex.width);
+                
                 return dataobject;
             }
 

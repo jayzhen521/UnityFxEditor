@@ -41,6 +41,7 @@ namespace Packages.FxEditor
         private string lastText = "";
         private float lastSize = 1.0f;
         private Vector3[] transforms = null;
+        private float lastTime = 999.0f;
 
         private List<TextAnimationNode> nodes=new List<TextAnimationNode>();
         
@@ -87,6 +88,8 @@ namespace Packages.FxEditor
 
         void UpdateTextNodes()
         {
+            if (material == null) return;
+            
             var render = gameObject.GetComponent<MeshRenderer>();
             if (render == null)
             {
@@ -95,6 +98,11 @@ namespace Packages.FxEditor
 
             render.material = material;
             
+            
+            //set tag
+
+            for (var i = 0; i < gameObject.transform.childCount; i++)
+                gameObject.transform.GetChild(i).gameObject.tag = "EditorOnly";
             
             //update count
             var count = text.Length;
@@ -141,10 +149,12 @@ namespace Packages.FxEditor
                 
                 font = Font.CreateDynamicFontFromOSFont(fontName, fontSize);
                 
-                material.mainTexture = font.material.mainTexture;    
+                    
             }
             
+            
             font.RequestCharactersInTexture(text);
+            material.mainTexture = font.material.mainTexture;
             float factor = 1.0f / fontSize;
 
             //-------------
@@ -231,6 +241,8 @@ namespace Packages.FxEditor
 
         void ComputeAnimation()
         {
+            if (clip == null) return;
+            
             //-----compute animation-----
             int index = 0;
             var n = text.Length;
@@ -250,14 +262,18 @@ namespace Packages.FxEditor
             //---------------
             
             float t = (Time.time-startTime)%effectDuration;
-            if (t < 0.1)
+            if (t < lastTime)
             {
                 foreach (var node in nodes)
                 {
                     clip.SampleAnimation(node.obj,0.0f);
+                    var pos = node.obj.transform.localPosition;
+                    pos += node.pos;
+                    node.obj.transform.localPosition = pos;
                 }
             }
 
+            lastTime = t;
             float ad = clip.length;
             foreach (var node in nodes)
             {
@@ -277,7 +293,6 @@ namespace Packages.FxEditor
                     clip.SampleAnimation(node.obj,dtt);    
                 }
 
-                
                 var pos = node.obj.transform.localPosition;
                 pos += node.pos;
                 node.obj.transform.localPosition = pos;
@@ -293,6 +308,8 @@ namespace Packages.FxEditor
             UpdateTextNodes();
             nodes.Clear();
 
+            if (clip == null) return;
+            
             var pos = GlobalUtility.RandomSample(text.Length);
             
             var t = gameObject.transform;
@@ -310,23 +327,19 @@ namespace Packages.FxEditor
                 
                 node.pos = node.obj.transform.localPosition;
                 nodes.Add(node);
+                
+                    
                 clip.SampleAnimation(node.obj,0.0f);
+                
+                
+                
             }
 
         }
 
         private void Update()
         {
-            // if (Time.time < startTime)
-            // {
-            //     gameObject.SetActive(false);
-            // }
-            // else
-            // {
-            //     gameObject.SetActive(true);
-            // }
             
-            //UpdateTextNodes();
             ComputeAnimation();
             
         }

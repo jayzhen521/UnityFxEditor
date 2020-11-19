@@ -108,9 +108,10 @@ namespace Packages.FxEditor
                  textMesh=obj.AddComponent<TextMesh>();
                  titleObject = obj;
                  titleObject.tag = "EditorOnly";
-                 titleObject.transform.position = gameObject.transform.position;
+                 
+                 var offset=new Vector3(0,6,0);
+                 titleObject.transform.position = gameObject.transform.position+offset;
             }
-            
             
             
             textMesh.text = name;

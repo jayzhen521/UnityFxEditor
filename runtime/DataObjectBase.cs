@@ -59,6 +59,8 @@ namespace Packages.FxEditor
             Position = stream.Position;
             Size = data.Length;
             
+            Debug.Log("type:"+ObjectType+" size:"+Size);
+            
             Write(stream, data);
             
             //---processing alignment of data block.

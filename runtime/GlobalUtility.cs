@@ -161,6 +161,13 @@ namespace Packages.FxEditor
 
             return randomizePos;
         }
+
+
+        public static Material GetMaterial(Renderer renderer)
+        {
+            var materal = renderer.sharedMaterial;
+            return materal;
+        }
             
     }
 }

@@ -31,7 +31,8 @@ namespace Packages.FxEditor
             //------------------
             var renderer = gameObject.GetComponent<Renderer>();
             
-            var shader = renderer.material.shader;
+            var shader = renderer.sharedMaterial.shader;
+            
             
             _shaderObject = exporter.GetObject(shader) as ShaderObject;
 
@@ -50,7 +51,7 @@ namespace Packages.FxEditor
                     case ShaderParameter.ParameterTypeColor:
                         p.colorValue = block.GetColor(p.name);
                         if (p.colorValue == new Color(0, 0, 0, 0))
-                            p.colorValue = renderer.material.GetColor(p.name);
+                            p.colorValue =GlobalUtility.GetMaterial(renderer).GetColor(p.name);
                         break;
                     case ShaderParameter.ParameterTypeFloat:
                         p.floatValue = block.GetFloat(p.name);
@@ -59,7 +60,7 @@ namespace Packages.FxEditor
                         break;
                     case ShaderParameter.ParameterTypeTexture2D:
                     {
-                        var tex = renderer.material.GetTexture(p.name);
+                        var tex = renderer.sharedMaterial.GetTexture(p.name);
                         if (tex == null) tex = Texture2D.whiteTexture;
                         p.textureValue = exporter.GetObject(tex) as TextureObject;
                     }
@@ -77,7 +78,7 @@ namespace Packages.FxEditor
                     //texcoord.vectorValue = renderer.material.GetVector(texcoord.name);
                     texcoord.vectorValue = block.GetVector(texcoord.name);
                     if(texcoord.vectorValue==new Vector4(0,0,0,0))
-                        texcoord.vectorValue = renderer.material.GetVector(texcoord.name);
+                        texcoord.vectorValue = GlobalUtility.GetMaterial(renderer).GetVector(texcoord.name);
                     _parameters.Add(texcoord);
                 }
             }

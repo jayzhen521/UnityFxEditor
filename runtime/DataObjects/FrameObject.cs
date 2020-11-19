@@ -7,10 +7,8 @@ using Object = UnityEngine.Object;
 
 namespace Packages.FxEditor
 {
-    
     public class FrameObject : DataObjectBase
     {
-        
         private readonly List<CommandObjectBase> commandlist = new List<CommandObjectBase>();
 
         private float time = Time.time;
@@ -22,7 +20,6 @@ namespace Packages.FxEditor
             var objs = Object.FindObjectsOfType<GameObject>();
             if (objs == null) return;
             Array.Sort(objs, SortByPosition);
-            
             
             
             //===================================================canvas
@@ -40,7 +37,7 @@ namespace Packages.FxEditor
                 foreach (var obj in objs)
                 {
                     if(!obj.transform.IsChildOf(c.root.transform))continue;
-                    Debug.Log(c.gameObject.name+"="+obj.name);
+                    
                     DrawObject(cam,obj, exporter);
                 }
 
@@ -134,6 +131,9 @@ namespace Packages.FxEditor
 
         void DrawMesh(Camera cam,MeshRenderer obj, Exporter exporter)
         {
+            if (obj.gameObject.tag == "EditorOnly") return;
+            if (obj.gameObject.GetComponent<TextFx>() != null) return;
+            
             //-------------------change shader command
             {
                 commandlist.Add(new ChangeShaderCommand(cam, obj.gameObject, exporter));

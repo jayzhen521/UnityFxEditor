@@ -16,22 +16,23 @@ namespace Packages.FxEditor
         private const int TextAnimationTypeSequence = 1;
         private const int TextAnimationTypeRandomize = 2;
         
-        
+        //------------------------------------------
         
         private int id = 0;
         private float size = 1.0f;
         private int textAlignment = 0;
+        private Int64 shaderID = 0;
         private Matrix4x4 matrixVP = new Matrix4x4();
         private Matrix4x4 matirxObjectToWorld = new Matrix4x4();
-        
-        private float duration = 0.0f;
 
+        private float starttime = 0.0f;
+        private float duration = 0.0f;
+        private float overlapPercent = 0.0f;
+
+        
         
         private List<AnimationClipObject> animationClips = new List<AnimationClipObject>();
         private int textAnimationType = TextAnimationTypeUnknown;
-        
-        
-        
         
         
         
@@ -61,7 +62,9 @@ namespace Packages.FxEditor
             matirxObjectToWorld = gameObject.transform.localToWorldMatrix;
             
             //----------time-----------
+            starttime = textobj.startTime;
             duration = textobj.effectDuration;
+            overlapPercent = textobj.interval;
 
             var clip = exporter.GetObject(textobj.clip) as AnimationClipObject;
             if (clip != null)
@@ -77,7 +80,20 @@ namespace Packages.FxEditor
                 case TextAnimationType.Randomize:
                     textAnimationType = TextAnimationTypeRandomize;
                     break;
-                
+            }
+
+            if (textobj.material != null)
+            {
+                var shader = exporter.GetObject(textobj.material.shader) as ShaderObject;
+                if (shader != null)
+                {
+                    shaderID = shader.ObjectID;
+                }
+
+            }
+            else
+            {
+                Debug.LogError("material of text is nuall:"+textobj.gameObject.name);
             }
         }
 
@@ -87,11 +103,17 @@ namespace Packages.FxEditor
             Write(stream,size);
             Write(stream,textAlignment);
             
+            
+            Write(stream,shaderID);
+            
             Write(stream,matrixVP);
             Write(stream,matirxObjectToWorld);
+            Debug.Log("matrix:"+matirxObjectToWorld.ToString());
             
             //-----------time-----------
+            Write(stream,starttime);
             Write(stream,duration);
+            Write(stream,overlapPercent);
             
             //-----------animation-----------
             Write(stream,textAnimationType);

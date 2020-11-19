@@ -85,12 +85,13 @@ namespace Packages.FxEditor
                 animationClip.SampleAnimation(gameObject,time);
                 renderer.GetPropertyBlock(block);
                 
-                
                 glyphMatrix.Add(gameObject.transform.localToWorldMatrix);
+                
                 
                 var color = block.GetColor("_Color");
                 _Color.Add(new Vector4(color.r,color.g,color.g,color.a));
             }
+            Object.DestroyImmediate(gameObject);
         }
 
         public override void Write(Stream stream)
@@ -102,13 +103,24 @@ namespace Packages.FxEditor
             Write(stream, framesCount);
             
             //-------animation data--------
-            Write(stream,animationDataProperies.Count);
-            foreach (var p in animationDataProperies)
+            Write(stream, animationDataProperies.Count);
+            
             {
+                var p = animationDataProperies[0];
                 Write(stream,p.objectID);
                 Write(stream,p.name);
                 Write(stream,p.type);
+                
             }
+            {
+                var p = animationDataProperies[1];
+                Write(stream,p.objectID);
+                Write(stream,p.name);
+                Write(stream,p.type);
+                
+            }
+                
+            
             Write(stream,glyphMatrix.ToArray());
             Write(stream,_Color.ToArray());
         }
