@@ -118,9 +118,10 @@ namespace Packages.FxEditor
         public static void OnCreateTextFx()
         {
             GameObject obj = new GameObject();
-            obj.AddComponent<TextFx>();
-
-
+            var textfx=obj.AddComponent<TextFx>();
+            textfx.text = "Hello";
+            textfx.material=new Material(Shader.Find("HLFx/Text/SolidColor"));
+            
             obj.name = GlobalUtility.GetUniqueName("TextFx");
         }
 
