@@ -193,11 +193,11 @@ namespace Packages.FxEditor
             obj.forExport = true;
             EditorApplication.ExecuteMenuItem("Edit/Play");
         }
-
-        [MenuItem("FxEditor/更新")]
-        public static void OnUpdate()
-        {
-            Client.Add("https://github.com/Helin777/UnityFxEditor.git");
-        }
+        //
+        // [MenuItem("FxEditor/更新")]
+        // public static void OnUpdate()
+        // {
+        //     //Client.Add("https://github.com/Helin777/UnityFxEditor.git");
+        // }
     }
 }
