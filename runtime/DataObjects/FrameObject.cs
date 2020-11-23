@@ -102,6 +102,7 @@ namespace Packages.FxEditor
             
             //textFx
             {
+                
                 var textFx = obj.GetComponent<TextFx>();
                 if (textFx != null)
                 {
@@ -113,6 +114,10 @@ namespace Packages.FxEditor
 
         void DrawTextFx(Camera cam, GameObject obj, Exporter exporter)
         {
+            //-------------------change shader command
+            {
+                commandlist.Add(new ChangeShaderCommand(cam, obj.gameObject, exporter));
+            }
             commandlist.Add(new TextFxSlotCommand(cam,obj,exporter));
         }
         void DrawParticleSystem(Camera cam, ParticleSystem obj, Exporter exporter)

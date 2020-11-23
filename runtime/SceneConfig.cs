@@ -45,8 +45,7 @@ namespace Packages.FxEditor
         {
             if (!forExport) return;
             
-            
-            if (Time.time >= duration)
+            if (Time.time > duration)
             {
                 if (Application.isPlaying||outputPath==null||outputPath=="")
                 {
@@ -56,7 +55,6 @@ namespace Packages.FxEditor
                     isSaved = true;
                     GlobalConfig.isPlaying = false;
                     EditorApplication.ExecuteMenuItem("Edit/Play");
-                    
                 }
             }
             else
@@ -75,6 +73,13 @@ namespace Packages.FxEditor
         public void SaveTotFile()
         {
             _exporter.SaveToFile(outputPath);
+            //-------------------json-----------
+            var jb = UnityEngine.Object.FindObjectOfType<FxJsonData>();
+            if (jb != null)
+            {
+                string jsonfile = outputPath.Replace("videofx", "json");
+                jb.SaveTo(jsonfile);
+            }
         }
         private void OnDrawGizmos()
         {

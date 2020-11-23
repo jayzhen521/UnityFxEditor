@@ -1,4 +1,6 @@
 #version 300 es
+//RadiusBlur
+
 precision highp float;
 precision highp int;
 

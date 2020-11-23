@@ -168,6 +168,92 @@ namespace Packages.FxEditor
             var materal = renderer.sharedMaterial;
             return materal;
         }
-            
+
+        public static Bounds GetGameObjectBounds(GameObject obj)
+        {
+            var renders = obj.GetComponentsInChildren<Renderer>();
+            float r = 99999.0f;
+            Vector3 minPoint=new Vector3(r,r,r);
+            Vector3 maxPoint=new Vector3(-r,-r,-r);
+            foreach (var render in renders)
+            {
+                var bounds = render.bounds;
+                var p = bounds.min;
+                minPoint.x = Mathf.Min(minPoint.x, p.x);
+                minPoint.y = Mathf.Min(minPoint.y, p.y);
+                minPoint.z = Mathf.Min(minPoint.z, p.z);
+
+                p = bounds.max;
+                maxPoint.x = Mathf.Max(maxPoint.x, p.x);
+                maxPoint.y = Mathf.Max(maxPoint.y, p.y);
+                maxPoint.z = Mathf.Max(maxPoint.z, p.z);
+            }
+
+            var center = (minPoint + maxPoint) * .5f;
+            var size = maxPoint - minPoint;
+            return new Bounds(center,size);
+        }
+        
+        
+        public static Bounds GetSelectionBounds()
+        {
+            List<Renderer> renders=new List<Renderer>();
+            foreach (var obj in Selection.gameObjects)
+            {
+                var rs = obj.GetComponentsInChildren<Renderer>();
+                foreach (var renderer in rs)
+                {
+                    renders.Add(renderer);
+                }
+            }
+            float r = 99999.0f;
+            Vector3 minPoint=new Vector3(r,r,r);
+            Vector3 maxPoint=new Vector3(-r,-r,-r);
+            foreach (var render in renders)
+            {
+                var bounds = render.bounds;
+                var p = bounds.min;
+                minPoint.x = Mathf.Min(minPoint.x, p.x);
+                minPoint.y = Mathf.Min(minPoint.y, p.y);
+                minPoint.z = Mathf.Min(minPoint.z, p.z);
+
+                p = bounds.max;
+                maxPoint.x = Mathf.Max(maxPoint.x, p.x);
+                maxPoint.y = Mathf.Max(maxPoint.y, p.y);
+                maxPoint.z = Mathf.Max(maxPoint.z, p.z);
+            }
+
+            var center = (minPoint + maxPoint) * .5f;
+            var size = maxPoint - minPoint;
+            return new Bounds(center,size);
+        }
+
+        public static Vector3 SnapToPoints(List<Vector3> points, Vector3 p,int mode)
+        {
+            float dis = 999999;
+            Vector3 snapPoint = p;
+            foreach (var pt in points)
+            {
+                float d = 99999.0f;
+                if (mode == 0)
+                {
+                    d=Vector3.Distance(pt, p);    
+                }else if (mode == 1)
+                {
+                    d = Mathf.Abs(pt.x - p.x);
+                    
+                }else if (mode == 2)
+                {
+                    d = Mathf.Abs(pt.y - p.y);
+                }
+                
+                if (d < dis)
+                {
+                    dis = d;
+                    snapPoint = pt;
+                }
+            }
+            return snapPoint;
+        }
     }
 }

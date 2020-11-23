@@ -39,7 +39,7 @@ namespace Packages.FxEditor
         public static void OnCreateFxNode()
         {
             var obj = new GameObject();
-            
+
             var cam = obj.AddComponent<Camera>();
             cam.orthographic = true;
             var canvasObject = obj.AddComponent<FxCanvasObject>();
@@ -63,7 +63,7 @@ namespace Packages.FxEditor
         public static void OnCreateFxNodeInput()
         {
             var obj = new GameObject();
-            
+
 
             var cam = obj.AddComponent<Camera>();
             cam.orthographic = true;
@@ -90,7 +90,7 @@ namespace Packages.FxEditor
         public static void OnCreateFxQuad()
         {
             var qual = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            
+
             //Material mat=new Material("");
             Material mat = GlobalUtility.CreateNewMaterialForNode();
             var render = qual.GetComponent<Renderer>();
@@ -118,13 +118,31 @@ namespace Packages.FxEditor
         public static void OnCreateTextFx()
         {
             GameObject obj = new GameObject();
-            var textfx=obj.AddComponent<TextFx>();
+            var textfx = obj.AddComponent<TextFx>();
             textfx.text = "Hello";
-            textfx.material=new Material(Shader.Find("HLFx/Text/SolidColor"));
-            
+            textfx.material = new Material(Shader.Find("HLFx/Text/SolidColor"));
+
             obj.name = GlobalUtility.GetUniqueName("TextFx");
         }
 
+
+        [MenuItem("FxEditor/工具/修复动画时间")]
+        public static void OnFixAnimationTime()
+        {
+            
+
+
+            
+            var objs = Object.FindObjectsOfType<Animator>();
+            foreach (var animator in objs)
+            {
+                var acs = AnimationUtility.GetAnimationClips(animator.gameObject);
+                foreach (var animationClip in acs)
+                {
+                    animationClip.SampleAnimation(animator.gameObject, 0.0f);
+                }
+            }
+        }
 
         [MenuItem("FxEditor/工具/克隆材质")]
         public static void OnCloneMaterials()
@@ -142,16 +160,15 @@ namespace Packages.FxEditor
                 foreach (var r in rs)
                 {
                     var mat = r.sharedMaterial;
-                    var newmat=new Material(mat.shader);
+                    var newmat = new Material(mat.shader);
                     newmat.CopyPropertiesFromMaterial(mat);
                     r.sharedMaterial = newmat;
                     GlobalUtility.SaveNewMaterialFile(newmat);
-                }    
+                }
             }
-
         }
-        
-        
+
+
         [MenuItem("FxEditor/显示隐藏UI")]
         public static void OnUIToggle()
         {
@@ -182,7 +199,5 @@ namespace Packages.FxEditor
         {
             Client.Add("https://github.com/Helin777/UnityFxEditor.git");
         }
-
-        
     }
 }

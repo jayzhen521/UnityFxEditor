@@ -237,8 +237,7 @@ namespace Packages.FxEditor
             lastSize = size;
         }
 
-
-
+        
         void ComputeAnimation()
         {
             if (clip == null) return;
@@ -266,7 +265,7 @@ namespace Packages.FxEditor
             {
                 foreach (var node in nodes)
                 {
-                    clip.SampleAnimation(node.obj,0.0f);
+                    clip.SampleAnimation(node.obj,0.001f);
                     var pos = node.obj.transform.localPosition;
                     pos += node.pos;
                     node.obj.transform.localPosition = pos;
@@ -280,9 +279,15 @@ namespace Packages.FxEditor
                 if (node.obj == null) return;
                 if (t < node.start || t > node.end)
                 {
-                    //clip.SampleAnimation(node.obj,clip.length);
-                    continue;
-                    
+                    if (t < node.start)
+                    {
+                        clip.SampleAnimation(node.obj,0.0f);
+                    }
+
+                    if (t > node.end)
+                    {
+                        clip.SampleAnimation(node.obj,clip.length);
+                    }
                 }
                 else
                 {
@@ -302,7 +307,6 @@ namespace Packages.FxEditor
         }
         private void Start()
         {
-            
             //transforms = null;
             //lastSize = -1;
             UpdateTextNodes();
@@ -327,14 +331,9 @@ namespace Packages.FxEditor
                 
                 node.pos = node.obj.transform.localPosition;
                 nodes.Add(node);
-                
-                    
-                clip.SampleAnimation(node.obj,0.0f);
-                
-                
-                
-            }
 
+                clip.SampleAnimation(node.obj,0.001f);
+            }
         }
 
         private void Update()

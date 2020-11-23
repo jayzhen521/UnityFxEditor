@@ -4,6 +4,7 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Center("center",Vector)=(0.5,0.5,0,0)
+        _Angle("angle",Float)=0
         //_Inner("inner",Float)=0
         _Zoom("zoom",Float)=1
         _Power("power",Float)=0.01
@@ -40,6 +41,7 @@
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _Center;
+            float _Angle;
             float _Inner;
             float _Zoom;
             float _Power;
@@ -57,12 +59,10 @@
             float4 frag (v2f i) : SV_Target
             {
                 float2 dir=(i.uv-_Center.xy);
-                dir=normalize(float2(-1,-1));
+                float r=_Angle*3.14159/180.0;
+                dir=normalize(float2(sin(r),cos(r)));
                 
                 float d=distance(i.uv,_Center.xy);
-                
-                
-                
                 
                 float p=sin(d*_Zoom+_Offset)*_Power;
 
@@ -72,7 +72,7 @@
                 float2 uv=i.uv+dir*p;
                 // sample the texture
                 float4 col = tex2D(_MainTex, uv);
-                if(uv.x<0||uv.y<0||uv.x>1||uv.y>1)col=float4(0,0,0,1);
+                //if(uv.x<0||uv.y<0||uv.x>1||uv.y>1)col=float4(0,0,0,1);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;

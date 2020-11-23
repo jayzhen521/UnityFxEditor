@@ -43,6 +43,7 @@
             float _Radius;
             float4 _Center;
 
+            
             v2f vert (appdata v)
             {
                 v2f o;
@@ -54,24 +55,24 @@
 
             float4 frag (v2f i) : SV_Target
             {
-                float2 uv=i.uv-_Center;
-                float a=atan2(uv.y,uv.x);
+                float2 uv=i.uv-_Center;                
+                float2 N=normalize(uv);
+                float l=sqrt(uv.x*uv.x+uv.y*uv.y);
 
-                float l=length(uv);
-                //l=clamp(l,0,_Radius);
-                float p=sin(l*3.14159)*_Power;
+                float d=min(l,_Radius);
+                d/=_Radius;
                 
-                float dx=cos(a)*p;
-                float dy=sin(a)*p;                
                 
-                uv=i.uv+float2(dx,dy);
+                float p=sqrt(d-d*d);
+                
+                uv=(i.uv-_Center)*(1-p*_Power)+_Center;
+
                 float4 color=tex2D(_MainTex,uv);
 
                 
-                //color=float4(p,p,p,1);
-                
                 
                 return color;
+                
             }
             ENDCG
         }

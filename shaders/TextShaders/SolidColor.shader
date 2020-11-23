@@ -54,7 +54,7 @@
                 float fontmask=tex2D(_MainTex, i.uv).a;
                 float4 color=_Color;
                 
-                color.a=fontmask;
+                color.a*=fontmask;
                 color.rgb*=color.a;
                 
                 return color;

@@ -32,6 +32,7 @@ namespace Packages.FxEditor
         private AnimationClip animationClip = null;
         private Shader shader = null;
         private string matrix = "";
+        private Vector4 staticColor=new Vector4(1,1,1,1);
 
 
         MaterialPropertyBlock block = new MaterialPropertyBlock();
@@ -64,10 +65,7 @@ namespace Packages.FxEditor
         public void SamplerData()
         {
             
-            animationDataProperies.Add(new AnimationClipProperty("glyphMatrix",
-                ShaderParameter.ParameterTypeMatrix4x4));
-            animationDataProperies.Add(new AnimationClipProperty("_Color", ShaderParameter.ParameterTypeFloat4));
-
+            
             var binds = AnimationUtility.GetCurveBindings(animationClip);
             
             
@@ -89,8 +87,24 @@ namespace Packages.FxEditor
                 
                 
                 var color = block.GetColor("_Color");
-                _Color.Add(new Vector4(color.r,color.g,color.g,color.a));
+                var colorV = new Vector4(color.r, color.g, color.b, color.a);
+                if (colorV != Vector4.zero)
+                {
+                    _Color.Add(colorV);
+                }
+
+                
+                Debug.Log("color:"+color);
             }
+            
+            animationDataProperies.Add(new AnimationClipProperty("animationMatrix",
+                ShaderParameter.ParameterTypeMatrix4x4));
+            if (_Color.Count > 0)
+            {
+                animationDataProperies.Add(new AnimationClipProperty("_Color", ShaderParameter.ParameterTypeFloat4));    
+            }
+            
+
             Object.DestroyImmediate(gameObject);
         }
 
@@ -102,6 +116,7 @@ namespace Packages.FxEditor
             Write(stream, animationType);
             Write(stream, framesCount);
             
+            
             //-------animation data--------
             Write(stream, animationDataProperies.Count);
             
@@ -112,6 +127,7 @@ namespace Packages.FxEditor
                 Write(stream,p.type);
                 
             }
+            if(_Color.Count>0)
             {
                 var p = animationDataProperies[1];
                 Write(stream,p.objectID);
@@ -122,6 +138,8 @@ namespace Packages.FxEditor
                 
             
             Write(stream,glyphMatrix.ToArray());
+            
+            if(_Color.Count>0)
             Write(stream,_Color.ToArray());
         }
     }
