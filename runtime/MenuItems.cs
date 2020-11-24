@@ -167,6 +167,36 @@ namespace Packages.FxEditor
                 }
             }
         }
+        
+        [MenuItem("FxEditor/工具/纹理映射")]
+        public static void OnTextureMapping()
+        {
+            var bound = GlobalUtility.GetSelectionBounds();
+            foreach(var gameobject in Selection.gameObjects){
+                Renderer rnd=gameobject.GetComponent<Renderer>();
+                if(rnd==null)continue;
+			
+                Material m=rnd.sharedMaterial;
+
+                var bd = rnd.bounds;
+                var v1 = bd.min - bound.min;
+                v1.x /= bound.size.x;
+                v1.y /= bound.size.y;
+                
+                var v2 = new Vector3(
+                    bd.size.x/bound.size.x,
+                    bd.size.y/bound.size.y,
+                    0
+                    );
+                
+                
+                // Vector3 v1=cam.WorldToViewportPoint(rnd.bounds.min);
+                // Vector3 v2=cam.WorldToViewportPoint(rnd.bounds.max);
+			
+                m.mainTextureOffset=new Vector2(v1.x,v1.y);
+                m.mainTextureScale=new Vector2(v2.x,v2.y);
+            }
+        }
 
 
         [MenuItem("FxEditor/显示隐藏UI")]

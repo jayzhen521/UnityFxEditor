@@ -260,7 +260,9 @@ namespace Packages.FxEditor
             }
             //---------------
             
-            float t = (Time.time-startTime)%effectDuration;
+            //float t = (Time.time-startTime)%effectDuration;
+            float t = Mathf.Min(effectDuration, Time.time-startTime);
+            
             if (t < lastTime)
             {
                 foreach (var node in nodes)

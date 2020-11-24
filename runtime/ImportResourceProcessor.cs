@@ -8,8 +8,8 @@ namespace Packages.FxEditor
     {
         private void OnPostprocessTexture(Texture2D texture)
         {
-            EditorUtility.CompressTexture(texture, TextureFormat.RGB24, TextureCompressionQuality.Normal);
             
+            //EditorUtility.CompressTexture(texture, TextureFormat.RGB24, TextureCompressionQuality.Normal);
         }
     }
 }

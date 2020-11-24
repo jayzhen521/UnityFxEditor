@@ -66,7 +66,8 @@
                 col.w*=mask;
                 col.xyz*=col.w;
                 // apply fog
-                UNITY_APPLY_FOG(i.fogCoord, col);
+                //UNITY_APPLY_FOG(i.fogCoord, col);
+                //col=fixed4(col.w,col.w,col.w,1);
                 return col;
             }
             ENDCG
