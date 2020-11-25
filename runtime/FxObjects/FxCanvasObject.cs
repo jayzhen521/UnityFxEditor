@@ -114,7 +114,7 @@ namespace Packages.FxEditor
             }
             
             
-            textMesh.text = name;
+            textMesh.text = name+":"+nodeOrder;
             textMesh.color = bounds_color;
             textMesh.fontSize = 32;
             textMesh.characterSize = 0.25f;

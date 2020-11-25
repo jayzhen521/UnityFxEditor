@@ -658,6 +658,7 @@ namespace Packages.FxEditor
             states[StateIndexBlendSrcFactor] =StateBlendFactorOne;
             states[StateIndexBlendDstFactor] = StateBlendFactorOneMinusSrcAlpha;
             //--------------------------------------
+            
         }
 
         public override void Write(Stream stream)
@@ -677,7 +678,6 @@ namespace Packages.FxEditor
                 Write(stream, p.type);
             }
 
-            
             //write source
             Write(stream,sourceStates);
             for (var i = 0; i < MaxSources; i++)

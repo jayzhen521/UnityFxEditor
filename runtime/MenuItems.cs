@@ -33,6 +33,9 @@ namespace Packages.FxEditor
             canvasObject.bounds_color = UnityEngine.Random.ColorHSV(0, 1, 1, 1, 1, 1);
 
             obj.name = GlobalUtility.GetUniqueName("Node");
+            
+            var objectRoot=new GameObject("noderoot");
+            canvasObject.root = objectRoot;
         }
 
         [MenuItem("FxEditor/创建物体/节点/效果节点")]
@@ -40,23 +43,32 @@ namespace Packages.FxEditor
         {
             var obj = new GameObject();
 
+            
             var cam = obj.AddComponent<Camera>();
             cam.orthographic = true;
             var canvasObject = obj.AddComponent<FxCanvasObject>();
+            
+            var objectRoot=new GameObject("noderoot");
+            objectRoot.transform.parent = obj.transform;
+            
+            canvasObject.root = objectRoot;
+            
             canvasObject.bounds_color = UnityEngine.Random.ColorHSV(0, 1, 1, 1, 1, 1);
 
             var qual = GameObject.CreatePrimitive(PrimitiveType.Quad);
             qual.transform.parent = cam.gameObject.transform;
             qual.transform.position = new Vector3(0, 0, 1);
             qual.transform.localScale = new Vector3(cam.orthographicSize * 2, cam.orthographicSize * 2, 1);
+            qual.transform.parent = objectRoot.transform;
             //Material mat=new Material("");
             Material mat = GlobalUtility.CreateNewMaterialForNode();
             var render = qual.GetComponent<Renderer>();
             render.material = mat;
-            canvasObject.root = qual;
+            
 
             Selection.activeObject = obj;
             obj.name = GlobalUtility.GetUniqueName(mat.shader.name);
+            
         }
 
         [MenuItem("FxEditor/创建物体/节点/输入效果节点")]
@@ -68,17 +80,22 @@ namespace Packages.FxEditor
             var cam = obj.AddComponent<Camera>();
             cam.orthographic = true;
             var canvasObject = obj.AddComponent<FxCanvasObject>();
+            var objectRoot=new GameObject("noderoot");
+            objectRoot.transform.parent = obj.transform;
+            canvasObject.root = objectRoot;
+
             canvasObject.bounds_color = UnityEngine.Random.ColorHSV(0, 1, 1, 1, 1, 1);
 
             var qual = GameObject.CreatePrimitive(PrimitiveType.Quad);
             qual.transform.parent = cam.gameObject.transform;
             qual.transform.position = new Vector3(0, 0, 1);
             qual.transform.localScale = new Vector3(cam.orthographicSize * 2, cam.orthographicSize * 2, 1);
+            qual.transform.parent = objectRoot.transform;
             //Material mat=new Material("");
             Material mat = GlobalUtility.CreateNewMaterialForNode();
             var render = qual.GetComponent<Renderer>();
             render.material = mat;
-            canvasObject.root = qual;
+            
             //------------------------------
 
             var slot = qual.AddComponent<FxCanvasSlot>();
