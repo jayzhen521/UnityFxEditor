@@ -57,6 +57,8 @@ namespace Packages.FxEditor
                         p.floatValue = block.GetFloat(p.name);
                         if(p.floatValue==0.0f)
                             p.floatValue = renderer.material.GetFloat(p.name);
+                            if(p.name=="_Power")
+                        Debug.Log("power:"+p.floatValue);
                         break;
                     case ShaderParameter.ParameterTypeTexture2D:
                     {

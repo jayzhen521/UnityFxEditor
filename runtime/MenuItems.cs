@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Rendering;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace Packages.FxEditor
 {
@@ -58,7 +62,7 @@ namespace Packages.FxEditor
             var qual = GameObject.CreatePrimitive(PrimitiveType.Quad);
             qual.transform.parent = cam.gameObject.transform;
             qual.transform.position = new Vector3(0, 0, 1);
-            qual.transform.localScale = new Vector3(cam.orthographicSize * 2, cam.orthographicSize * 2, 1);
+            qual.transform.localScale = new Vector3(cam.orthographicSize * 2+0.01f, cam.orthographicSize * 2+0.01f, 1);
             qual.transform.parent = objectRoot.transform;
             //Material mat=new Material("");
             Material mat = GlobalUtility.CreateNewMaterialForNode();
@@ -89,7 +93,7 @@ namespace Packages.FxEditor
             var qual = GameObject.CreatePrimitive(PrimitiveType.Quad);
             qual.transform.parent = cam.gameObject.transform;
             qual.transform.position = new Vector3(0, 0, 1);
-            qual.transform.localScale = new Vector3(cam.orthographicSize * 2, cam.orthographicSize * 2, 1);
+            qual.transform.localScale = new Vector3(cam.orthographicSize * 2+0.01f, cam.orthographicSize * 2+0.01f, 1);
             qual.transform.parent = objectRoot.transform;
             //Material mat=new Material("");
             Material mat = GlobalUtility.CreateNewMaterialForNode();
@@ -146,9 +150,7 @@ namespace Packages.FxEditor
         [MenuItem("FxEditor/工具/修复动画时间")]
         public static void OnFixAnimationTime()
         {
-            
-
-
+            var pb=new MaterialPropertyBlock();
             
             var objs = Object.FindObjectsOfType<Animator>();
             foreach (var animator in objs)
@@ -158,6 +160,37 @@ namespace Packages.FxEditor
                 {
                     animationClip.SampleAnimation(animator.gameObject, 0.0f);
                 }
+
+                var render = animator.gameObject.GetComponent<Renderer>();
+                if(render==null)continue;
+                render.GetPropertyBlock(pb);
+
+                var shader = render.material.shader;
+                for (int i = 0; i < shader.GetPropertyCount(); i++)
+                {
+                    var type = shader.GetPropertyType(i);
+                    switch (type)
+                    {
+                        case ShaderPropertyType.Color:
+                            render.material.SetColor(i,pb.GetColor(i));
+                            break;
+                        case ShaderPropertyType.Vector:
+                            render.material.SetVector(i,pb.GetVector(i));
+                            break;
+                        case ShaderPropertyType.Float:
+                            render.material.SetFloat(i,pb.GetFloat(i));
+                            break;
+                        case ShaderPropertyType.Range:
+                            
+                            break;
+                        case ShaderPropertyType.Texture:
+                            render.material.SetTexture(i,pb.GetTexture(i));
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+                
             }
         }
 

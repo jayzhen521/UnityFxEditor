@@ -60,10 +60,9 @@
                 float r=_Angle;
                 float2 dir=float2(sin(r),cos(r));
                 dir=normalize(dir);
-                float2 uv=i.uv+dir*(_Power*bump-_Power*0.5);
+                float2 uv=i.uv+dir*(_Power*bump);
                 float4 col = tex2D(_MainTex, uv);
-                //if(uv.x<0||uv.y<0||uv.x>1||uv.y>1)col=float4(0,0,0,1);
-                // apply fog
+                
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }
