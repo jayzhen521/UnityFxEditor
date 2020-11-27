@@ -7,8 +7,8 @@ namespace Packages.FxEditor
     
     public class FxCanvasObject : MonoBehaviour
     {
-        public int width = 128;
-        public int height = 128;
+        public int width = 512;
+        public int height = 512;
         public Color backgroundColor=Color.black;
 
         public bool show_bounds = true;
@@ -40,7 +40,7 @@ namespace Packages.FxEditor
             if (canvasTexture.width != width || canvasTexture.height != height)
             {
                 canvasTexture = new RenderTexture((int) width, (int) height, 16, RenderTextureFormat.Default);
-                canvasTexture.wrapMode = TextureWrapMode.Repeat;
+                canvasTexture.wrapMode = TextureWrapMode.Clamp;
                 canvasTexture.depth = 0;
                 Debug.Log("update canvas!");
             }
@@ -92,9 +92,6 @@ namespace Packages.FxEditor
         }
         
         
-        
-        
-
         void UpdateTitleObject()
         {
             
