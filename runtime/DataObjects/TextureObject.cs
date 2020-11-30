@@ -11,7 +11,7 @@ namespace Packages.FxEditor
         private static Dictionary<TextureFormat,int> registeredFormat=new Dictionary<TextureFormat, int>();
         private static Dictionary<TextureWrapMode,int> registeredWrap=new Dictionary<TextureWrapMode, int>();
         private static Dictionary<FilterMode,int> registeredFilter=new Dictionary<FilterMode, int>();
-        private Texture _texture;
+        public Texture _texture;
         private int[] dim = new int[3];
         private int type = 0;
 
@@ -53,6 +53,8 @@ namespace Packages.FxEditor
         {
             ObjectType = ObjectTypeTexture;
             //-------------------
+            if(!(texture is RenderTexture))
+            Debug.Log("texture:"+texture.name+","+texture.width);
             
             _texture = texture;
             dim[0] = texture.width;

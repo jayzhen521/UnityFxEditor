@@ -39,6 +39,7 @@ namespace Packages.FxEditor
             obj.name = GlobalUtility.GetUniqueName("Node");
             
             var objectRoot=new GameObject("noderoot");
+            objectRoot.transform.parent = obj.transform;
             canvasObject.root = objectRoot;
         }
 

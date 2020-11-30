@@ -126,10 +126,11 @@ namespace Packages.FxEditor
             //-------------------change shader command
             {
                 commandlist.Add(new ChangeShaderCommand(cam, obj.gameObject, exporter));
+                
             }
 
             {
-                commandlist.Add(new ParticleSystemCommand(obj));
+                commandlist.Add(new ParticleSystemCommand(cam,obj));
             }
         }
 

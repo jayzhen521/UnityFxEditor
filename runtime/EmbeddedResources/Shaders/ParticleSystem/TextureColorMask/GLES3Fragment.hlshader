@@ -1,0 +1,22 @@
+#version 300 es
+//TextureColorMask
+
+precision highp float;
+
+uniform  sampler2D _MainTex;
+uniform  sampler2D _MaskTex;
+
+uniform   vec4 _Color;
+in  vec2 vs_TEXCOORD0;
+in  vec2 vs_TEXCOORD1;
+
+out  vec4 SV_Target0;
+void main()
+{  
+    vec4 outColor=texture(_MainTex, vs_TEXCOORD0.xy);
+    float mask=texture(_MaskTex, vs_TEXCOORD1.xy).x;
+    outColor*=_Color; 
+    outColor.w*=mask;
+    outColor.xyz*=outColor.w;
+    SV_Target0 =outColor;   
+}

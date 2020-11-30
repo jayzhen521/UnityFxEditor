@@ -62,10 +62,11 @@ namespace Packages.FxEditor
 
             if (obj is Texture)
             {
-                var dataobject = new TextureObject(obj as Texture);
-                objects[obj] = dataobject;
+                TextureObject dataobject = null;
                 
-                Texture2D tex=obj as Texture2D;
+                dataobject = new TextureObject(obj as Texture);
+                //dataobject = new TextureObject(Texture2D.whiteTexture);
+                objects[obj] = dataobject;
                 
                 return dataobject;
             }
