@@ -98,6 +98,7 @@ namespace Packages.FxEditor
             qual.transform.parent = objectRoot.transform;
             //Material mat=new Material("");
             Material mat = GlobalUtility.CreateNewMaterialForNode();
+            
             var render = qual.GetComponent<Renderer>();
             render.material = mat;
             
@@ -106,6 +107,49 @@ namespace Packages.FxEditor
             var slot = qual.AddComponent<FxCanvasSlot>();
             Selection.activeObject = obj;
             obj.name = GlobalUtility.GetUniqueName(mat.shader.name);
+        }
+
+        [MenuItem("FxEditor/创建物体/节点/链接节点 _c")]
+        public static void OnConnectNodes()
+        {
+            FxCanvasSlot slot = null;
+            FxCanvasObject node = null;
+
+            foreach (var gameObject in Selection.gameObjects)        
+            {
+                //----------node-------------
+                if (gameObject.GetComponentInChildren<FxCanvasObject>() != null)
+                {
+                    node = gameObject.GetComponentInChildren<FxCanvasObject>();
+                }
+
+                if (gameObject.GetComponentInParent<FxCanvasObject>() != null)
+                {
+                    node = gameObject.GetComponentInParent<FxCanvasObject>();
+                }
+                
+                //----------slot-------------
+                if (gameObject.GetComponentInChildren<FxCanvasSlot>() != null)
+                {
+                    slot = gameObject.GetComponentInChildren<FxCanvasSlot>();
+                }
+
+                if (gameObject.GetComponentInParent<FxCanvasSlot>() != null)
+                {
+                    slot = gameObject.GetComponentInParent<FxCanvasSlot>();
+                }
+                
+            }
+
+            if (slot == null && node == null)
+            {
+                Debug.LogWarning("选择的内容中找不到能够链接的对象！！");
+            }
+            else
+            {
+                slot.canvas = node;
+
+            }
         }
 
         [MenuItem("FxEditor/创建物体/效果图片")]
