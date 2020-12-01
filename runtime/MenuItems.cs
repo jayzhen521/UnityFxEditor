@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -31,16 +32,19 @@ namespace Packages.FxEditor
         public static void OnCreateNode()
         {
             var obj = new GameObject("Node");
+            
+            var aspect = Camera.main.aspect;
             var cam = obj.AddComponent<Camera>();
             cam.orthographic = true;
             var canvasObject = obj.AddComponent<FxCanvasObject>();
             canvasObject.bounds_color = UnityEngine.Random.ColorHSV(0, 1, 1, 1, 1, 1);
 
             obj.name = GlobalUtility.GetUniqueName("Node");
-            
-            var objectRoot=new GameObject("noderoot");
+
+            var objectRoot = new GameObject("noderoot");
             objectRoot.transform.parent = obj.transform;
             canvasObject.root = objectRoot;
+            canvasObject.width =(int) (canvasObject.height * aspect);
         }
 
         [MenuItem("FxEditor/创建物体/节点/效果节点")]
@@ -48,44 +52,51 @@ namespace Packages.FxEditor
         {
             var obj = new GameObject();
 
+
+
+            var aspect = Camera.main.aspect;
+            
+            Debug.Log("aspect:"+aspect);
+            
             
             var cam = obj.AddComponent<Camera>();
             cam.orthographic = true;
             var canvasObject = obj.AddComponent<FxCanvasObject>();
-            
-            var objectRoot=new GameObject("noderoot");
+
+            var objectRoot = new GameObject("noderoot");
             objectRoot.transform.parent = obj.transform;
-            
+
             canvasObject.root = objectRoot;
-            
+
             canvasObject.bounds_color = UnityEngine.Random.ColorHSV(0, 1, 1, 1, 1, 1);
 
             var qual = GameObject.CreatePrimitive(PrimitiveType.Quad);
             qual.transform.parent = cam.gameObject.transform;
             qual.transform.position = new Vector3(0, 0, 1);
-            qual.transform.localScale = new Vector3(cam.orthographicSize * 2+0.01f, cam.orthographicSize * 2+0.01f, 1);
+            qual.transform.localScale =
+                new Vector3(cam.orthographicSize * 2*aspect + 0.01f, cam.orthographicSize * 2 + 0.01f, 1);
+            canvasObject.width =(int) (canvasObject.height * aspect);
             qual.transform.parent = objectRoot.transform;
             //Material mat=new Material("");
             Material mat = GlobalUtility.CreateNewMaterialForNode();
             var render = qual.GetComponent<Renderer>();
             render.material = mat;
-            
+
 
             Selection.activeObject = obj;
             obj.name = GlobalUtility.GetUniqueName(mat.shader.name);
-            
         }
 
         [MenuItem("FxEditor/创建物体/节点/输入效果节点")]
         public static void OnCreateFxNodeInput()
         {
             var obj = new GameObject();
-
+            var aspect = Camera.main.aspect;
 
             var cam = obj.AddComponent<Camera>();
             cam.orthographic = true;
             var canvasObject = obj.AddComponent<FxCanvasObject>();
-            var objectRoot=new GameObject("noderoot");
+            var objectRoot = new GameObject("noderoot");
             objectRoot.transform.parent = obj.transform;
             canvasObject.root = objectRoot;
 
@@ -94,14 +105,16 @@ namespace Packages.FxEditor
             var qual = GameObject.CreatePrimitive(PrimitiveType.Quad);
             qual.transform.parent = cam.gameObject.transform;
             qual.transform.position = new Vector3(0, 0, 1);
-            qual.transform.localScale = new Vector3(cam.orthographicSize * 2+0.01f, cam.orthographicSize * 2+0.01f, 1);
+            qual.transform.localScale =
+                new Vector3(cam.orthographicSize * aspect*2 + 0.01f, cam.orthographicSize * 2 + 0.01f, 1);
             qual.transform.parent = objectRoot.transform;
+            canvasObject.width =(int) (canvasObject.height * aspect);
             //Material mat=new Material("");
             Material mat = GlobalUtility.CreateNewMaterialForNode();
-            
+
             var render = qual.GetComponent<Renderer>();
             render.material = mat;
-            
+
             //------------------------------
 
             var slot = qual.AddComponent<FxCanvasSlot>();
@@ -115,40 +128,51 @@ namespace Packages.FxEditor
             FxCanvasSlot slot = null;
             FxCanvasObject node = null;
 
-            foreach (var gameObject in Selection.gameObjects)        
+            List<FxCanvasObject> cs=new List<FxCanvasObject>();
+            foreach (var gameObject in Selection.gameObjects)
             {
-                //----------node-------------
-                if (gameObject.GetComponentInChildren<FxCanvasObject>() != null)
+                var slotobj = gameObject.GetComponentInChildren<FxCanvasSlot>();
+                if (slotobj != null && slotobj.canvas == null)
                 {
-                    node = gameObject.GetComponentInChildren<FxCanvasObject>();
+                    slot = slotobj;
+                    break;
                 }
-
-                if (gameObject.GetComponentInParent<FxCanvasObject>() != null)
-                {
-                    node = gameObject.GetComponentInParent<FxCanvasObject>();
-                }
-                
-                //----------slot-------------
-                if (gameObject.GetComponentInChildren<FxCanvasSlot>() != null)
-                {
-                    slot = gameObject.GetComponentInChildren<FxCanvasSlot>();
-                }
-
-                if (gameObject.GetComponentInParent<FxCanvasSlot>() != null)
-                {
-                    slot = gameObject.GetComponentInParent<FxCanvasSlot>();
-                }
-                
             }
 
-            if (slot == null && node == null)
+            if (slot == null) return;
+            
+            cs.Append(slot.gameObject.GetComponentInChildren<FxCanvasObject>());
+            cs.Append(slot.gameObject.GetComponentInParent<FxCanvasObject>());
+            
+            
+            
+            //---------
+            foreach (var gameObject in Selection.gameObjects)
+            {
+                //----------node-------------
+                var nodeobj = gameObject.GetComponentInChildren<FxCanvasObject>();
+                if (nodeobj != null&&cs.IndexOf(nodeobj)<0)
+                {
+                    node = nodeobj;
+                    break;
+                }
+                nodeobj = gameObject.GetComponentInParent<FxCanvasObject>();
+                if (nodeobj != null&&cs.IndexOf(nodeobj)<0)
+                {
+                    node = nodeobj;
+                    break;
+                }
+            }
+
+            Debug.Log("node:"+node+",slot:"+slot);
+            if (slot == null || node == null)
             {
                 Debug.LogWarning("选择的内容中找不到能够链接的对象！！");
             }
             else
             {
                 slot.canvas = node;
-
+                
             }
         }
 
@@ -195,8 +219,8 @@ namespace Packages.FxEditor
         [MenuItem("FxEditor/工具/修复动画时间")]
         public static void OnFixAnimationTime()
         {
-            var pb=new MaterialPropertyBlock();
-            
+            var pb = new MaterialPropertyBlock();
+
             var objs = Object.FindObjectsOfType<Animator>();
             foreach (var animator in objs)
             {
@@ -207,7 +231,7 @@ namespace Packages.FxEditor
                 }
 
                 var render = animator.gameObject.GetComponent<Renderer>();
-                if(render==null)continue;
+                if (render == null) continue;
                 render.GetPropertyBlock(pb);
 
                 var shader = render.material.shader;
@@ -217,25 +241,24 @@ namespace Packages.FxEditor
                     switch (type)
                     {
                         case ShaderPropertyType.Color:
-                            render.material.SetColor(i,pb.GetColor(i));
+                            render.material.SetColor(i, pb.GetColor(i));
                             break;
                         case ShaderPropertyType.Vector:
-                            render.material.SetVector(i,pb.GetVector(i));
+                            render.material.SetVector(i, pb.GetVector(i));
                             break;
                         case ShaderPropertyType.Float:
-                            render.material.SetFloat(i,pb.GetFloat(i));
+                            render.material.SetFloat(i, pb.GetFloat(i));
                             break;
                         case ShaderPropertyType.Range:
-                            
+
                             break;
                         case ShaderPropertyType.Texture:
-                            render.material.SetTexture(i,pb.GetTexture(i));
+                            render.material.SetTexture(i, pb.GetTexture(i));
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
                 }
-                
             }
         }
 
@@ -262,34 +285,35 @@ namespace Packages.FxEditor
                 }
             }
         }
-        
+
         [MenuItem("FxEditor/工具/纹理映射")]
         public static void OnTextureMapping()
         {
             var bound = GlobalUtility.GetSelectionBounds();
-            foreach(var gameobject in Selection.gameObjects){
-                Renderer rnd=gameobject.GetComponent<Renderer>();
-                if(rnd==null)continue;
-			
-                Material m=rnd.sharedMaterial;
+            foreach (var gameobject in Selection.gameObjects)
+            {
+                Renderer rnd = gameobject.GetComponent<Renderer>();
+                if (rnd == null) continue;
+
+                Material m = rnd.sharedMaterial;
 
                 var bd = rnd.bounds;
                 var v1 = bd.min - bound.min;
                 v1.x /= bound.size.x;
                 v1.y /= bound.size.y;
-                
+
                 var v2 = new Vector3(
-                    bd.size.x/bound.size.x,
-                    bd.size.y/bound.size.y,
+                    bd.size.x / bound.size.x,
+                    bd.size.y / bound.size.y,
                     0
-                    );
-                
-                
+                );
+
+
                 // Vector3 v1=cam.WorldToViewportPoint(rnd.bounds.min);
                 // Vector3 v2=cam.WorldToViewportPoint(rnd.bounds.max);
-			
-                m.mainTextureOffset=new Vector2(v1.x,v1.y);
-                m.mainTextureScale=new Vector2(v2.x,v2.y);
+
+                m.mainTextureOffset = new Vector2(v1.x, v1.y);
+                m.mainTextureScale = new Vector2(v2.x, v2.y);
             }
         }
 
@@ -318,6 +342,7 @@ namespace Packages.FxEditor
             obj.forExport = true;
             EditorApplication.ExecuteMenuItem("Edit/Play");
         }
+
         //
         // [MenuItem("FxEditor/更新")]
         // public static void OnUpdate()

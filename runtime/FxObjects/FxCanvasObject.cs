@@ -121,14 +121,15 @@ namespace Packages.FxEditor
         }
         private void OnDrawGizmos()
         {
+
+            var config = Object.FindObjectOfType<SceneConfig>();
+            if (config == null) return;
             
             UpdateTitleObject();
-            var ob = Object.FindObjectOfType<SceneConfig>();
-            if (ob == null || !ob.showCanvasUI) return;
+            if (config == null || !config.showCanvasUI) return;
             
-            if (Application.isPlaying) return;
+            if (Application.isPlaying&&config.autoRefreshNode==false) return;
              UpdateCanvas();
-            
         }
     }
 }

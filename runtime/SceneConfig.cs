@@ -24,6 +24,9 @@ namespace Packages.FxEditor
         public static Camera currentCamera=null;
 
         public bool forExport = false;
+
+        [Tooltip("节点内容自动刷新开关")]
+        public bool autoRefreshNode = true;
         
         private void Start()
         {
