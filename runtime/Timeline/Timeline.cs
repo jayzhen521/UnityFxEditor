@@ -17,7 +17,7 @@ namespace Packages.FxEditor
             {
                 if (timelineClip.rootObject == null) continue;
                 float timeScale = ComputeAnimationDuration(timelineClip.rootObject,timelineClip.duration);
-                Debug.Log(timeScale);
+                
                 var animatoies = timelineClip.rootObject.GetComponentsInChildren<Animator>();
                 foreach (var animator in animatoies)
                 {

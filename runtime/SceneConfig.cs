@@ -25,8 +25,8 @@ namespace Packages.FxEditor
 
         public bool forExport = false;
 
-        [Tooltip("节点内容自动刷新开关")]
-        public bool autoRefreshNode = true;
+        // [Tooltip("节点内容自动刷新开关")]
+        // public bool autoRefreshNode = true;
         
         private void Start()
         {
@@ -40,7 +40,9 @@ namespace Packages.FxEditor
 
         public void Prepare()
         {
+            GlobalUtility.UpdateCanvasNodeOrder();
             currentCamera=Camera.main;
+            
             //outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
         }
 
@@ -104,8 +106,9 @@ namespace Packages.FxEditor
             }
             //return;
             //if (Application.isPlaying) return;
-            
-            GlobalUtility.UpdateCanvasNodeOrder();
+            //
+            // if(autoRefreshNode) 
+            //     GlobalUtility.UpdateCanvasNodeOrder();
             if(showCanvasUI)_uiRenderer.DrawCanvasUIS();
             //_uiRenderer.DrawString(Camera.main.transform.position,"hello" );
         }

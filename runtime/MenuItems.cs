@@ -128,7 +128,7 @@ namespace Packages.FxEditor
             FxCanvasSlot slot = null;
             FxCanvasObject node = null;
 
-            List<FxCanvasObject> cs=new List<FxCanvasObject>();
+            
             foreach (var gameObject in Selection.gameObjects)
             {
                 var slotobj = gameObject.GetComponentInChildren<FxCanvasSlot>();
@@ -141,10 +141,17 @@ namespace Packages.FxEditor
 
             if (slot == null) return;
             
-            cs.Append(slot.gameObject.GetComponentInChildren<FxCanvasObject>());
-            cs.Append(slot.gameObject.GetComponentInParent<FxCanvasObject>());
-            
-            
+            List<FxCanvasObject> cs=new List<FxCanvasObject>();
+            var pc = slot.gameObject.GetComponentsInChildren<FxCanvasObject>();
+            foreach (var p in pc)
+            {
+                cs.Add(p);
+            }
+            pc = slot.gameObject.GetComponentsInParent<FxCanvasObject>();
+            foreach (var p in pc)
+            {
+                cs.Add(p);
+            }
             
             //---------
             foreach (var gameObject in Selection.gameObjects)
