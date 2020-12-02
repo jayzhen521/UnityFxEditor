@@ -63,7 +63,7 @@ namespace Packages.FxEditor
 
         private void Update()
         {
-            //UpdateCanvas();
+            UpdateCanvas();
         }
 
         void DrawBounds()

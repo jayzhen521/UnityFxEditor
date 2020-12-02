@@ -16,14 +16,11 @@ namespace Packages.FxEditor
             foreach (var timelineClip in clips)
             {
                 if (timelineClip.rootObject == null) continue;
-                float timeScale = ComputeAnimationDuration(timelineClip.rootObject,timelineClip.duration);
+                float timeScale = ComputeAnimationDuration(timelineClip.rootObject,0)/timelineClip.duration;
                 
                 var animatoies = timelineClip.rootObject.GetComponentsInChildren<Animator>();
-                foreach (var animator in animatoies)
-                {
-                    animator.enabled = false;
-                    animator.speed = timeScale;
-                }
+                timelineClip.clipTimeRatio = timeScale;
+                
             }
         }
 
@@ -40,46 +37,44 @@ namespace Packages.FxEditor
             float d = 0;
             foreach (var animator in ams)
             {
+                animator.enabled = false;
                 var animationClips = AnimationUtility.GetAnimationClips(animator.gameObject);
-            
+                if (animationClips == null) continue;
+                
                 foreach (var animationClip in animationClips)
                 {
                     d = Mathf.Max(animationClip.length,d);
-                }    
+                    animationClip.SampleAnimation(animator.gameObject,time);
+                }
             }
             
-
-            if (d <= 0.001f) return 1;
-            return d/time;
+            return d;
         }
         void updateAnimation()
         {
-            float time = 0;
-            foreach (var timelineClip in clips)
+            
+            
+            float starttime = 0;
+            for(var i=0;i<clips.Count;i++)
+            //foreach (var timelineClip in clips)
             {
-                float endtime = time+timelineClip.duration;
+                var timelineClip = clips[i];
 
-                if (timelineClip.rootObject == null)
+                float endtime =starttime+timelineClip.duration;
+                float time = Time.time - starttime;
+                
+                if (timelineClip.rootObject == null||Time.time<starttime||Time.time>endtime)
                 {
-                    time = endtime;
+                    starttime = endtime;    
                     continue;
                 }
+
+                float t = time*timelineClip.clipTimeRatio;
                 
-                var animatoies = timelineClip.rootObject.GetComponentsInChildren<Animator>();
-                foreach (var animator in animatoies)
-                {
-                    if (Time.time >= time && Time.time < endtime)
-                    {
-                        animator.enabled = true;
-                        
-                    }
-                    else
-                    {
-                        animator.enabled = false;
-                    }
-                }
                 
-                time = endtime;
+                ComputeAnimationDuration(timelineClip.rootObject,t);
+                Debug.Log("cam:"+timelineClip.rootObject.name+"="+t+"="+time);
+                starttime = endtime;    
             }
         }
         

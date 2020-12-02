@@ -15,5 +15,6 @@ namespace Packages.FxEditor
         public GameObject rootObject = null;
         public float duration = 1.0f;
         public ClipType type = ClipType.PictureInPicture;
+        public float clipTimeRatio = 0.0f;
     }
 }
