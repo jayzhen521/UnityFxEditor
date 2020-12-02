@@ -1,5 +1,5 @@
 using System;
-
+using System.IO;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -82,7 +82,9 @@ namespace Packages.FxEditor
             var jb = UnityEngine.Object.FindObjectOfType<FxJsonData>();
             if (jb != null)
             {
-                string jsonfile = outputPath.Replace("videofx", "json");
+                FileInfo info=new FileInfo(outputPath);
+                //string jsonfile = outputPath.Replace("videofx", "json");
+                string jsonfile = info.Directory.FullName + "/config.json";
                 jb.SaveTo(jsonfile);
             }
         }

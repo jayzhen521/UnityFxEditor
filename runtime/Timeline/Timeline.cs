@@ -73,7 +73,7 @@ namespace Packages.FxEditor
                 
                 
                 ComputeAnimationDuration(timelineClip.rootObject,t);
-                Debug.Log("cam:"+timelineClip.rootObject.name+"="+t+"="+time);
+                
                 starttime = endtime;    
             }
         }
