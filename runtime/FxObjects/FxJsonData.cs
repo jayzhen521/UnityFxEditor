@@ -24,7 +24,7 @@ namespace Packages.FxEditor
         public int edit_filter_id1 = -1;
         public int edit_filter_id2 = -1;
         public int type = -2;
-        public string path = "";
+        public string path = "00";
     }
 
     public enum PlayMode
@@ -42,6 +42,20 @@ namespace Packages.FxEditor
         public PlayMode play_mode = PlayMode.Once;
         
         public List<EffectItem> effectList = new List<EffectItem>();
+
+
+     
+        
+        public string musicConfig = "999";
+        public int isTransRand = 0;
+        public int backgroundColor = 3;
+        public int clipNum = 13;
+        public int translationType = 2;
+        public int moveType = 2;
+        [Tooltip("新引擎标志")]
+        public bool engineType = true;
+
+        public List<int> clip_duration = new List<int>();
         
         [Header("用户自定义数据")]
         //--------------------------------------------
@@ -61,18 +75,36 @@ namespace Packages.FxEditor
 
         void UpdateTimelineData()
         {
+            clip_duration.Clear();
+            
             var timeline = UnityEngine.Object.FindObjectOfType<Timeline>();
             if (timeline == null) return;
             effectList.Clear();
-            int starttime = 0;
+            float starttime = 0;
+            totalDuration = 0;
             for (int i = 0; i < timeline.clips.Count; i++)
             {
                 var clip = timeline.clips[i];
                 
                 var fx=new EffectItem();
-                fx.path = string.Format("{0:00}",i);
+                //fx.path = string.Format("{0:00}",i);
+                fx.duration = (int) (clip.duration * 1000);
+                fx.start_time=(int)(starttime*1000);
+                fx.end_time=(int)((starttime+clip.duration)*1000);
+                fx.type = (int) clip.type;
                 effectList.Add(fx);
+                starttime += clip.duration;
+
+
+                if (clip.type == ClipType.PictureInPicture)
+                {
+                    clip_duration.Add(fx.duration);
+                    totalDuration += fx.duration;
+                }
+                
             }
+
+            clipNum = clip_duration.Count;
         }
 
         private void OnDrawGizmos()
