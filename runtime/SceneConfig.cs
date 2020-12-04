@@ -24,9 +24,11 @@ namespace Packages.FxEditor
         public static Camera currentCamera=null;
 
         public bool forExport = false;
+        [Tooltip("决定是否外置纹理数据")] 
+        public bool isExternalTexture = false;
 
-        // [Tooltip("节点内容自动刷新开关")]
-        // public bool autoRefreshNode = true;
+        [Tooltip("节点内容自动刷新开关")]
+        public bool autoRefreshNode = true;
         
         private void Start()
         {
@@ -43,6 +45,7 @@ namespace Packages.FxEditor
             GlobalUtility.UpdateCanvasNodeOrder();
             currentCamera=Camera.main;
             
+
             //outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
         }
 
