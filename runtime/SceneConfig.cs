@@ -24,8 +24,13 @@ namespace Packages.FxEditor
         public static Camera currentCamera=null;
 
         public bool forExport = false;
+        
+        [Header("纹理数据设置")]
         [Tooltip("决定是否外置纹理数据")] 
         public bool isExternalTexture = false;
+
+        [Tooltip("0--100,数值越小质量越差")]
+        public int jpegCompressQuality = 75;
 
         [Tooltip("节点内容自动刷新开关")]
         public bool autoRefreshNode = true;

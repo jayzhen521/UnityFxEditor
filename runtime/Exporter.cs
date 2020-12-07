@@ -3,6 +3,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace Packages.FxEditor
@@ -133,13 +134,28 @@ namespace Packages.FxEditor
                         if (tex.externalTextureData != null)
                         {
                             var texData = tex.externalTextureData;
-                            
+
+                            var tex2d = tex._texture as Texture2D;
                             //     
                             FileInfo dstinfo = new FileInfo(path);
                             FileInfo srcinfo = new FileInfo(tex.externalTextureData.path);
-                            string filename = obj.ObjectID.ToString()  + srcinfo.Extension;
+                            string ext = ".jpg";
+                            byte[] data = null;
+                            
+                            if (tex2d.format == TextureFormat.RGBA32)
+                            {
+                                ext = ".png";
+                                data = ImageConversion.EncodeToPNG(tex2d);
+                            }
+                            else
+                            {
+                                data = ImageConversion.EncodeToJPG(tex2d, config.jpegCompressQuality);
+                            }
+                            
+                            string filename = obj.ObjectID.ToString()  + ext;
                             string outfile = string.Format("{0}/{1}", outputDir, filename);
-                            srcinfo.CopyTo(outfile);
+                            File.WriteAllBytes(outfile,data);
+                            //srcinfo.CopyTo(outfile);
                             
                             //Debug.Log("output:" + outfile);
 
