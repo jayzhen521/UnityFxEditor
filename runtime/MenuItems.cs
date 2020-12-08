@@ -12,6 +12,100 @@ namespace Packages.FxEditor
 {
     public class MenuItems
     {
+
+        [MenuItem("FxEditor/工具/Alpha分离/配置Alpha分离")]
+        public static void OnCreateAlphaSpliter()
+        {
+            float aspect = Camera.main.aspect;
+            Camera.main.clearFlags = CameraClearFlags.SolidColor;
+            Camera.main.backgroundColor = Color.black;
+            Camera.main.orthographic = true;
+            Camera.main.transform.position=new Vector3(0,0,-10);
+            float h = Camera.main.orthographicSize;
+            float w = h * aspect;
+            GameObject obj=new GameObject("VideoAlphaSpliter");
+            var spliter = obj.AddComponent<AlphaChannelSpliter>();
+            obj.transform.position = Vector3.zero;
+            
+            GameObject objRGB=GameObject.CreatePrimitive(PrimitiveType.Quad);
+            objRGB.name = "RGB";
+            objRGB.transform.parent = obj.transform;
+            objRGB.transform.localScale=new Vector3(w,h*2,1);
+            objRGB.transform.position=new Vector3(-w*0.5f,0,0);
+            objRGB.GetComponent<MeshRenderer>().sharedMaterial=new Material(Shader.Find("HLFx/TextureColorMask"));
+            
+            GameObject objAlpha=GameObject.CreatePrimitive(PrimitiveType.Quad);
+            objAlpha.name = "Alpha";
+            objAlpha.transform.parent = obj.transform;
+            objAlpha.transform.localScale=new Vector3(w,h*2,1);
+            objAlpha.transform.position=new Vector3(w*0.5f,0,0);
+            objAlpha.GetComponent<MeshRenderer>().sharedMaterial=new Material(Shader.Find("HLFx/Tools/AlphaToGray"));
+
+            spliter.rgbObject = objRGB;
+            spliter.alphaObject = objAlpha;
+        }
+        [MenuItem("FxEditor/工具/Alpha分离/水平分布")]
+        public static void OnToHor()
+        {
+            float aspect = Camera.main.aspect;
+            Camera.main.clearFlags = CameraClearFlags.SolidColor;
+            Camera.main.backgroundColor = Color.black;
+            Camera.main.orthographic = true;
+            Camera.main.transform.position=new Vector3(0,0,-10);
+            
+            
+            float h = Camera.main.orthographicSize;
+            float w = h * aspect;
+            
+            var spliter = Object.FindObjectOfType<AlphaChannelSpliter>();
+
+            GameObject objRGB = spliter.rgbObject;
+            objRGB.transform.localScale=new Vector3(w,h*2,1);
+            objRGB.transform.position=new Vector3(-w*0.5f,0,0);
+            
+            
+            GameObject objAlpha=spliter.alphaObject;
+            objAlpha.transform.localScale=new Vector3(w,h*2,1);
+            objAlpha.transform.position=new Vector3(w*0.5f,0,0);
+
+        }
+        [MenuItem("FxEditor/工具/Alpha分离/垂直分布")]
+        public static void OnToVert()
+        {
+            float aspect = Camera.main.aspect;
+            Camera.main.clearFlags = CameraClearFlags.SolidColor;
+            Camera.main.backgroundColor = Color.black;
+            Camera.main.orthographic = true;
+            Camera.main.transform.position=new Vector3(0,0,-10);
+            
+            
+            float h = Camera.main.orthographicSize;
+            float w = h * aspect;
+            
+            var spliter = Object.FindObjectOfType<AlphaChannelSpliter>();
+
+            GameObject objRGB = spliter.rgbObject;
+            objRGB.transform.localScale=new Vector3(w*2,h,1);
+            objRGB.transform.position=new Vector3(0,-h*0.5f,0);
+            
+            
+            GameObject objAlpha=spliter.alphaObject;
+            objAlpha.transform.localScale=new Vector3(w*2,h,1);
+            objAlpha.transform.position=new Vector3(0,h*0.5f,0);
+
+        }
+        
+        
+        [MenuItem("FxEditor/工具/Alpha分离/运行Alpha分离")]
+        public static void OnAlphaChannelSplit()
+        {
+            var spliter=Object.FindObjectOfType<AlphaChannelSpliter>();
+            if (spliter == null) return;
+            
+            spliter.Run();
+        }
+        
+        
         [MenuItem("FxEditor/创建配置")]
         public static void OnCreateConfig()
         {
@@ -55,9 +149,6 @@ namespace Packages.FxEditor
 
 
             var aspect = Camera.main.aspect;
-            
-            Debug.Log("aspect:"+aspect);
-            
             
             var cam = obj.AddComponent<Camera>();
             cam.orthographic = true;
@@ -323,6 +414,16 @@ namespace Packages.FxEditor
                 m.mainTextureScale = new Vector2(v2.x, v2.y);
             }
         }
+
+        [MenuItem("FxEditor/工具/纹理去重")]
+        public static void OnTextureDeduplicates()
+        {
+            string dir = "/Volumes/Misce/Temp/texturedep";
+            TextureDeduplicates td=new TextureDeduplicates();
+            td.ScanDirectory(dir);
+        }
+        
+        
 
 
         [MenuItem("FxEditor/显示隐藏UI")]

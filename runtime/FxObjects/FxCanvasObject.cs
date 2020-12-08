@@ -117,12 +117,8 @@ namespace Packages.FxEditor
         {
             
             UpdateTitleObject();
-            var config = Object.FindObjectOfType<SceneConfig>();
-            if (config == null) return;
-            if (config.autoRefreshNode)
-            {
-                UpdateCanvas();
-            }
+            
+            
         }
     }
 }

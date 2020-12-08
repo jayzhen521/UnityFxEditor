@@ -1,14 +1,12 @@
 using System;
 using System.IO;
-using System.Xml.Serialization;
 
 namespace Packages.FxEditor
 {
     public class CanvasSlotCommand:CommandObjectBase
     {
-        public UInt64 canvasID;
+        public Int64 canvasID;
         public string channelName = "";
-        
         public CanvasSlotCommand(FxCanvasSlot obj,Exporter exporter)
         {
             ObjectType = CommandTypeCanvasSlot;

@@ -12,7 +12,7 @@ namespace Packages.FxEditor
 {
     public class GlobalUtility
     {
-        protected static UInt64 IDCounter = 0; 
+        protected static Int64 IDCounter = 0; 
         public static string GetShaderCode(string path)
         {
             
@@ -28,10 +28,10 @@ namespace Packages.FxEditor
             // return text;
         }
 
-        public static UInt64 GenerateID()
+        public static Int64 GenerateID()
         {
             var now = DateTime.Now;
-            UInt64 id = (UInt64) (((((((now.Year * 365 + now.DayOfYear) * 24) + now.Hour) * 60) + now.Minute) * 60 + now.Second) *
+            Int64 id = (((((((now.Year * 365 + now.DayOfYear) * 24) + now.Hour) * 60) + now.Minute) * 60 + now.Second) *
                 1000 + now.Millisecond);
             IDCounter++;
             return IDCounter+id;
