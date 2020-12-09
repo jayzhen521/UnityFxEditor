@@ -20,7 +20,7 @@ namespace Packages.FxEditor
         //-----------------------------------------
 
 
-        public Int64 ObjectID = GlobalUtility.GenerateID();
+        public UInt64 ObjectID = GlobalUtility.GenerateID();
         public Int64 ObjectType = 0;
         public Int64 Position = 0;
         public Int64 Size = 0;
@@ -47,7 +47,6 @@ namespace Packages.FxEditor
             //---------------------------------------
             stream.Write(data, 0, data.Length);
             ms.Close();
-            
         }
 
         public void WriteToStream(Stream stream)
@@ -58,8 +57,6 @@ namespace Packages.FxEditor
             var data = ms.ToArray();
             Position = stream.Position;
             Size = data.Length;
-            
-            Debug.Log("type:"+ObjectType+" size:"+Size);
             
             Write(stream, data);
             

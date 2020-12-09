@@ -21,7 +21,7 @@ namespace Packages.FxEditor
         private int id = 0;
         private float size = 1.0f;
         private int textAlignment = 0;
-        private Int64 shaderID = 0;
+        private UInt64 shaderID = 0;
         private Matrix4x4 matrixVP = new Matrix4x4();
         private Matrix4x4 matirxObjectToWorld = new Matrix4x4();
 

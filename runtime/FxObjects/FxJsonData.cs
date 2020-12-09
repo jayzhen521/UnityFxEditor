@@ -53,7 +53,7 @@ namespace Packages.FxEditor
         public int translationType = 2;
         public int moveType = 2;
         [Tooltip("新引擎标志")]
-        public bool engineType = true;
+        public bool EngineType = true;
 
         public List<int> clip_duration = new List<int>();
         
