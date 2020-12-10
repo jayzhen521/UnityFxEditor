@@ -114,7 +114,6 @@ namespace Packages.FxEditor
             foreach (var p in _particles)
             {
                 Write(stream, p.position);
-
                 Write(stream, p.rotation * Mathf.PI / 180.0f);
                 Write(stream, _particlesSize[i]);
                 Write(stream, _particlesColor[i]);

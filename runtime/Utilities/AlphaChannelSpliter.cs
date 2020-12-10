@@ -83,7 +83,6 @@ namespace Packages.FxEditor
 
         public void Run()
         {
-            
             var source = inputDir;
             var dest = outputDir;
             CreateObject();

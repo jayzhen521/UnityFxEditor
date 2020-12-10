@@ -418,9 +418,20 @@ namespace Packages.FxEditor
         [MenuItem("FxEditor/工具/纹理去重")]
         public static void OnTextureDeduplicates()
         {
-            string dir = "/Volumes/Misce/Temp/texturedep";
-            TextureDeduplicates td=new TextureDeduplicates();
-            td.ScanDirectory(dir);
+            
+            string indir = "";
+            
+
+            indir=EditorUtility.OpenFolderPanel("选择纹理去重目录", "", "");
+            if (indir == "") return;
+            if (EditorUtility.DisplayDialog("警告",String.Format("这个操作可能对数据造成不可逆的破坏确认目录是:\n{0}\n吗？",indir),  "OK", "Cancel"))
+            {
+                TextureDeduplicates td=new TextureDeduplicates();
+                td.ScanDirectory(indir);
+            }
+
+            return;
+            
         }
         
         
