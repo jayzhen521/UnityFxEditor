@@ -13,7 +13,7 @@ namespace Packages.FxEditor
         //-------------------
         private readonly List<FrameObject> framesData = new List<FrameObject>();
         private readonly Dictionary<Object, DataObjectBase> objects = new Dictionary<Object, DataObjectBase>();
-        
+
 
         public Exporter()
         {
@@ -94,7 +94,6 @@ namespace Packages.FxEditor
 
         public void SaveToFile(string path)
         {
-            
             var ms = new MemoryStream();
             int headersize = 0;
 
@@ -113,8 +112,9 @@ namespace Packages.FxEditor
 
             //-------------Write data of resources------------------
             string outputDir = (new FileInfo(path)).DirectoryName;
-            string datasetfile = outputDir + "/dataset.txt";
-            var dataset=new StreamWriter(datasetfile);
+            //string datasetfile = outputDir + "/dataset.txt";
+            string datasetfile = path + ".fix";
+            var dataset = new StreamWriter(datasetfile);
             {
                 foreach (var keydata in objects)
                 {
@@ -123,10 +123,10 @@ namespace Packages.FxEditor
                     obj.WriteHeaderData(ms);
 
                     //-------for copy texture file----------
-                    
+
                     var tex = obj as TextureObject;
                     var config = Object.FindObjectOfType<SceneConfig>();
-                    if (tex != null&&config.isExternalTexture)
+                    if (tex != null && config.isExternalTexture)
                     {
                         //     
                         //     
@@ -141,7 +141,7 @@ namespace Packages.FxEditor
                             FileInfo srcinfo = new FileInfo(tex.externalTextureData.path);
                             string ext = ".jpg";
                             byte[] data = null;
-                            
+
                             if (tex2d.format == TextureFormat.RGBA32)
                             {
                                 ext = ".png";
@@ -151,25 +151,25 @@ namespace Packages.FxEditor
                             {
                                 data = ImageConversion.EncodeToJPG(tex2d, config.jpegCompressQuality);
                             }
-                            
-                            string filename = obj.ObjectID.ToString()  + ext;
+
+                            string filename = obj.ObjectID.ToString() + ext;
                             string outfile = string.Format("{0}/{1}", outputDir, filename);
-                            File.WriteAllBytes(outfile,data);
-                            //srcinfo.CopyTo(outfile);
+                            File.WriteAllBytes(outfile, data);
                             
-                            //Debug.Log("output:" + outfile);
 
                             dataset.WriteLine(string.Format("{0} {1} {2} {3}",
                                 filename,
-                                texData.position+headersize+obj.Position,
+                                texData.position + headersize + obj.Position,
                                 texData.size,
                                 texData.format));
                         }
                     }
+
                     //---------------------------------------
                 }
             }
             dataset.Close();
+
             //--------------------------------------------------------
 
             //-------------Frames data of resources------------------
@@ -192,33 +192,78 @@ namespace Packages.FxEditor
             File.WriteAllBytes(path, ms.ToArray());
             Debug.Log("count:" + objects.Count);
             Debug.Log(message: "frames:" + framesData.Count);
-            
+
             //testExportFile(path);
+
+            RelayoutFile(path);
         }
 
-        public void testExportFile(string path)
+        private void RelayoutFile(string path)
         {
-            string outputDir = (new FileInfo(path)).DirectoryName;
-            string datasetfile = outputDir + "/dataset.txt";
-            string outputfile = outputDir + "/output.videofx";
-            File.Copy(path,outputfile,true);
-            var outfile=new FileStream(outputfile,FileMode.Open);
-            var dataset=new StreamReader(datasetfile);
-            while (!dataset.EndOfStream)
+            string fixfile = path + ".fix";
+            string text = File.ReadAllText(fixfile);
+            string[] lines = text.Split('\n');
+            byte[] srcData = File.ReadAllBytes(path);
+            byte[] dstData = new byte[srcData.Length];
+
+            
+            //compute data block
+            int currentDstPos = 0;
+            int srcPos = 0;
+            foreach (var line in lines)
             {
-                string linetext = dataset.ReadLine();
-                if (linetext == "") continue;
-                string[] fs = linetext.Split(' ');
-                UInt64 pos = UInt64.Parse(fs[1]);
-                UInt64 size = UInt64.Parse(fs[2]);
-                outfile.Seek((long) pos, SeekOrigin.Begin);
-                for (var i = 0; i <(int) size; i++)
-                {
-                    outfile.WriteByte((byte) (i%255));
-                }
+                if (line == "") continue;
+                string[] fs = line.Split(' ');
+                
+
+                int pos = int.Parse(fs[1]);
+                int size = int.Parse(fs[2]);
+
+                int datasize = pos - srcPos;
+                Array.Copy(srcData, srcPos, 
+                    dstData,currentDstPos,datasize);
+                currentDstPos +=datasize;
+                srcPos = pos + size;
             }
+
+            //last data block
+            {
+                int datasize = srcData.Length-srcPos;
+                Array.Copy(srcData, srcPos, 
+                    dstData,currentDstPos,datasize);
+                currentDstPos +=datasize;
+            }
+            byte[] finaldata = new byte[currentDstPos];
+            Array.Copy(dstData,0,
+                finaldata,0,currentDstPos);
+            
+
+            File.Delete(path);
+            File.WriteAllBytes(path, finaldata);
         }
+
+        // public void testExportFile(string path)
+        // {
+        //     string outputDir = (new FileInfo(path)).DirectoryName;
+        //     string datasetfile = outputDir + "/dataset.txt";
+        //     string outputfile = outputDir + "/output.videofx";
+        //     File.Copy(path,outputfile,true);
+        //     var outfile=new FileStream(outputfile,FileMode.Open);
+        //     var dataset=new StreamReader(datasetfile);
+        //     while (!dataset.EndOfStream)
+        //     {
+        //         string linetext = dataset.ReadLine();
+        //         if (linetext == "") continue;
+        //         string[] fs = linetext.Split(' ');
+        //         UInt64 pos = UInt64.Parse(fs[1]);
+        //         UInt64 size = UInt64.Parse(fs[2]);
+        //         outfile.Seek((long) pos, SeekOrigin.Begin);
+        //         for (var i = 0; i <(int) size; i++)
+        //         {
+        //             outfile.WriteByte((byte) (i%255));
+        //         }
+        //     }
+        // }
         //----------------------------------------
-        
     }
 }
