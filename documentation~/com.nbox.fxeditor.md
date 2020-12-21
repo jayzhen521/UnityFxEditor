@@ -1,12 +1,44 @@
 # FxEditor使用文档
 
+
+##Shader参考
+###Droplet
+
+###Pixelate
+
+###RadiusBlur
+
+###ZoomBlur
+
+###DirectionalBlur
+
+###TextureColorMask
+
+###TextureColorMaskMultiply
+
+###TextureColorMaskAdditive
+
+###Spherical
+
+###BumpMap
+
+###Wave
+
+###ColorDistanceRGB
+
+###Smoothstep
+
+###Inverse
+
+###PageCurl
+
+
 ##FXEditor菜单项目参考说明
 ###FxEditor/创建物体/画布
 创建空的画布对象
 
 ###FxEditor/创建物体/效果画布
 创建一个画布对象和一个空的效果画面
-
 
 
 

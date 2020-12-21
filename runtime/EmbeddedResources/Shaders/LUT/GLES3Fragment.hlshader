@@ -1,0 +1,56 @@
+#version 300 es
+
+precision highp float;
+precision highp int;
+
+
+
+uniform 	float _Size;
+uniform 	float _ImageSize;
+uniform mediump sampler2D _MainTex;
+uniform mediump sampler2D _LUTMap;
+in highp vec2 vs_TEXCOORD0;
+ out highp vec4 SV_Target0;
+vec2 u_xlat0;
+mediump vec3 u_xlat16_0;
+vec2 u_xlat1;
+vec2 u_xlat2;
+float u_xlat4;
+vec2 u_xlat6;
+float u_xlat7;
+float u_xlat9;
+bool u_xlatb9;
+void main()
+{
+    u_xlat16_0.xyz = texture(_MainTex, vs_TEXCOORD0.xy).xyz;
+    u_xlat9 = _Size * _Size + -1.0;
+    u_xlat6.x = u_xlat16_0.z * u_xlat9 + 9.99999975e-05;
+    u_xlat6.x = floor(u_xlat6.x);
+    u_xlat6.x = min(u_xlat9, u_xlat6.x);
+    u_xlat9 = u_xlat6.x * _Size;
+
+    u_xlatb9 = u_xlat9>=(-u_xlat9);
+
+    u_xlat9 = (u_xlatb9) ? _Size : (-_Size);
+    u_xlat1.x = float(1.0) / u_xlat9;
+    u_xlat1.x = u_xlat6.x * u_xlat1.x;
+    u_xlat6.x = u_xlat6.x / _Size;
+    u_xlat6.x = floor(u_xlat6.x);
+    u_xlat1.x = fract(u_xlat1.x);
+    u_xlat6.y = u_xlat9 * u_xlat1.x;
+    u_xlat1.xy = vec2(1.0, 1.0) / vec2(_ImageSize, _Size);
+    u_xlat2.xy = u_xlat6.yx * u_xlat1.yy;
+    u_xlat6.xy = max(u_xlat2.xy, vec2(0.0, 0.0));
+    u_xlat7 = (-u_xlat1.y) + 1.0;
+    u_xlat6.xy = min(u_xlat6.xy, vec2(u_xlat7));
+    u_xlat4 = (-u_xlat1.x) + u_xlat1.y;
+    u_xlat0.xy = u_xlat16_0.xy * vec2(u_xlat4) + u_xlat6.xy;
+    u_xlat0.xy = u_xlat1.xx * vec2(0.5, 0.5) + u_xlat0.xy;
+
+    u_xlat0.xy = clamp(u_xlat0.xy, 0.0, 1.0);
+
+    u_xlat16_0.xyz = texture(_LUTMap, u_xlat0.xy).xyz;
+    SV_Target0.xyz = u_xlat16_0.xyz;
+    SV_Target0.w = 1.0;
+    return;
+}

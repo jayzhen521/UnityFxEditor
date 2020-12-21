@@ -118,7 +118,6 @@ namespace Packages.FxEditor
         private void OnDrawGizmos()
         {
             UpdateDuration();
-            
         }
     }
 }

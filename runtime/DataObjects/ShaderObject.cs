@@ -528,60 +528,29 @@ namespace Packages.FxEditor
                 regobject.states[ShaderObject.StateIndexBlendDstFactor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
                 shaders[name] = regobject;
             }
-            // //--------------------------------------
-            // {
-            //     var name = "FxEditor/HLAddtive";
-            //     var regobject=new ShaderRegisterInformation(
-            //         101,
-            //         "TextureColorMaskGLES3.hlshader",
-            //         "TextureColorMaskGLCore.hlshader"
-            //     );
-            //     regobject.states[ShaderObject.StateIndexBlendEnable] = 1;
-            //     regobject.states[ShaderObject.StateBlendFactorSrcColor] = ShaderObject.StateBlendFactorOne;
-            //     regobject.states[ShaderObject.StateBlendFactorDstColor] = ShaderObject.StateBlendFactorOne;
-            //     shaders[name] = regobject;
-            // }
-            
-            // shaders["FxEditor/HLBoxBlur"] = new ShaderRegisterInformation(
-            //     101,
-            //     "TextureColorMaskGLES3.hlshader",
-            //     "TextureColorMaskGLCore.hlshader"
-            // );
-            // shaders["FxEditor/HLDirectorBlur"] = new ShaderRegisterInformation(
-            //     101,
-            //     "TextureColorMaskGLES3.hlshader",
-            //     "TextureColorMaskGLCore.hlshader"
-            // );
-            // shaders["FxEditor/HLGaussianBlur"] = new ShaderRegisterInformation(
-            //     101,
-            //     "TextureColorMaskGLES3.hlshader",
-            //     "TextureColorMaskGLCore.hlshader"
-            // );
-            // shaders["FxEditor/HLHeightToNormal"] = new ShaderRegisterInformation(
-            //     101,
-            //     "TextureColorMaskGLES3.hlshader",
-            //     "TextureColorMaskGLCore.hlshader"
-            // );
-            // shaders["FxEditor/HLMix"] = new ShaderRegisterInformation(
-            //     101,
-            //     "TextureColorMaskGLES3.hlshader",
-            //     "TextureColorMaskGLCore.hlshader"
-            // );
-            // shaders["FxEditor/HLPhone"] = new ShaderRegisterInformation(
-            //     101,
-            //     "TextureColorMaskGLES3.hlshader",
-            //     "TextureColorMaskGLCore.hlshader"
-            // );
-            // shaders["FxEditor/HLRefract"] = new ShaderRegisterInformation(
-            //     101,
-            //     "TextureColorMaskGLES3.hlshader",
-            //     "TextureColorMaskGLCore.hlshader"
-            // );
-            // shaders["FxEditor/HLSoliderColor"] = new ShaderRegisterInformation(
-            //     100,
-            //     "TextureColorMaskGLES3.hlshader",
-            //     "TextureColorMaskGLCore.hlshader"
-            // );
+            startID++;
+            { //HLFx/TextureColorMask
+                var name = "HLFx/LUT";
+                var regobject=new ShaderRegisterInformation(
+                    startID
+                );
+                
+                //-source
+                var source = GlobalUtility.GetShaderCode("Common/GLES3Vertex.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Vertex] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreVertex] = source.Replace(GLES3Header, GLCoreHeader);
+                
+                source = GlobalUtility.GetShaderCode("LUT/GLES3Fragment.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Fragment] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreFragment] = source.Replace(GLES3Header,GLCoreHeader);
+                
+                //-----------------------------
+
+                regobject.states[ShaderObject.StateIndexBlendEnable] = 1;
+                regobject.states[ShaderObject.StateIndexBlendSrcFactor] = ShaderObject.StateBlendFactorOne;
+                regobject.states[ShaderObject.StateIndexBlendDstFactor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
+                shaders[name] = regobject;
+            }
             
         }
         //-------------------------------

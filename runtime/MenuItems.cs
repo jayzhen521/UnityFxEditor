@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -434,6 +436,50 @@ namespace Packages.FxEditor
             
         }
         
+        [MenuItem("FxEditor/工具/材质排序")]
+        public static void OnMaterialOrder()
+        {
+            var rs = Object.FindObjectsOfType<Renderer>();
+            foreach (var r in rs)
+            {
+                var t = r.gameObject.transform;
+                int z = (int) (t.position.z * 10);
+                r.material.renderQueue = 3000 - z;
+            }
+        }
+        
+        [MenuItem("FxEditor/工具/创建时间轴从剪贴板")]
+        public static void OnCreateTLFromPast()
+        {
+            var TL = Object.FindObjectOfType<Timeline>();
+            if (TL == null)
+            {
+                var obj=new GameObject("Timeline");
+                TL=obj.AddComponent<Timeline>();
+
+            }
+            string text = GUIUtility.systemCopyBuffer;
+            
+            string[] lines = text.Split('\n');
+            
+            TL.clips.Clear();
+            
+            int i = 0;
+            foreach (var line in lines)
+            {
+                var c=new TimelineClip();
+                string[] dg= line.Split(' ');
+                
+                float a = int.Parse(dg[0]);
+                    
+                c.duration = a*0.001f;
+                i += 2;
+                
+                TL.clips.Add(c);
+                TL.clips.Add(new TimelineClip());
+            }
+            Debug.Log(text);
+        }
         
 
 
@@ -467,6 +513,12 @@ namespace Packages.FxEditor
         // public static void OnUpdate()
         // {
         //     //Client.Add("https://github.com/Helin777/UnityFxEditor.git");
+        // }
+
+        // [MenuItem("Test/MMA")]
+        // public static void OnMMA()
+        // {
+        //     Process.Start("/Users/henry/Temp/ttt.wls");
         // }
     }
 }

@@ -7,7 +7,7 @@ namespace Packages.FxEditor
         //public static UInt32 FileFourCC = 0x58464C48; //<-文件
         public const string FileFourCC = "HLFX";
         //-----------------version-------------
-        public const ushort VersionMajor = 0;
+        public const ushort VersionMajor = 1;
         public const ushort VersionSecondMajor = 0;
         public const ushort VersionMinor = 0;
         public const ushort VersionPatch = 0;

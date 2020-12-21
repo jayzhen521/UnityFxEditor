@@ -1,6 +1,6 @@
 {
   "name": "com.nbox.fxeditor",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "displayName": "FxEditor",
   "type": "template",
   "unity": "2020.1",
@@ -15,5 +15,5 @@
     "email": "hlbox2000@outlook.com",
     "url": "https://"
   },
-  "description": "nothing!!!"
+  "description": "\u7528\u4e8e\u89c6\u9891\u6548\u679c\u7684\u7279\u6548\u5185\u5bb9\u521b\u5efa\u5de5\u5177\u3002"
 }
