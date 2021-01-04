@@ -5,3 +5,7 @@ FxLibrary/Temp/**
 shaders/Tmp.meta
 FxLibrary/Temp.meta
 .Ulysses-Group.plist
+runtime/Utilities/SizeByCamera.cs
+runtime/Utilities/MyTest.cs.meta
+runtime/Utilities/MyTest.cs
+runtime/Utilities/SizeByCamera.cs

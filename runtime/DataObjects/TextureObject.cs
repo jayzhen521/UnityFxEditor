@@ -120,7 +120,7 @@ namespace Packages.FxEditor
             string path = AssetDatabase.GetAssetPath(tex2d);
 
             var config = UnityEngine.Object.FindObjectOfType<SceneConfig>(); 
-            if(path!=""&&config.isExternalTexture){
+            if(config.isExternalTexture){
                 
                 int size = data.Length;
                 data = new byte[size];
@@ -137,7 +137,6 @@ namespace Packages.FxEditor
                 externalTextureData = etexture;
             }
             //--------------------------------------
-            
             Write(stream, data);
         }
 

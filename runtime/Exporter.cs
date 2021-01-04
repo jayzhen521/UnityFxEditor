@@ -134,11 +134,10 @@ namespace Packages.FxEditor
                         if (tex.externalTextureData != null)
                         {
                             var texData = tex.externalTextureData;
-
                             var tex2d = tex._texture as Texture2D;
-                            //     
-                            FileInfo dstinfo = new FileInfo(path);
-                            FileInfo srcinfo = new FileInfo(tex.externalTextureData.path);
+                            //
+                            // FileInfo dstinfo = new FileInfo(path);
+                            // FileInfo srcinfo = new FileInfo(tex.externalTextureData.path);
                             string ext = ".jpg";
                             byte[] data = null;
 
@@ -164,7 +163,6 @@ namespace Packages.FxEditor
                                 texData.format));
                         }
                     }
-
                     //---------------------------------------
                 }
             }

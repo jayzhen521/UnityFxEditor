@@ -47,8 +47,6 @@ namespace Packages.FxEditor
         //-------------------------
         public List<Matrix4x4> glyphMatrix=new List<Matrix4x4>();
         public List<Vector4> _Color=new List<Vector4>();
-        
-
         //------------------------------------------------------
 
         public AnimationClipObject(AnimationClip clip)
@@ -119,21 +117,19 @@ namespace Packages.FxEditor
             
             //-------animation data--------
             Write(stream, animationDataProperies.Count);
-            
             {
                 var p = animationDataProperies[0];
                 Write(stream,p.objectID);
                 Write(stream,p.name);
                 Write(stream,p.type);
-                
             }
+            
             if(_Color.Count>0)
             {
                 var p = animationDataProperies[1];
                 Write(stream,p.objectID);
                 Write(stream,p.name);
                 Write(stream,p.type);
-                
             }
                 
             
