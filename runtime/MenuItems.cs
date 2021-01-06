@@ -480,6 +480,26 @@ namespace Packages.FxEditor
             }
             Debug.Log(text);
         }
+
+        [MenuItem("FxEditor/动画工具/添加动画属性")]
+        public static void OnCreateAnimation()
+        {
+            foreach (var gameObject in Selection.gameObjects)
+            {
+                gameObject.AddComponent<AnimationProperty>();
+            }
+        }
+        
+        [MenuItem("FxEditor/动画工具/创建程序动画对象")]
+        public static void OnCreateProceduralAnimation()
+        {
+            var pd = new GameObject("ProceduralAnimationRoot");
+            pd.AddComponent<ProceduralAnimation>();
+            foreach (var gameObject in Selection.gameObjects)
+            {
+                gameObject.transform.parent = pd.transform;
+            }
+        }
         
 
 
