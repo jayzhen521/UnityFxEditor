@@ -135,32 +135,36 @@ namespace Packages.FxEditor
                         {
                             var texData = tex.externalTextureData;
                             var tex2d = tex._texture as Texture2D;
-                            //
-                            // FileInfo dstinfo = new FileInfo(path);
-                            // FileInfo srcinfo = new FileInfo(tex.externalTextureData.path);
-                            string ext = ".jpg";
-                            byte[] data = null;
-
-                            if (tex2d.format == TextureFormat.RGBA32)
+                            if (tex2d != null)
                             {
-                                ext = ".png";
-                                data = ImageConversion.EncodeToPNG(tex2d);
-                            }
-                            else
-                            {
-                                data = ImageConversion.EncodeToJPG(tex2d, config.jpegCompressQuality);
-                            }
+                                //
+                                // FileInfo dstinfo = new FileInfo(path);
+                                // FileInfo srcinfo = new FileInfo(tex.externalTextureData.path);
+                                string ext = ".jpg";
+                                byte[] data = null;
 
-                            string filename = obj.ObjectID.ToString() + ext;
-                            string outfile = string.Format("{0}/{1}", outputDir, filename);
-                            File.WriteAllBytes(outfile, data);
+                                if (tex2d.format == TextureFormat.RGBA32)
+                                {
+                                    ext = ".png";
+                                    data = ImageConversion.EncodeToPNG(tex2d);
+                                }
+                                else
+                                {
+                                    data = ImageConversion.EncodeToJPG(tex2d, config.jpegCompressQuality);
+                                }
+
+                                string filename = obj.ObjectID.ToString() + ext;
+                                string outfile = string.Format("{0}/{1}", outputDir, filename);
+                                File.WriteAllBytes(outfile, data);
                             
 
-                            dataset.WriteLine(string.Format("{0} {1} {2} {3}",
-                                filename,
-                                texData.position + headersize + obj.Position,
-                                texData.size,
-                                texData.format));
+                                dataset.WriteLine(string.Format("{0} {1} {2} {3}",
+                                    filename,
+                                    texData.position + headersize + obj.Position,
+                                    texData.size,
+                                    texData.format));    
+                            }
+                            
                         }
                     }
                     //---------------------------------------
