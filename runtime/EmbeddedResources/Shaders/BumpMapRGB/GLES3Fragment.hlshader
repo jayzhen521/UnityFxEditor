@@ -1,0 +1,42 @@
+#version 300 es
+//BumpMapRGB
+
+
+
+precision highp float;
+precision highp int;
+
+
+
+uniform 	float _Angle;
+uniform 	float _Power;
+uniform mediump sampler2D _BumpTex;
+uniform mediump sampler2D _MainTex;
+in highp vec2 vs_TEXCOORD0;
+in highp vec2 vs_TEXCOORD1;
+out highp vec4 SV_Target0;
+vec2 u_xlat0;
+mediump float u_xlat16_0;
+vec4 u_xlat1;
+mediump vec3 u_xlat16_1;
+vec2 u_xlat4;
+void main()
+{
+    u_xlat0.x = sin(_Angle);
+    u_xlat1.x = cos(_Angle);
+    u_xlat0.y = u_xlat1.x;
+    u_xlat4.x = dot(u_xlat0.xy, u_xlat0.xy);
+    u_xlat4.x = inversesqrt(u_xlat4.x);
+    u_xlat0.xy = u_xlat4.xx * u_xlat0.xy;
+    u_xlat16_1.xyz = texture(_BumpTex, vs_TEXCOORD1.xy).xyz;
+    u_xlat1.xyz = u_xlat16_1.xyz * vec3(vec3(_Power, _Power, _Power));
+    u_xlat4.xy = u_xlat0.xy * u_xlat1.zz + vs_TEXCOORD0.xy;
+    u_xlat1 = u_xlat0.xyxy * u_xlat1.xxyy + vs_TEXCOORD0.xyxy;
+    u_xlat16_0 = texture(_MainTex, u_xlat4.xy).z;
+    SV_Target0.z = u_xlat16_0;
+    u_xlat0.x = texture(_MainTex, u_xlat1.xy).x;
+    u_xlat0.y = texture(_MainTex, u_xlat1.zw).y;
+    SV_Target0.xy = u_xlat0.xy;
+    SV_Target0.w = 1.0;
+    return;
+}
