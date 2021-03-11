@@ -1,4 +1,4 @@
-﻿Shader "HLFx/TextureColorMask"
+﻿Shader "HLFx/TextureColorMaskWEBp"
 {
     Properties
     {
@@ -65,7 +65,7 @@
                 col*=_Color;
 
                 col.w*=mask;
-                col.xyz*=col.w;
+                //col.xyz*=col.w;
                 // apply fog
                 //UNITY_APPLY_FOG(i.fogCoord, col);
                 //col=fixed4(col.w,col.w,col.w,1);
