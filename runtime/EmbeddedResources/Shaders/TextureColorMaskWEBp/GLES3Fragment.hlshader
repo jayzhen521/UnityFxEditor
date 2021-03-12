@@ -17,6 +17,5 @@ void main()
     float mask=texture(_MaskTex, vs_TEXCOORD1.xy).x;
     outColor*=_Color; 
     outColor.w*=mask;
-    outColor.xyz*=outColor.w;
     SV_Target0 =outColor;   
 }
