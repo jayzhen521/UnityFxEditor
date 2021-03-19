@@ -575,8 +575,8 @@ namespace Packages.FxEditor
                 shaders[name] = regobject;
             }
             startID++;
-            { //HLFx/TextureColorMaskWEBp
-                var name = "HLFx/TextureColorMaskWEBp";
+            { //HLFx/TextureColorMaskPM
+                var name = "HLFx/TextureColorMaskPM";
                 var regobject=new ShaderRegisterInformation(
                     startID
                 );
@@ -586,7 +586,7 @@ namespace Packages.FxEditor
                 regobject.sources[ShaderObject.SourceTypeGLES3Vertex] = source;
                 regobject.sources[ShaderObject.SourceTypeGLCoreVertex] = source.Replace(GLES3Header, GLCoreHeader);
                 
-                source = GlobalUtility.GetShaderCode("TextureColorMaskWEBp/GLES3Fragment.hlshader");
+                source = GlobalUtility.GetShaderCode("TextureColorMaskPM/GLES3Fragment.hlshader");
                 regobject.sources[ShaderObject.SourceTypeGLES3Fragment] = source;
                 regobject.sources[ShaderObject.SourceTypeGLCoreFragment] = source.Replace(GLES3Header,GLCoreHeader);
                 
