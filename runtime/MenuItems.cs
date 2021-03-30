@@ -289,20 +289,7 @@ namespace Packages.FxEditor
             Selection.activeObject = qual;
         }
 
-        [MenuItem("FxEditor/创建物体/时间线")]
-        public static void OnCreateTimeline()
-        {
-            var timeline = Object.FindObjectOfType<Timeline>();
-            if (timeline != null)
-            {
-                Debug.LogError("场景中已经创建了Timeline对象");
-                Selection.activeObject = timeline.gameObject;
-                return;
-            }
-
-            var obj = new GameObject("Timeline");
-            timeline = obj.AddComponent<Timeline>();
-        }
+        
 
         [MenuItem("FxEditor/创建物体/文字")]
         public static void OnCreateTextFx()
@@ -448,38 +435,7 @@ namespace Packages.FxEditor
             }
         }
         
-        [MenuItem("FxEditor/工具/创建时间轴从剪贴板")]
-        public static void OnCreateTLFromPast()
-        {
-            var TL = Object.FindObjectOfType<Timeline>();
-            if (TL == null)
-            {
-                var obj=new GameObject("Timeline");
-                TL=obj.AddComponent<Timeline>();
-
-            }
-            string text = GUIUtility.systemCopyBuffer;
-            
-            string[] lines = text.Split('\n');
-            
-            TL.clips.Clear();
-            
-            int i = 0;
-            foreach (var line in lines)
-            {
-                var c=new TimelineClip();
-                string[] dg= line.Split(' ');
-                
-                float a = int.Parse(dg[0]);
-                    
-                c.duration = a*0.001f;
-                i += 2;
-                
-                TL.clips.Add(c);
-                TL.clips.Add(new TimelineClip());
-            }
-            Debug.Log(text);
-        }
+        
 
         [MenuItem("FxEditor/动画工具/添加动画属性")]
         public static void OnCreateAnimation()
@@ -528,6 +484,30 @@ namespace Packages.FxEditor
             EditorApplication.ExecuteMenuItem("Edit/Play");
         }
 
+
+        
+        [MenuItem("MyTest/test")]
+        public static void OnTest()
+        {
+            var fs = AssetDatabase.FindAssets("*",new []{"Assets/assettest"});
+
+            var path = AssetDatabase.GUIDToAssetPath(fs[0]);
+            var obj = AssetDatabase.LoadMainAssetAtPath(path);
+            Object.Instantiate(obj);
+            
+            Debug.Log(obj);
+            
+            // foreach (var s in fs)
+            // {
+            //     var lbs = AssetDatabase.GetLabels(new GUID(s));
+            //     foreach (var lb in lbs)
+            //     {
+            //         Debug.Log(lb);    
+            //     }
+            //     
+            // }
+        }
+            
         //
         // [MenuItem("FxEditor/更新")]
         // public static void OnUpdate()

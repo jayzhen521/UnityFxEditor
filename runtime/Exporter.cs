@@ -13,10 +13,20 @@ namespace Packages.FxEditor
         //-------------------
         private readonly List<FrameObject> framesData = new List<FrameObject>();
         private readonly Dictionary<Object, DataObjectBase> objects = new Dictionary<Object, DataObjectBase>();
+        
+        
+        private ExportMode _exportMode = ExportMode.Generic;
+        public Timeline _Timeline = null;
 
-
-        public Exporter()
+        public ExportMode Mode
         {
+            get { return _exportMode; }
+        }
+
+
+        public Exporter(ExportMode mode=ExportMode.Generic)
+        {
+            _exportMode = mode;
             ShaderObject.RegisterShaders();
             TextureObject.RegisterFormat();
 

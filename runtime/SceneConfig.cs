@@ -34,13 +34,15 @@ namespace Packages.FxEditor
 
         [Tooltip("节点内容自动刷新开关")]
         public bool autoRefreshNode = true;
-        
+
+
+        private Timeline _timeline = null;
         private void Start()
         {
             //isExporting = true;
-            Time.captureFramerate = frameRate;
+            
             //outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
-            currentCamera=Camera.main;
+            Prepare();
             //currentCamera=SceneConfig.currentCamera;
             //_exporter=new Exporter();
         }
@@ -49,6 +51,9 @@ namespace Packages.FxEditor
         {
             GlobalUtility.UpdateCanvasNodeOrder();
             currentCamera=Camera.main;
+            Time.captureFramerate = frameRate;
+
+            _timeline = UnityEngine.Object.FindObjectOfType<Timeline>();
             
 
             //outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
@@ -78,7 +83,13 @@ namespace Packages.FxEditor
 
         public void AddFrame()
         {
-            if(_exporter==null)_exporter=new Exporter();
+            if (_exporter == null)
+            {
+                ExportMode mode = ExportMode.Generic;
+                if (_timeline != null) mode = ExportMode.Timeline;
+                _exporter=new Exporter(mode);
+                _exporter._Timeline = _timeline;
+            }
             
             _exporter.AddFrame();
         }

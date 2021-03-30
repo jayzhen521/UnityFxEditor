@@ -119,5 +119,18 @@ namespace Packages.FxEditor
         {
             UpdateDuration();
         }
+        
+        
+        public GameObject GetRootObjectByTime(float t)
+        {
+            GameObject root = null;
+            float time = 0;
+            foreach (var clip in clips)
+            {
+                if (t >= time) root = clip.rootObject;
+                time += clip.duration;
+            }
+            return root;
+        }
     }
 }

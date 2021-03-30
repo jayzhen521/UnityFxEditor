@@ -33,6 +33,14 @@
 ###PageCurl
 
 
+
+
+
+##Timeline随机填充使用指导
+
+
+
+
 ##FXEditor菜单项目参考说明
 ###FxEditor/创建物体/画布
 创建空的画布对象

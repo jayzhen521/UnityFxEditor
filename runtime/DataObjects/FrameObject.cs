@@ -18,6 +18,12 @@ namespace Packages.FxEditor
             ObjectType = ObjectTypeFrame;
             //-------------------
 
+            GameObject timelineRoot = null;
+            if(exporter._Timeline!=null)
+            timelineRoot=exporter._Timeline.GetRootObjectByTime(time);
+            // Debug.Log(timelineRoot);
+
+
             var objs = Object.FindObjectsOfType<GameObject>();
             if (objs == null) return;
             Array.Sort(objs, SortByPosition);
@@ -38,9 +44,20 @@ namespace Packages.FxEditor
                 //Draw
                 foreach (var obj in objs)
                 {
+                    //---------for timeline-------------------
+                    if (exporter._Timeline != null)
+                    {
+                        if (timelineRoot == null) continue;
+                        if (!obj.transform.IsChildOf(timelineRoot.transform)) continue;    
+                    }
+                    //-----------------------------------------------------
+                    
                     if (!obj.transform.IsChildOf(c.root.transform)) continue;
 
                     DrawObject(cam, obj, exporter);
+                    Debug.Log("cccccc");
+                    
+                    
                 }
 
                 commandlist.Add(new EndCanvasCommand(c));
@@ -70,8 +87,21 @@ namespace Packages.FxEditor
                 }
                 //--------------------------------
 
+                
+                //---------for timeline-------------------
+                if (exporter._Timeline != null)
+                {
+                    if (timelineRoot == null) continue;
+                    if (!obj.transform.IsChildOf(timelineRoot.transform))
+                    {
+                        continue;
+                    }
+                            
+                }
+                //-----------------------------------------------------
+                
                 if (skip) continue;
-                //Debug.Log("draw");
+                Debug.Log("draw");
                 //DrawObject(Camera.main,obj, exporter);
                 DrawObject(SceneConfig.currentCamera, obj, exporter);
             }

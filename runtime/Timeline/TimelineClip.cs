@@ -8,6 +8,7 @@ namespace Packages.FxEditor
         Translator=2,
         PictureInPicture=5
     }
+    
     [Serializable]
     public class TimelineClip
     {
@@ -16,5 +17,10 @@ namespace Packages.FxEditor
         public float duration = 1.0f;
         public ClipType type = ClipType.PictureInPicture;
         public float clipTimeRatio = 0.0f;
+        
+        
     }
+    
+    
+    
 }
