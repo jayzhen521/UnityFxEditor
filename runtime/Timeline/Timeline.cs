@@ -119,8 +119,7 @@ namespace Packages.FxEditor
         {
             UpdateDuration();
         }
-        
-        
+
         public GameObject GetRootObjectByTime(float t)
         {
             GameObject root = null;

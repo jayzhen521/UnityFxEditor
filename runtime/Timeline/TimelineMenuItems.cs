@@ -59,6 +59,21 @@ namespace Packages.FxEditor
                 TL.clips.Add(c);
                 TL.clips.Add(new TimelineClip());
             }
+            
+            
+            //-------
+            for (var i = 0; i < TL.clips.Count; i++)
+            {
+                var c = TL.clips[i];
+                if (i % 2 == 0)
+                {
+                    c.type = ClipType.PictureInPicture;
+                }
+                else
+                {
+                    c.type = ClipType.PictureInPicture;
+                }
+            }
             Debug.Log(text);
         }
 

@@ -18,7 +18,6 @@ namespace Packages.FxEditor
         public ClipType type = ClipType.PictureInPicture;
         public float clipTimeRatio = 0.0f;
         
-        
     }
     
     

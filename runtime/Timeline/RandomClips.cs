@@ -121,10 +121,11 @@ namespace Packages.FxEditor
             var obj = AssetDatabase.LoadMainAssetAtPath(path) as GameObject;
             
             
-            var retobj=UnityEngine.Object.Instantiate(obj);
+            //var retobj=UnityEngine.Object.Instantiate(obj);
+            var retobj = PrefabUtility.InstantiatePrefab(obj) as GameObject;
+
             
-            
-            var cam=retobj.GetComponent<Camera>();
+             var cam=retobj.GetComponent<Camera>();
             float h = cam.orthographicSize * 2;
             float w = h * cam.aspect;
             
@@ -135,7 +136,7 @@ namespace Packages.FxEditor
             clip.rootObject = retobj;
             clip.camera = cam;//retobj.GetComponent<Camera>();
             
-            
+
             //Debug.Log(bound.size.x);
         }
         public void Fill()
