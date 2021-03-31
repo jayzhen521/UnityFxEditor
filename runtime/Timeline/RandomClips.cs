@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using NUnit.Framework.Constraints;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -78,7 +77,7 @@ namespace Packages.FxEditor
             var assets = AssetDatabase.FindAssets("*",new []{clipsPath});
             foreach (var asset in assets)
             {
-                var lbs = AssetDatabase.GetLabels(new GUID(asset));
+                var lbs = AssetDatabase.GetLabels( AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GUIDToAssetPath(asset)));
                 foreach (var lb in lbs)
                 {
                     var wt=AddTag(lb);
