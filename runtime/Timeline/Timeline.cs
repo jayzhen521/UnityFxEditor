@@ -123,11 +123,23 @@ namespace Packages.FxEditor
         public GameObject GetRootObjectByTime(float t)
         {
             GameObject root = null;
+            Camera cam = null;
+            
             float time = 0;
             foreach (var clip in clips)
             {
-                if (t >= time) root = clip.rootObject;
+                if (t >= time)
+                {
+                    root = clip.rootObject;
+                    cam = clip.camera;
+                }
+                    
                 time += clip.duration;
+            }
+
+            if (root != null)
+            {
+                SceneConfig.currentCamera = cam;
             }
             return root;
         }

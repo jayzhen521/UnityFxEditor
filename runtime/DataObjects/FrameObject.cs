@@ -21,6 +21,7 @@ namespace Packages.FxEditor
             GameObject timelineRoot = null;
             if(exporter._Timeline!=null)
             timelineRoot=exporter._Timeline.GetRootObjectByTime(time);
+            
             // Debug.Log(timelineRoot);
 
 
@@ -37,10 +38,15 @@ namespace Packages.FxEditor
             {
                 if (c.root == null) continue;
 
-
+                if (timelineRoot != null)
+                {
+                    if (!c.root.transform.IsChildOf(timelineRoot.transform)) continue;
+                }
+                
                 Camera cam = c.gameObject.GetComponent<Camera>();
-
                 commandlist.Add(new BeginCanvasCommand(c, exporter));
+                
+                
                 //Draw
                 foreach (var obj in objs)
                 {
@@ -101,12 +107,13 @@ namespace Packages.FxEditor
                 //-----------------------------------------------------
                 
                 if (skip) continue;
-                Debug.Log("draw");
+                
                 //DrawObject(Camera.main,obj, exporter);
                 DrawObject(SceneConfig.currentCamera, obj, exporter);
             }
 
             //===================================================
+//            Debug.Log("DrawCommands:"+commandlist.Count);
         }
 
 

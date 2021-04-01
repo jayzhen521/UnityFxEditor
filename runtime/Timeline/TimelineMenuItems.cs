@@ -28,52 +28,56 @@ namespace Packages.FxEditor
             tl = UnityEngine.Object.FindObjectOfType<Timeline>();
             tl.gameObject.AddComponent<RandomClips>();
         }
-        
+
         [MenuItem("FxEditor/时间线工具/创建时间轴从剪贴板")]
         public static void OnCreateTLFromPast()
         {
             var TL = Object.FindObjectOfType<Timeline>();
             if (TL == null)
             {
-                var obj=new GameObject("Timeline");
-                TL=obj.AddComponent<Timeline>();
-
+                var obj = new GameObject("Timeline");
+                TL = obj.AddComponent<Timeline>();
             }
+
             string text = GUIUtility.systemCopyBuffer;
-            
+
             string[] lines = text.Split('\n');
-            
+
+
             TL.clips.Clear();
-            
             int i = 0;
             foreach (var line in lines)
             {
-                var c=new TimelineClip();
-                string[] dg= line.Split(' ');
-                
+                var c = new TimelineClip();
+                string[] dg = line.Split(' ');
+
                 float a = int.Parse(dg[0]);
-                    
-                c.duration = a*0.001f;
+
+                c.duration = a * 0.001f;
                 i += 2;
-                
+
                 TL.clips.Add(c);
                 TL.clips.Add(new TimelineClip());
             }
-            
-            
-            //-------
-            for (var i = 0; i < TL.clips.Count; i++)
+
+
+            //-------set default value of type
             {
-                var c = TL.clips[i];
-                if (i % 2 == 0)
+                for (i = 0; i < TL.clips.Count; i++)
                 {
-                    c.type = ClipType.PictureInPicture;
-                }
-                else
-                {
-                    c.type = ClipType.PictureInPicture;
-                }
+                    var c = TL.clips[i];
+                    if (i % 2 == 0)
+                    {
+                        c.type = ClipType.PictureInPicture;
+                    }
+                    else
+                    {
+                        c.type = ClipType.PictureInPicture;
+                    }
+                }    
             }
+            
+
             Debug.Log(text);
         }
 
@@ -84,10 +88,10 @@ namespace Packages.FxEditor
             var randomData = UnityEngine.Object.FindObjectOfType<RandomClips>();
             if (randomData == null)
             {
-                EditorUtility.DisplayDialog("error", "没有创建RandomClips对象","确定");
+                EditorUtility.DisplayDialog("error", "没有创建RandomClips对象", "确定");
                 return;
             }
-            
+
             randomData.Fill();
         }
     }

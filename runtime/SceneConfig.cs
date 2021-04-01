@@ -43,7 +43,8 @@ namespace Packages.FxEditor
             
             //outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
             Prepare();
-            //currentCamera=SceneConfig.currentCamera;
+            currentCamera=SceneConfig.currentCamera;
+            //AddFrame();
             //_exporter=new Exporter();
         }
 
@@ -54,6 +55,10 @@ namespace Packages.FxEditor
             Time.captureFramerate = frameRate;
 
             _timeline = UnityEngine.Object.FindObjectOfType<Timeline>();
+            if (_timeline != null)
+            {
+                currentCamera = _timeline.clips[0].camera;
+            }
             
 
             //outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";

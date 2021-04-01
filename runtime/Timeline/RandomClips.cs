@@ -13,6 +13,8 @@ namespace Packages.FxEditor
         public float weight = 0.0f;
 
         private List<string> guids = new List<string>();
+
+
         
 
         public TagWeight(string t, float v)
@@ -48,6 +50,7 @@ namespace Packages.FxEditor
 
         private int[] fillCounts =null;
         private Timeline _timeline = null;
+        private float lastPosX = 0.0f;
         
         private TagWeight AddTag(string tag)
         {
@@ -128,10 +131,13 @@ namespace Packages.FxEditor
              var cam=retobj.GetComponent<Camera>();
             float h = cam.orthographicSize * 2;
             float w = h * cam.aspect;
+
+            var nodeBound = GlobalUtility.GetGameObjectBounds(retobj);
+            w = Math.Max(w, nodeBound.size.x);
             
+            retobj.transform.position = new Vector3(lastPosX, 0, 0);
             
-            retobj.transform.position = new Vector3((w+1) * i, 0, 0);
-            
+            lastPosX+=((w+1)*2);
             var clip = _timeline.clips[i];
             clip.rootObject = retobj;
             clip.camera = cam;//retobj.GetComponent<Camera>();
@@ -141,6 +147,8 @@ namespace Packages.FxEditor
         }
         public void Fill()
         {
+            lastPosX = 0.0f;
+            
             _timeline = UnityEngine.Object.FindObjectOfType<Timeline>();
             if (_timeline == null)
             {
