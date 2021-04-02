@@ -24,11 +24,15 @@ namespace Packages.FxEditor
             }
         }
 
-        
-        private void Update()
+
+        public void MyUpdate()
         {
             updateCamera();
             updateAnimation();
+        }
+        private void Update()
+        {
+            MyUpdate();
         }
 
         float ComputeAnimationDuration(GameObject obj, float time)
@@ -123,24 +127,18 @@ namespace Packages.FxEditor
         public GameObject GetRootObjectByTime(float t)
         {
             GameObject root = null;
-            Camera cam = null;
-            
+
             float time = 0;
             foreach (var clip in clips)
             {
                 if (t >= time)
                 {
                     root = clip.rootObject;
-                    cam = clip.camera;
                 }
                     
                 time += clip.duration;
             }
 
-            if (root != null)
-            {
-                SceneConfig.currentCamera = cam;
-            }
             return root;
         }
     }

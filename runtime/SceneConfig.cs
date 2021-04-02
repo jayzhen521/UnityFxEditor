@@ -66,6 +66,10 @@ namespace Packages.FxEditor
 
         private void Update()
         {
+            if (_timeline != null)
+            {
+                _timeline.MyUpdate();
+            }
             if (!forExport) return;
             
             if (Time.time > duration)
