@@ -24,7 +24,6 @@ namespace Packages.FxEditor
             }
         }
 
-
         public void MyUpdate()
         {
             updateCamera();

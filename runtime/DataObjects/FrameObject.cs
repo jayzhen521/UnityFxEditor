@@ -216,9 +216,9 @@ namespace Packages.FxEditor
 
         static int SortByPosition(GameObject a, GameObject b)
         {
-            var ta = a.transform.TransformPoint(a.transform.position);
+            var ta = a.transform.position;
 
-            var tb = b.transform.TransformPoint(b.transform.position);
+            var tb = b.transform.position;
 
             if (ta.z > tb.z)
             {
