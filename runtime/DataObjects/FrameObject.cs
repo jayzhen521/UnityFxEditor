@@ -18,6 +18,8 @@ namespace Packages.FxEditor
             ObjectType = ObjectTypeFrame;
             //-------------------
 
+            Debug.Log("-------------------"+time);
+            
             GameObject timelineRoot = null;
             if(exporter._Timeline!=null)
             timelineRoot=exporter._Timeline.GetRootObjectByTime(time);
@@ -61,9 +63,8 @@ namespace Packages.FxEditor
                     if (!obj.transform.IsChildOf(c.root.transform)) continue;
 
                     DrawObject(cam, obj, exporter);
-                    Debug.Log("cccccc");
-                    
-                    
+
+
                 }
 
                 commandlist.Add(new EndCanvasCommand(c));
@@ -173,9 +174,11 @@ namespace Packages.FxEditor
 
         void DrawMesh(Camera cam, MeshRenderer obj, Exporter exporter)
         {
+            
             if (obj.gameObject.tag == "EditorOnly") return;
             if (obj.gameObject.GetComponent<TextFx>() != null) return;
 
+            Debug.Log(obj.gameObject.name);
             //-------------------change shader command
             {
                 commandlist.Add(new ChangeShaderCommand(cam, obj.gameObject, exporter));

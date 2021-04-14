@@ -72,7 +72,7 @@ namespace Packages.FxEditor
                     }
                     else
                     {
-                        c.type = ClipType.PictureInPicture;
+                        c.type = ClipType.Translator;
                     }
                 }    
             }
