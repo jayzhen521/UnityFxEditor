@@ -1,4 +1,9 @@
 # 日志
+## 2021-4-20 1.0.3
+添加了SmoothstepFloat Shader
+添加了ColorDistanceHSL Shader
+
+
 ## 2021-3-31 1.0.2
 修正了Timeline黑屏问题
 近一步优化了导出文件大小
