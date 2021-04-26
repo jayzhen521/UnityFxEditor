@@ -1,0 +1,110 @@
+#version 300 es
+//ColorDistanceHSL
+
+precision highp float;
+precision highp int;
+
+
+uniform 	vec4 _Color;
+uniform mediump sampler2D _MainTex;
+in highp vec2 vs_TEXCOORD0;
+out highp vec4 SV_Target0;
+
+vec4 u_xlat0;
+bool u_xlatb0;
+vec4 u_xlat1;
+bool u_xlatb1;
+vec4 u_xlat2;
+vec4 u_xlat3;
+vec2 u_xlat4;
+float u_xlat5;
+float u_xlat8;
+float u_xlat12;
+bool u_xlatb12;
+void main()
+{
+#ifdef UNITY_ADRENO_ES3
+    u_xlatb0 = !!(_Color.y>=_Color.z);
+#else
+    u_xlatb0 = _Color.y>=_Color.z;
+#endif
+    u_xlat0.x = u_xlatb0 ? 1.0 : float(0.0);
+    u_xlat1.xy = _Color.yz;
+    u_xlat1.z = float(0.0);
+    u_xlat1.w = float(-0.333333343);
+    u_xlat2.xy = _Color.zy;
+    u_xlat2.z = float(-1.0);
+    u_xlat2.w = float(0.666666687);
+    u_xlat1 = u_xlat1 + (-u_xlat2);
+    u_xlat0 = u_xlat0.xxxx * u_xlat1.xywz + u_xlat2.xywz;
+#ifdef UNITY_ADRENO_ES3
+    u_xlatb1 = !!(_Color.x>=u_xlat0.x);
+#else
+    u_xlatb1 = _Color.x>=u_xlat0.x;
+#endif
+    u_xlat1.x = u_xlatb1 ? 1.0 : float(0.0);
+    u_xlat2.z = u_xlat0.w;
+    u_xlat0.w = _Color.x;
+    u_xlat2.xyw = u_xlat0.wyx;
+    u_xlat2 = (-u_xlat0) + u_xlat2;
+    u_xlat0 = u_xlat1.xxxx * u_xlat2 + u_xlat0;
+    u_xlat1.x = min(u_xlat0.y, u_xlat0.w);
+    u_xlat1.x = u_xlat0.x + (-u_xlat1.x);
+    u_xlat5 = u_xlat1.x * 6.0 + 1.00000001e-10;
+    u_xlat4.x = (-u_xlat0.y) + u_xlat0.w;
+    u_xlat4.x = u_xlat4.x / u_xlat5;
+    u_xlat4.x = u_xlat4.x + u_xlat0.z;
+    u_xlat4.x = abs(u_xlat4.x) * 6.28318548;
+    u_xlat2.x = sin(u_xlat4.x);
+    u_xlat3.x = cos(u_xlat4.x);
+    u_xlat4.x = u_xlat0.x + 1.00000001e-10;
+    u_xlat4.x = u_xlat1.x / u_xlat4.x;
+    u_xlat4.y = u_xlat4.x * u_xlat3.x;
+    u_xlat4.x = u_xlat4.x * u_xlat2.x;
+    u_xlat4.xy = u_xlat0.xx * u_xlat4.xy;
+    u_xlat1.z = float(-1.0);
+    u_xlat1.w = float(0.666666687);
+    u_xlat2.z = float(1.0);
+    u_xlat2.w = float(-1.0);
+    u_xlat3.xyw = texture(_MainTex, vs_TEXCOORD0.xy).yzx;
+#ifdef UNITY_ADRENO_ES3
+    u_xlatb12 = !!(u_xlat3.x>=u_xlat3.y);
+#else
+    u_xlatb12 = u_xlat3.x>=u_xlat3.y;
+#endif
+    u_xlat12 = u_xlatb12 ? 1.0 : float(0.0);
+    u_xlat1.xy = u_xlat3.yx;
+    u_xlat2.xy = (-u_xlat1.xy) + u_xlat3.xy;
+    u_xlat1 = vec4(u_xlat12) * u_xlat2 + u_xlat1;
+    u_xlat3.xyz = u_xlat1.xyw;
+#ifdef UNITY_ADRENO_ES3
+    u_xlatb12 = !!(u_xlat3.w>=u_xlat3.x);
+#else
+    u_xlatb12 = u_xlat3.w>=u_xlat3.x;
+#endif
+    u_xlat12 = u_xlatb12 ? 1.0 : float(0.0);
+    u_xlat1.xyw = u_xlat3.wyx;
+    u_xlat1 = u_xlat1 + (-u_xlat3);
+    u_xlat1 = vec4(u_xlat12) * u_xlat1 + u_xlat3;
+    u_xlat0.w = min(u_xlat1.y, u_xlat1.w);
+    u_xlat0.xw = (-u_xlat0.xw) + u_xlat1.xx;
+    u_xlat2.x = u_xlat0.w * 6.0 + 1.00000001e-10;
+    u_xlat5 = (-u_xlat1.y) + u_xlat1.w;
+    u_xlat5 = u_xlat5 / u_xlat2.x;
+    u_xlat5 = u_xlat5 + u_xlat1.z;
+    u_xlat5 = abs(u_xlat5) * 6.28318548;
+    u_xlat2.x = sin(u_xlat5);
+    u_xlat3.x = cos(u_xlat5);
+    u_xlat5 = u_xlat1.x + 1.00000001e-10;
+    u_xlat12 = u_xlat0.w / u_xlat5;
+    u_xlat5 = u_xlat12 * u_xlat3.x;
+    u_xlat12 = u_xlat12 * u_xlat2.x;
+    u_xlat4.x = u_xlat12 * u_xlat1.x + (-u_xlat4.x);
+    u_xlat8 = u_xlat5 * u_xlat1.x + (-u_xlat4.y);
+    u_xlat8 = u_xlat8 * u_xlat8;
+    u_xlat4.x = u_xlat4.x * u_xlat4.x + u_xlat8;
+    u_xlat0.x = u_xlat0.x * u_xlat0.x + u_xlat4.x;
+    SV_Target0.xyz = sqrt(u_xlat0.xxx);
+    SV_Target0.w = 1.0;
+    return;
+}
