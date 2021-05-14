@@ -1,0 +1,23 @@
+#version 300 es
+
+precision highp float;
+precision highp int;
+
+
+uniform 	vec4 _Color;
+uniform mediump sampler2D _MainTex;
+in highp vec2 vs_TEXCOORD0;
+out highp vec4 SV_Target0;
+vec2 u_xlat0;
+mediump vec4 u_xlat16_0;
+void main()
+{
+    u_xlat16_0 = texture(_MainTex, vs_TEXCOORD0.xy);
+    u_xlat0.xy = u_xlat16_0.xy * _Color.xy;
+    u_xlat0.x = u_xlat0.y + u_xlat0.x;
+    u_xlat0.x = u_xlat16_0.z * _Color.z + u_xlat0.x;
+    u_xlat0.x = u_xlat16_0.w * _Color.w + u_xlat0.x;
+    SV_Target0.xyz = min(u_xlat0.xxx, vec3(1.0, 1.0, 1.0));
+    SV_Target0.w = 1.0;
+    return;
+}

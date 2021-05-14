@@ -1,4 +1,8 @@
 # 日志
+## 2021-5-14 1.0.4
+添加了TextureColorComponents Shader用于分离颜色通道
+
+
 ## 2021-4-20 1.0.3
 添加了SmoothstepFloat Shader
 添加了ColorDistanceHSL Shader
