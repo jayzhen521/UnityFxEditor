@@ -644,7 +644,7 @@ namespace Packages.FxEditor
                 shaders[name] = regobject;
             }
             startID++;
-            { //HLFx/TextureColorMask
+            { //HLFx/TextureColorComponents
                 var name = "HLFx/TextureColorComponents";
                 var regobject=new ShaderRegisterInformation(
                     startID

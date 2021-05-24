@@ -1,4 +1,7 @@
 # 日志
+## 2021-5-24 1.0.5
+添加了新的Json属性
+
 ## 2021-5-14 1.0.4
 添加了TextureColorComponents Shader用于分离颜色通道
 

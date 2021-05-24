@@ -25,7 +25,14 @@ namespace Packages.FxEditor
         public int edit_filter_id2 = -1;
         public int type = -2;
         public string path = "00";
+        //----------------------
+        public int opacityID=0;
     }
+    [Serializable]
+    public class EffectItemFeatures{
+        public int index=0;
+        public int opacityID=0;
+     }
 
     public enum PlayMode
     {
@@ -34,13 +41,21 @@ namespace Packages.FxEditor
         PingPong
     }
     
+ public enum supportSizesTypes
+    {
+        
+        A_1x2=1,//===1
+        A_3x4,
+        A_4x3
+    }
+
     public class FxJsonData : MonoBehaviour
     {
         //-----------Json数据--------------
         public string name = "";
         public float totalDuration = 0.0f;
         public PlayMode play_mode = PlayMode.Once;
-        
+        public List<supportSizesTypes> supportSizes=new List<supportSizesTypes>();
         public List<EffectItem> effectList = new List<EffectItem>();
 
 
@@ -56,6 +71,9 @@ namespace Packages.FxEditor
         public bool EngineType = true;
 
         public List<int> clip_duration = new List<int>();
+
+
+        public List<EffectItemFeatures> effectFeaturesList=new List<EffectItemFeatures>(); 
         
         [Header("用户自定义数据")]
         //--------------------------------------------
@@ -79,7 +97,12 @@ namespace Packages.FxEditor
             
             var timeline = UnityEngine.Object.FindObjectOfType<Timeline>();
             if (timeline == null) return;
-            effectList.Clear();
+
+    
+
+             effectList.Clear();
+     
+            
             float starttime = 0;
             totalDuration = 0;
             for (int i = 0; i < timeline.clips.Count; i++)
@@ -87,6 +110,7 @@ namespace Packages.FxEditor
                 var clip = timeline.clips[i];
                 
                 var fx=new EffectItem();
+                
                 //fx.path = string.Format("{0:00}",i);
                 fx.duration = (int) (clip.duration * 1000);
                 fx.start_time=(int)(starttime*1000);
@@ -107,9 +131,12 @@ namespace Packages.FxEditor
             clipNum = clip_duration.Count;
         }
 
+    
+
         private void OnDrawGizmos()
         {
             UpdateTimelineData();
+
         }
     }
 }
