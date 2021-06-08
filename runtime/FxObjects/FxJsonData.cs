@@ -26,7 +26,6 @@ namespace Packages.FxEditor
         public int type = -2;
         public string path = "00";
         //----------------------
-        public int opacityID=0;
     }
     [Serializable]
     public class EffectItemFeatures{
@@ -125,16 +124,15 @@ namespace Packages.FxEditor
                     clip_duration.Add(fx.duration);
                     totalDuration += fx.duration;
                 }
-                
             }
 
             clipNum = clip_duration.Count;
         }
 
     
-
         private void OnDrawGizmos()
         {
+            Debug.Log("heee");
             UpdateTimelineData();
 
         }

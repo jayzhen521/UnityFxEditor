@@ -202,8 +202,8 @@ namespace Packages.FxEditor
             if (info.Exists) info.Delete();
 
             File.WriteAllBytes(path, ms.ToArray());
-            Debug.Log("count:" + objects.Count);
-            Debug.Log(message: "frames:" + framesData.Count);
+            //Debug.Log("count:" + objects.Count);
+            //Debug.Log(message: "frames:" + framesData.Count);
 
             //testExportFile(path);
 

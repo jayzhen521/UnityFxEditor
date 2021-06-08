@@ -286,10 +286,25 @@ namespace Packages.FxEditor
             var render = qual.GetComponent<Renderer>();
             render.material = mat;
             qual.name = GlobalUtility.GetUniqueName(mat.shader.name);
-            Selection.activeObject = qual;
-        }
+            
+            if (Selection.activeObject!=null&&Selection.activeObject is GameObject)
+            {
+                var obj = Selection.activeObject as GameObject;
+                
+                qual.transform.parent = obj.transform;
+                qual.transform.localPosition = new Vector3(0, 0, 1);
 
-        
+                var cam = obj.GetComponent<Camera>();
+                if (cam != null)
+                {
+                    qual.transform.localScale=new Vector3(cam.orthographicSize *2* cam.aspect + 0.01f, cam.orthographicSize*2 + 0.01f, 1);
+                }
+                
+            }
+            
+            Selection.activeObject = qual;
+            
+        }
 
         [MenuItem("FxEditor/创建物体/文字")]
         public static void OnCreateTextFx()

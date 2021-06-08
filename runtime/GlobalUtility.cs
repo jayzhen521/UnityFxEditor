@@ -108,7 +108,7 @@ namespace Packages.FxEditor
             
             FileInfo fileinfo=new FileInfo(file);
             string shaderName = "HLFx/" + fileinfo.Name.Replace(".shader","");
-            Debug.Log(shaderName);
+            //Debug.Log(shaderName);
             
             Material material = new Material(Shader.Find(shaderName));
             

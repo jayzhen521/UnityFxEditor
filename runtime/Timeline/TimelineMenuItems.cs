@@ -94,5 +94,20 @@ namespace Packages.FxEditor
 
             randomData.Fill();
         }
+
+
+        [MenuItem("FxEditor/时间线工具/设置用方向 _l")]
+        public static void OnSetTimeLine()
+        {
+            if (Selection.objects.Length != 2)
+            {
+                Debug.LogError("不具备执行命令的条件,请阅读文档中关于这个命令的内容");
+                return;
+            }
+            
+            
+            
+            Debug.Log("");
+        }
     }
 }

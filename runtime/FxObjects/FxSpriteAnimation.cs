@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 namespace Packages.FxEditor
 {
-    public class FxSpriteAnimation : MonoBehaviour
+    public class FxSpriteAnimation : ScriptBase
     {
         
         public Texture2D texture = null;
@@ -38,7 +38,7 @@ namespace Packages.FxEditor
             UpdateNames(shader);
         }
 
-        void UpdateTextureCoord()
+        public void UpdateTextureCoord()
         {
             if (texture == null)
             {
@@ -72,6 +72,11 @@ namespace Packages.FxEditor
         private void OnDrawGizmos()
         {
             UpdateUI();
+            UpdateTextureCoord();
+        }
+
+        public override void UpdateAnimation()
+        {
             UpdateTextureCoord();
         }
     }

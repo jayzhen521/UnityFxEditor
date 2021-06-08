@@ -9,6 +9,7 @@ using PackageInfo = UnityEditor.PackageInfo;
 
 namespace Packages.FxEditor
 {
+    
     public class SceneConfig : MonoBehaviour
     {
         private Exporter _exporter = null;//new Exporter();
@@ -27,7 +28,7 @@ namespace Packages.FxEditor
         
         [Header("纹理数据设置")]
         [Tooltip("决定是否外置纹理数据")] 
-        public bool isExternalTexture = false;
+        public bool isExternalTexture = true;
 
         [Tooltip("0--100,数值越小质量越差")]
         public int jpegCompressQuality = 75;
@@ -43,7 +44,7 @@ namespace Packages.FxEditor
             
             //outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
             Prepare();
-            currentCamera=SceneConfig.currentCamera;
+            
             //AddFrame();
             //_exporter=new Exporter();
         }
@@ -59,20 +60,26 @@ namespace Packages.FxEditor
             {
                 currentCamera = _timeline.clips[0].camera;
             }
-            
 
+            _exporter = new Exporter();
             //outputPath="/Volumes/Workspace/Projects/HLVideoFx/source/PlatformsApp/testdata/fx/test.videofx";
         }
 
+        
         private void Update()
+        {
+            AddFrame(false);
+        }
+
+        public void AddFrame(bool isQ)
         {
             if (_timeline != null)
             {
                 _timeline.MyUpdate();
             }
-            if (!forExport) return;
+            if (!forExport&&!isQ) return;
             
-            if (Time.time > duration)
+            if (Time.time > duration&&!isQ)
             {
                 if (Application.isPlaying||outputPath==null||outputPath=="")
                 {
@@ -86,21 +93,16 @@ namespace Packages.FxEditor
             }
             else
             {
-                AddFrame();
-            }
-        }
-
-        public void AddFrame()
-        {
-            if (_exporter == null)
-            {
-                ExportMode mode = ExportMode.Generic;
-                if (_timeline != null) mode = ExportMode.Timeline;
-                _exporter=new Exporter(mode);
-                _exporter._Timeline = _timeline;
-            }
+                if (_exporter == null)
+                {
+                    ExportMode mode = ExportMode.Generic;
+                    if (_timeline != null) mode = ExportMode.Timeline;
+                    _exporter=new Exporter(mode);
+                    _exporter._Timeline = _timeline;
+                }
             
-            _exporter.AddFrame();
+                _exporter.AddFrame();
+            }
         }
 
         public void SaveTotFile()

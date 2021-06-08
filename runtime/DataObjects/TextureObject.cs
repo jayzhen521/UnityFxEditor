@@ -72,8 +72,8 @@ namespace Packages.FxEditor
         {
             ObjectType = ObjectTypeTexture;
             //-------------------
-            if (!(texture is RenderTexture))
-                Debug.Log("texture:" + texture.name + "," + texture.width);
+            // if (!(texture is RenderTexture))
+            //     Debug.Log("texture:" + texture.name + "," + texture.width);
 
             _texture = texture;
             dim[0] = texture.width;
@@ -90,8 +90,7 @@ namespace Packages.FxEditor
                 dim[2] = (texture as Texture3D).depth;
             }
         }
-
-
+        
         private void WriteLevel(Stream stream, int level)
         {
             var tex2d = _texture as Texture2D;

@@ -18,7 +18,7 @@ namespace Packages.FxEditor
             ObjectType = ObjectTypeFrame;
             //-------------------
 
-            Debug.Log("-------------------"+time);
+            
             
             GameObject timelineRoot = null;
             if(exporter._Timeline!=null)
@@ -137,7 +137,6 @@ namespace Packages.FxEditor
                 var ps = obj.GetComponent<ParticleSystem>();
                 if (ps != null)
                     DrawParticleSystem(cam, ps, exporter);
-                ;
             }
 
             //textFx
@@ -178,7 +177,7 @@ namespace Packages.FxEditor
             if (obj.gameObject.tag == "EditorOnly") return;
             if (obj.gameObject.GetComponent<TextFx>() != null) return;
 
-            Debug.Log(obj.gameObject.name);
+            
             //-------------------change shader command
             {
                 commandlist.Add(new ChangeShaderCommand(cam, obj.gameObject, exporter));
