@@ -22,7 +22,7 @@ namespace Packages.FxEditor
         bool GetOutputFile()
         {
             //------UI---------
-            if (config.outputPath == "")
+            if (config.outputPath==null||config.outputPath == "")
             {
                 config.outputPath = EditorUtility.SaveFilePanel("", ".", "", "videofx");
             }
