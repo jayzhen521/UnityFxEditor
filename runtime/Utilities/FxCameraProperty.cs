@@ -6,7 +6,30 @@ namespace Packages.FxEditor
 {
     public class FxCameraProperty : MonoBehaviour
     {
+        public enum CameraAspectTypes// ratio=0.0001
+        {
+            [InspectorName("自定义")]
+            None=0,
+            
+            [InspectorName("1:1")]
+            WH_1x1=10000,
+            
+            [InspectorName("4:3")]
+            WH_4x3=13333,
+            
+            [InspectorName("3:4")]
+            WH_3x4=7500,
+            
+            [InspectorName("16:9")]
+            WH_16x9=17777,
+            
+            [InspectorName("9:16")]
+            WH_9x16=5625
+        }
+
+        
         [Header("屏幕机比例")]
+        public CameraAspectTypes aspect = CameraAspectTypes.WH_16x9;
         public int width = 9;
         public int height = 16;
 
@@ -45,7 +68,15 @@ namespace Packages.FxEditor
             }
 
 
-            cam.aspect = (float)width / height;
+            if (aspect == CameraAspectTypes.None)
+            {
+                cam.aspect = (float)width / height;    
+            }
+            else
+            {
+                cam.aspect = ((int) aspect) * 0.0001f;
+            }
+            
         }
     }
 }

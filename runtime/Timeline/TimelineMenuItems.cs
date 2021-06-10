@@ -154,7 +154,7 @@ namespace Packages.FxEditor
 
             Timeline timeline = null;
 
-            if (Selection.count == 1)
+            if (Selection.objects.Length == 1)
             {
                 GameObject obj = Selection.activeObject as GameObject;
                 if (obj != null)
