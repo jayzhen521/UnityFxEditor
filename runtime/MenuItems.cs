@@ -428,11 +428,23 @@ namespace Packages.FxEditor
 
             indir=EditorUtility.OpenFolderPanel("选择纹理去重目录", "", "");
             if (indir == "") return;
-            if (EditorUtility.DisplayDialog("警告",String.Format("这个操作可能对数据造成不可逆的破坏确认目录是:\n{0}\n吗？",indir),  "OK", "Cancel"))
+
+
+            try
             {
-                TextureDeduplicates td=new TextureDeduplicates();
-                td.ScanDirectory(indir);
+                if (EditorUtility.DisplayDialog("警告",String.Format("这个操作可能对数据造成不可逆的破坏确认目录是:\n{0}\n吗？",indir),  "OK", "Cancel"))
+                {
+                    TextureDeduplicates td=new TextureDeduplicates();
+                    td.ScanDirectory(indir);
+                }
             }
+            catch (Exception e)
+            {
+                EditorUtility.ClearProgressBar();
+                Console.WriteLine(e);
+                throw;
+            }
+            
 
             return;
             

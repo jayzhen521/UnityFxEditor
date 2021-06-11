@@ -22,6 +22,10 @@ namespace Packages.FxEditor
 
             var dataA = image1.GetRawTextureData<Color32>();
             var dataB = image2.GetRawTextureData<Color32>();
+
+            if (dataA.Length != dataB.Length) return false;
+            
+            
             int count = dataA.Length;
             int diffCount = 0;
             for (int i = 0; i < count; i++)
