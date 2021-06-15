@@ -1,4 +1,7 @@
 # 日志
+## 2020-6-15 1.1.5
+添加TextureColorTransparentPM Shader，支持透明剔除
+
 ## 2020-6-11 1.1.4
 修改图片文件去重错误
 
