@@ -441,7 +441,8 @@ namespace Packages.FxEditor
             catch (Exception e)
             {
                 EditorUtility.ClearProgressBar();
-                Console.WriteLine(e);
+                Debug.LogError(e.Message);
+                
                 throw;
             }
             

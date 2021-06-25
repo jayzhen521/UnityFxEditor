@@ -8,9 +8,6 @@ namespace Packages.FxEditor
     {
         public enum CameraAspectTypes// ratio=0.0001
         {
-            [InspectorName("自定义")]
-            None=0,
-            
             [InspectorName("1:1")]
             WH_1x1=10000,
             
@@ -30,8 +27,8 @@ namespace Packages.FxEditor
         
         [Header("屏幕机比例")]
         public CameraAspectTypes aspect = CameraAspectTypes.WH_16x9;
-        public int width = 9;
-        public int height = 16;
+        // public int width = 9;
+        // public int height = 16;
 
         [MenuItem("FxEditor/创建物体/添加相机属性")]
         public static void OnAddCameraProperty()
@@ -68,14 +65,14 @@ namespace Packages.FxEditor
             }
 
 
-            if (aspect == CameraAspectTypes.None)
-            {
-                cam.aspect = (float)width / height;    
-            }
-            else
-            {
+            // if (aspect == CameraAspectTypes.None)
+            // {
+            //     cam.aspect = (float)width / height;    
+            // }
+            // else
+            // {
                 cam.aspect = ((int) aspect) * 0.0001f;
-            }
+            //}
             
         }
     }

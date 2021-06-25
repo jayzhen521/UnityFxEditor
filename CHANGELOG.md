@@ -1,4 +1,10 @@
 # 日志
+## 2020-6-25 1.1.6
+添加了ImageMask Shader
+所有Shader改为双面显示和实际运行的效果对齐
+去掉了自定义比例
+纹理去重工具将图片文件全部移动到sharedimages中了
+
 ## 2020-6-15 1.1.5
 添加TextureColorTransparentPM Shader，支持透明剔除
 

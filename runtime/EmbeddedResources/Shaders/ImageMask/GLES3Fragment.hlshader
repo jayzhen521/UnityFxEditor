@@ -1,0 +1,23 @@
+#version 300 es
+//ImageMask
+
+precision highp float;
+precision highp int;
+
+uniform mediump sampler2D _MainTex;
+uniform mediump sampler2D _MaskTex;
+in highp vec2 vs_TEXCOORD0;
+in highp vec2 vs_TEXCOORD1;
+out mediump vec4 SV_Target0;
+float u_xlat0;
+mediump float u_xlat16_0;
+mediump vec4 u_xlat16_1;
+void main()
+{
+    u_xlat16_0 = texture(_MaskTex, vs_TEXCOORD1.xy).x;
+    u_xlat16_1 = texture(_MainTex, vs_TEXCOORD0.xy);
+    u_xlat0 = u_xlat16_0 * u_xlat16_1.w;
+    SV_Target0.xyz = vec3(u_xlat0) * u_xlat16_1.xyz;
+    SV_Target0.w = u_xlat0;
+    return;
+}

@@ -14,6 +14,7 @@
         
         Pass
         {
+            Cull Off
             Blend One One // Premultiplied transparency
 
             CGPROGRAM

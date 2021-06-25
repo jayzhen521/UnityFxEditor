@@ -261,7 +261,7 @@ namespace Packages.FxEditor
             //---------------
             
             //float t = (Time.time-startTime)%effectDuration;
-            float t = Mathf.Min(effectDuration, Time.time-startTime);
+            float t = Mathf.Min(effectDuration, GlobalUtility.time-startTime);
             
             if (t < lastTime)
             {

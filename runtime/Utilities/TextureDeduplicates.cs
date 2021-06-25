@@ -77,6 +77,7 @@ namespace Packages.FxEditor
             float procCount = 0.0f;
             foreach (var imageFile in imageFiles)
             {
+
                 procCount++;
                 if (EditorUtility.DisplayCancelableProgressBar("纹理处理", imageFile.FullName, procCount / allCOunt))break;
                 //----------------------
@@ -152,6 +153,16 @@ namespace Packages.FxEditor
             foreach (var imageSet in imageSets)
             {
                 File.Delete(imageSet.file.FullName);
+            }
+            
+            //------move file to out dir------------
+            foreach (var imageFile in imageFiles)
+            {
+                
+                if(!imageFile.Exists)continue;
+                imageFile.MoveTo(outdir+"/"+imageFile.Name);
+                
+                
             }
         }
     }

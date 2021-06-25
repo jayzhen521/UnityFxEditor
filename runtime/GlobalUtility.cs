@@ -12,6 +12,7 @@ namespace Packages.FxEditor
 {
     public class GlobalUtility
     {
+        public static float time = 0.0f;    //<-临时使用渲染时间
         protected static UInt64 IDCounter = 0; 
         public static string GetShaderCode(string path)
         {

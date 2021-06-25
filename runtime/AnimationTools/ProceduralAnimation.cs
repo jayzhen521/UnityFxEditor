@@ -33,7 +33,7 @@ namespace Packages.FxEditor
             if (_animations == null || _animations.Length <= 0) return;
             
             float dtime = effectDuration / _animations.Length;
-            float t = Time.time - startTime;
+            float t = GlobalUtility.time - startTime;
             if (t < 0) return;
 
             foreach (var animation1 in _animations)

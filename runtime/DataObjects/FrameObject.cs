@@ -11,19 +11,17 @@ namespace Packages.FxEditor
     {
         private readonly List<CommandObjectBase> commandlist = new List<CommandObjectBase>();
 
-        private float time = Time.time;
+        private float time = GlobalUtility.time;
 
         public FrameObject(Exporter exporter)
         {
             ObjectType = ObjectTypeFrame;
             //-------------------
 
-            
-            
+
             GameObject timelineRoot = null;
-            if(exporter._Timeline!=null)
-            timelineRoot=exporter._Timeline.GetRootObjectByTime(time);
-            
+            if (exporter._Timeline != null) timelineRoot = exporter._Timeline.GetRootObjectByTime(time);
+
             // Debug.Log(timelineRoot);
 
 
@@ -33,84 +31,88 @@ namespace Packages.FxEditor
 
 
             //===================================================canvas
-
             var canvases = Object.FindObjectsOfType<FxCanvasObject>();
             Array.Sort(canvases, SortByNodeOrder);
-            foreach (var c in canvases)
-            {
-                if (c.root == null) continue;
 
-                if (timelineRoot != null)
+            List<GameObject> canvasObjects = new List<GameObject>();
+            
+            if(true){
+                foreach (var c in canvases)
                 {
-                    if (!c.root.transform.IsChildOf(timelineRoot.transform)) continue;
-                }
-                
-                Camera cam = c.gameObject.GetComponent<Camera>();
-                commandlist.Add(new BeginCanvasCommand(c, exporter));
-                
-                
-                //Draw
-                foreach (var obj in objs)
-                {
-                    //---------for timeline-------------------
-                    if (exporter._Timeline != null)
+                    if (c.root == null) continue;
+
+                    if (timelineRoot != null)
                     {
-                        if (timelineRoot == null) continue;
-                        if (!obj.transform.IsChildOf(timelineRoot.transform)) continue;    
+                        if (!c.root.transform.IsChildOf(timelineRoot.transform)) continue;
                     }
-                    //-----------------------------------------------------
-                    
-                    if (!obj.transform.IsChildOf(c.root.transform)) continue;
 
-                    DrawObject(cam, obj, exporter);
+                    Camera cam = c.gameObject.GetComponent<Camera>();
+                    commandlist.Add(new BeginCanvasCommand(c, exporter));
 
 
+                    //Draw
+                    foreach (var obj in objs)
+                    {
+                        //---------for timeline-------------------
+                        if (exporter._Timeline != null)
+                        {
+                            if (timelineRoot == null) continue;
+                            if (!obj.transform.IsChildOf(timelineRoot.transform)) continue;
+                        }
+                        //-----------------------------------------------------
+
+                        if (!obj.transform.IsChildOf(c.root.transform)) continue;
+
+                        canvasObjects.Add(obj);
+                        DrawObject(cam, obj, exporter);
+                    }
+
+                    commandlist.Add(new EndCanvasCommand(c));
                 }
-
-                commandlist.Add(new EndCanvasCommand(c));
             }
             //===================================================
 
 
             //===================================================Draw
-            foreach (var obj in objs)
-            {
-                //----------------skip content of canvas----------------
-                bool skip = false;
-                foreach (var c in canvases)
+            if(true){
+                foreach (var obj in objs)
                 {
-                    if (c.root == null)
-                    {
-                        continue;
-                    }
+                    //----------------skip content of canvas----------------
+                    bool skip = (canvasObjects.IndexOf(obj) != -1);
+                    // foreach (var c in canvases)
+                    // {
+                    //     if (c.root == null)
+                    //     {
+                    //         continue;
+                    //     }
+                    //
+                    //     if (obj.gameObject.transform.IsChildOf(c.root.transform))
+                    //     {
+                    //         skip = true;
+                    //         break;
+                    //     }
+                    //
+                    //     if (skip) break;
+                    // }
+                    //--------------------------------
 
-                    if (obj.gameObject.transform.IsChildOf(c.root.transform))
-                    {
-                        skip = true;
-                        break;
-                    }
 
-                    if (skip) break;
+                    //---------for timeline-------------------
+                    if (exporter._Timeline != null)
+                    {
+                        if (timelineRoot == null) continue;
+                        if (!obj.transform.IsChildOf(timelineRoot.transform))
+                        {
+                            continue;
+                        }
+                    }
+                    //-----------------------------------------------------
+
+                    if (skip) continue;
+
+                    //DrawObject(Camera.main,obj, exporter);
+                    DrawObject(SceneConfig.currentCamera, obj, exporter);
                 }
-                //--------------------------------
-
-                
-                //---------for timeline-------------------
-                if (exporter._Timeline != null)
-                {
-                    if (timelineRoot == null) continue;
-                    if (!obj.transform.IsChildOf(timelineRoot.transform))
-                    {
-                        continue;
-                    }
-                            
-                }
-                //-----------------------------------------------------
-                
-                if (skip) continue;
-                
-                //DrawObject(Camera.main,obj, exporter);
-                DrawObject(SceneConfig.currentCamera, obj, exporter);
             }
 
             //===================================================
@@ -163,21 +165,19 @@ namespace Packages.FxEditor
             //-------------------change shader command
             {
                 commandlist.Add(new ChangeShaderCommand(cam, obj.gameObject, exporter));
-                
             }
 
             {
-                commandlist.Add(new ParticleSystemCommand(cam,obj));
+                commandlist.Add(new ParticleSystemCommand(cam, obj));
             }
         }
 
         void DrawMesh(Camera cam, MeshRenderer obj, Exporter exporter)
         {
-            
             if (obj.gameObject.tag == "EditorOnly") return;
             if (obj.gameObject.GetComponent<TextFx>() != null) return;
 
-            
+
             //-------------------change shader command
             {
                 commandlist.Add(new ChangeShaderCommand(cam, obj.gameObject, exporter));

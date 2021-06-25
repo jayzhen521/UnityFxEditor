@@ -48,7 +48,7 @@ namespace Packages.FxEditor
         A_4x3
     }
 
-    public class FxJsonData : MonoBehaviour
+    public class FxJsonData : FxJsonDataBase
     {
         //-----------Json数据--------------
         public string name = "";
@@ -83,11 +83,7 @@ namespace Packages.FxEditor
         //--------------------------------------------
 
 
-        public void SaveTo(string filepath)
-        {
-            var text=JsonUtility.ToJson(this);
-            File.WriteAllText(filepath,text);
-        }
+        
 
 
         void UpdateTimelineData()
@@ -132,7 +128,6 @@ namespace Packages.FxEditor
     
         private void OnDrawGizmos()
         {
-            Debug.Log("heee");
             UpdateTimelineData();
 
         }

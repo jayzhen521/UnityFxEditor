@@ -6,13 +6,18 @@ using Object = System.Object;
 
 namespace Packages.FxEditor
 {
-    public class Timeline : MonoBehaviour
+    public class Timeline : ScriptBase
     {
         public List<TimelineClip> clips=new List<TimelineClip>();
 
         private void Start()
         {
+            BeginExport();
             
+        }
+
+        public override void BeginExport()
+        {
             foreach (var timelineClip in clips)
             {
                 if (timelineClip.rootObject == null) continue;
@@ -22,6 +27,7 @@ namespace Packages.FxEditor
                 timelineClip.clipTimeRatio = timeScale;
                 
             }
+            base.BeginExport();
         }
 
         public void MyUpdate()
@@ -51,6 +57,8 @@ namespace Packages.FxEditor
                 }
             }
             
+            
+            
             return d;
         }
         void updateAnimation()
@@ -64,9 +72,9 @@ namespace Packages.FxEditor
                 var timelineClip = clips[i];
 
                 float endtime =starttime+timelineClip.duration;
-                float time = Time.time - starttime;
+                float time = GlobalUtility.time - starttime;
                 
-                if (timelineClip.rootObject == null||Time.time<starttime||Time.time>endtime)
+                if (timelineClip.rootObject == null||GlobalUtility.time<starttime||GlobalUtility.time>endtime)
                 {
                     starttime = endtime;    
                     continue;
@@ -95,7 +103,7 @@ namespace Packages.FxEditor
                 if (timelineClip.camera == null) continue;
                 
                 float endtime = time + timelineClip.duration;
-                if (Time.time >= time && Time.time < endtime)
+                if (GlobalUtility.time >= time && GlobalUtility.time < endtime)
                 {
                     timelineClip.camera.enabled = true;
                     SceneConfig.currentCamera = timelineClip.camera;

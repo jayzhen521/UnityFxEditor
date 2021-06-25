@@ -13,6 +13,7 @@
 
         Pass
         {
+            Cull Off
             Blend One OneMinusSrcAlpha // Premultiplied transparency
 
             CGPROGRAM
