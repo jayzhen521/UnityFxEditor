@@ -45,7 +45,7 @@ namespace Packages.FxEditor
                 return;
             }
             
-            var material = GetComponent<Renderer>().sharedMaterial;
+            var material =GlobalUtility.GetMaterial(GetComponent<Renderer>());
             var name = names[channelName];
             
             material.SetTexture(name,texture);
@@ -79,5 +79,6 @@ namespace Packages.FxEditor
         {
             UpdateTextureCoord();
         }
+        
     }
 }

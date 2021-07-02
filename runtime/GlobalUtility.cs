@@ -166,7 +166,19 @@ namespace Packages.FxEditor
 
         public static Material GetMaterial(Renderer renderer)
         {
-            var materal = renderer.sharedMaterial;
+            Material materal = null;
+            try
+            {
+                 materal = renderer.sharedMaterial;
+            }
+            catch (Exception e)
+            {
+                materal = renderer.material;
+
+                Debug.Log("Material error;");
+            }
+            
+            
             return materal;
         }
 
@@ -256,5 +268,6 @@ namespace Packages.FxEditor
             }
             return snapPoint;
         }
+
     }
 }

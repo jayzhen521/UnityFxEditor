@@ -51,12 +51,12 @@ namespace Packages.FxEditor
                     case ShaderParameter.ParameterTypeColor:
                         p.colorValue = block.GetColor(p.name);
                         if (p.colorValue == new Color(0, 0, 0, 0))
-                            p.colorValue =GlobalUtility.GetMaterial(renderer).GetColor(p.name);
+                            p.colorValue =renderer.material.GetColor(p.name);
                         break;
                     case ShaderParameter.ParameterTypeFloat:
                         p.floatValue = block.GetFloat(p.name);
                         if(p.floatValue==0.0f)
-                            p.floatValue = renderer.material.GetFloat(p.name);
+                            p.floatValue =renderer.material.GetFloat(p.name);
                         break;
                     case ShaderParameter.ParameterTypeTexture2D:
                     {
@@ -78,7 +78,7 @@ namespace Packages.FxEditor
                     //texcoord.vectorValue = renderer.material.GetVector(texcoord.name);
                     texcoord.vectorValue = block.GetVector(texcoord.name);
                     if(texcoord.vectorValue==new Vector4(0,0,0,0))
-                        texcoord.vectorValue = GlobalUtility.GetMaterial(renderer).GetVector(texcoord.name);
+                        texcoord.vectorValue =renderer.material.GetVector(texcoord.name);
                     _parameters.Add(texcoord);
                 }
             }

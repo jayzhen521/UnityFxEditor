@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using PlasticPipe.PlasticProtocol.Messages;
+
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -68,19 +67,19 @@ namespace Packages.FxEditor
                         switch (type)
                         {
                             case ShaderPropertyType.Color:
-                                render.material.SetColor(j, pb.GetColor(j));
+                                GlobalUtility.GetMaterial(render).SetColor(j, pb.GetColor(j));
                                 break;
                             case ShaderPropertyType.Vector:
-                                render.material.SetVector(j, pb.GetVector(j));
+                                GlobalUtility.GetMaterial(render).SetVector(j, pb.GetVector(j));
                                 break;
                             case ShaderPropertyType.Float:
-                                render.material.SetFloat(j, pb.GetFloat(j));
+                                GlobalUtility.GetMaterial(render).SetFloat(j, pb.GetFloat(j));
                                 break;
                             case ShaderPropertyType.Range:
 
                                 break;
                             case ShaderPropertyType.Texture:
-                                render.material.SetTexture(j, pb.GetTexture(j));
+                                GlobalUtility.GetMaterial(render).SetTexture(j, pb.GetTexture(j));
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();

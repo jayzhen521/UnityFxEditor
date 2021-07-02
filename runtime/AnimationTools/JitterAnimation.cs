@@ -8,7 +8,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace Packages.FxEditor
 {
-    public class JitterAnimation : MonoBehaviour
+    public class JitterAnimation : ScriptBase
     {
         public int frequency = 1;
         public float powerT = 0.1f;
@@ -23,6 +23,16 @@ namespace Packages.FxEditor
         private Random rnd = null;
         private void Start()
         {
+            BeginExport();
+        }
+
+        private void Update()
+        {
+            UpdateAnimation();
+        }
+
+        public override void BeginExport()
+        {
             rot = transform.rotation;
             rnd = new Random(seed);
             pos = transform.position;
@@ -30,7 +40,7 @@ namespace Packages.FxEditor
             count = 0;
         }
 
-        private void Update()
+        public override void UpdateAnimation()
         {
             count++;
             if ((count % frequency) == 0)
@@ -39,15 +49,20 @@ namespace Packages.FxEditor
                 float y = (float)rnd.NextDouble() * powerT-powerT*.5f;
                 transform.position = pos + (new Vector3(x, y, 0));
                 
-                 x = (float)rnd.NextDouble() * powerS-powerS*.5f;
-                 y = (float)rnd.NextDouble() * powerS-powerS*.5f;
-                 transform.localScale = sc + (new Vector3(x, x, 0));
+                x = (float)rnd.NextDouble() * powerS-powerS*.5f;
+                y = (float)rnd.NextDouble() * powerS-powerS*.5f;
+                transform.localScale = sc + (new Vector3(x, x, 0));
                  
                  
-                 x = (float)rnd.NextDouble() * powerR-powerR*.5f;
-                 UnityEngine.Quaternion q = UnityEngine.Quaternion.AngleAxis(x, Vector3.forward);
-                 transform.rotation =rot*q;
+                x = (float)rnd.NextDouble() * powerR-powerR*.5f;
+                UnityEngine.Quaternion q = UnityEngine.Quaternion.AngleAxis(x, Vector3.forward);
+                transform.rotation =rot*q;
             }
+        }
+
+        public override void EndExport()
+        {
+            base.EndExport();
         }
     }
 }
