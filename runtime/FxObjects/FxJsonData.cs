@@ -29,9 +29,10 @@ namespace Packages.FxEditor
     }
     [Serializable]
     public class EffectItemFeatures{
-        public int index=0;
-        public int opacityID=0;
-     }
+        public int none=0;
+        public int cutout;
+        public int cartoon;
+    }
 
     public enum PlayMode
     {
