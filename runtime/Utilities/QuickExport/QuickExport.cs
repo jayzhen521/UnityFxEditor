@@ -17,6 +17,7 @@ namespace Packages.FxEditor
         private string message = "";
         private Camera currentCamera = null;
         private ScriptBase[] scripts = null;
+        private Timeline timeline = null;
 
         bool GetOutputFile()
         {
@@ -43,8 +44,14 @@ namespace Packages.FxEditor
 
         void UpdateSceneByTime(float time)
         {
+            
             //--------------
-            //var scripts = Object.FindObjectsOfType<ScriptBase>();
+            if (timeline)
+            {
+                timeline.UpdateAnimation();
+                return;
+            }
+                
 
             //-------------
             var pb = new MaterialPropertyBlock();
@@ -88,6 +95,7 @@ namespace Packages.FxEditor
                 }
             }
 
+            
             if (scripts != null)
             {
                 foreach (var scriptBase in scripts)
@@ -95,6 +103,7 @@ namespace Packages.FxEditor
                     scriptBase.UpdateAnimation();
                 }
             }
+            
             //--------------
         }
 
@@ -217,11 +226,23 @@ namespace Packages.FxEditor
 
         public void Run()
         {
+            timeline = Object.FindObjectOfType<Timeline>();
+            
             scripts = Object.FindObjectsOfType<ScriptBase>();
+            // if (timeline)
+            // {
+            //     scripts = new[] {timeline};
+            //     
+            // }
+            
+            
+            //scripts = ScriptBase.GetAllScript();
+            
             if (scripts != null)
             {
                 foreach (var scriptBase in scripts)
                 {
+                    Debug.Log((scriptBase));
                     scriptBase.BeginExport();
                 }
             }
@@ -239,9 +260,10 @@ namespace Packages.FxEditor
 
 
             var batchExportConfig = Object.FindObjectOfType<BatchExportConfig>();
-            if (batchExportConfig != null)
+            if (batchExportConfig != null&&batchExportConfig.ExportItems.Count>0)
             {
                 BatchExportScene(batchExportConfig);
+                
             }
             else
             {
@@ -264,6 +286,12 @@ namespace Packages.FxEditor
         [MenuItem("FxEditor/快速的导出  %e")]
         public static void OnQuickExport()
         {
+            //var scripts = Object.FindObjectsOfType<ScriptBase>();
+            // var scripts = ScriptBase.GetAllScript();
+            //
+            // Debug.Log(scripts.Count);
+            // return;
+            
             var qc = new QuickExport();
             qc.Run();
         }

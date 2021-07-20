@@ -74,7 +74,7 @@ namespace Packages.FxEditor
         private void OnDrawGizmos()
         {
             UpdateUI();
-            //UpdateTextureCoord();
+            UpdateTextureCoord();
         }
 
         public override void UpdateAnimation()
