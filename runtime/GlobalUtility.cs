@@ -169,13 +169,18 @@ namespace Packages.FxEditor
             Material materal = null;
             try
             {
-                 materal = renderer.sharedMaterial;
+                 
+                materal = renderer.sharedMaterial;
+                //materal = renderer.material;
+                
             }
             catch (Exception e)
             {
+                
                 materal = renderer.material;
+                
 
-                Debug.Log("Material error;");
+                Debug.LogError("Material error;");
             }
             
             

@@ -8,43 +8,46 @@ namespace Packages.FxEditor
 {
     public class TextAnimationNode
     {
-        public float start=0.0f;
-        public float end=0.0f;
+        public float start = 0.0f;
+        public float end = 0.0f;
         public GameObject obj = null;
-        public Vector3 pos=new Vector3(0,0,0);
+        public Vector3 pos = new Vector3(0, 0, 0);
     }
+
     public class TextFx : MonoBehaviour
     {
-        [Tooltip("编号范围在0-9999之间")]
-        public int soltID = 0;
+        [Tooltip("编号范围在0-9999之间")] public int soltID = 0;
         public string text = "";
         public float size = 1.0f;
         public TextAlignment align = TextAlignment.Left;
         public Material material = null;
 
 
-        [Header("Time")] 
-        public float startTime = 0.0f;
+        [Header("Time")] public float startTime = 0.0f;
         public float effectDuration = 5;
+        
+        [Tooltip("用于设置连个字符之间时间重叠率(0-1)")]
+        [Range(0,1)]
         public float interval = 0.05f;
 
-        [Tooltip("用于设置连个字符之间时间重叠率(0-2)")]
-        public float overlayFactor = 0;
-        
-        [Header("Animation")]
-        public AnimationClip clip = null;
+         // public float overlayFactor = 0;
+
+        [Header("Animation")] public AnimationClip clip = null;
         public TextAnimationType animationType = TextAnimationType.Sequence;
+        public bool loopDebug = false;
+
+
         //"Helvetica"
         private Font font = null;
-        
-        private string fontName="Helvetica";
+
+        private string fontName = "Helvetica";
         private string lastText = "";
         private float lastSize = 1.0f;
         private Vector3[] transforms = null;
         private float lastTime = 999.0f;
 
-        private List<TextAnimationNode> nodes=new List<TextAnimationNode>();
-        
+        private List<TextAnimationNode> nodes = new List<TextAnimationNode>();
+
         void RebuildMesh()
         {
             Mesh mesh = null;
@@ -89,21 +92,21 @@ namespace Packages.FxEditor
         void UpdateTextNodes()
         {
             if (material == null) return;
-            
+
             var render = gameObject.GetComponent<MeshRenderer>();
             if (render == null)
             {
-                render=gameObject.AddComponent<MeshRenderer>();
+                render = gameObject.AddComponent<MeshRenderer>();
             }
 
             render.material = material;
-            
-            
+
+
             //set tag
 
             for (var i = 0; i < gameObject.transform.childCount; i++)
                 gameObject.transform.GetChild(i).gameObject.tag = "EditorOnly";
-            
+
             //update count
             var count = text.Length;
             if (gameObject.transform.childCount < count)
@@ -114,27 +117,28 @@ namespace Packages.FxEditor
                     var obj = new GameObject("T");
                     obj.transform.parent = gameObject.transform;
                     Mesh mesh = new Mesh();
-                    
-                    Vector3[] points =new Vector3[4];
-                    Vector2[] uv =new Vector2[4];
+
+                    Vector3[] points = new Vector3[4];
+                    Vector2[] uv = new Vector2[4];
 
                     int[] triangles = {1, 3, 0, 1, 2, 3};
                     mesh.vertices = points;
                     mesh.uv = uv;
                     mesh.triangles = triangles;
-                    
+
                     var meshfilter = obj.AddComponent<MeshFilter>();
                     meshfilter.mesh = mesh;
-                    
+
                     MeshRenderer renderer = obj.AddComponent<MeshRenderer>();
                     renderer.material = material;
-                    
+
+
+                    obj.hideFlags = HideFlags.HideInHierarchy;
                 }
-                
             }
             else
             {
-                var c =  gameObject.transform.childCount;
+                var c = gameObject.transform.childCount;
                 for (var i = 0; i < c; i++)
                 {
                     gameObject.transform.GetChild(i).gameObject.SetActive(false);
@@ -142,17 +146,13 @@ namespace Packages.FxEditor
             }
 
 
-
             int fontSize = 256;
             if (font == null)
             {
-                
                 font = Font.CreateDynamicFontFromOSFont(fontName, fontSize);
-                
-                    
             }
-            
-            
+
+
             font.RequestCharactersInTexture(text);
             material.mainTexture = font.material.mainTexture;
             float factor = 1.0f / fontSize;
@@ -163,7 +163,7 @@ namespace Packages.FxEditor
             {
                 CharacterInfo ch;
                 font.GetCharacterInfo(text[i], out ch);
-                textWidth += ch.advance * size*factor;
+                textWidth += ch.advance * size * factor;
             }
             //-------------------------------
 
@@ -174,34 +174,34 @@ namespace Packages.FxEditor
                     pos = 0.0f;
                     break;
                 case TextAlignment.Center:
-                    pos = -textWidth*0.5f;
+                    pos = -textWidth * 0.5f;
                     break;
                 case TextAlignment.Right:
                     pos = -textWidth;
                     break;
             }
+
             //float s = 0.01f;
             for (int i = 0; i < text.Length; i++)
             {
                 GameObject obj = gameObject.transform.GetChild(i).gameObject;
-                
-                
+
+
                 obj.tag = "EditorOnly";
                 obj.SetActive(true);
-                
+
                 CharacterInfo ch;
                 font.GetCharacterInfo(text[i], out ch);
 
-                
-                
+
                 float r = 1.0f;
-                
+
                 Vector3[] points =
                 {
-                    (new Vector3(ch.minX, ch.maxY, 0)) * size*factor,
-                    (new Vector3(ch.maxX, ch.maxY, 0)) * size*factor,
-                    (new Vector3(ch.maxX, ch.minY, 0)) * size*factor,
-                    (new Vector3(ch.minX, ch.minY, 0)) * size*factor
+                    (new Vector3(ch.minX, ch.maxY, 0)) * size * factor,
+                    (new Vector3(ch.maxX, ch.maxY, 0)) * size * factor,
+                    (new Vector3(ch.maxX, ch.minY, 0)) * size * factor,
+                    (new Vector3(ch.minX, ch.minY, 0)) * size * factor
                 };
 
 
@@ -216,58 +216,66 @@ namespace Packages.FxEditor
 
                 var meshfilter = obj.GetComponent<MeshFilter>();
                 var mesh = meshfilter.sharedMesh;
-                
-                
+
+
                 int[] triangles = {1, 3, 0, 1, 2, 3};
                 mesh.vertices = points;
                 mesh.uv = uv;
                 mesh.triangles = triangles;
                 meshfilter.mesh = mesh;
                 //meshfilter.mesh = mesh;
-                
-                
+
+
                 obj.transform.localPosition = new Vector3(pos, 0, 0);
                 obj.transform.parent = transform;
-                
-                pos += ch.advance * size*factor;
+
+                pos += ch.advance * size * factor;
             }
-            
+
             //-----------
             lastText = text;
             lastSize = size;
         }
 
-        
+
         void ComputeAnimation()
         {
             if (clip == null) return;
-            
+
             //-----compute animation-----
             int index = 0;
             var n = text.Length;
             if (n == 0) return;
             float start = 0.0f;
-            
+
 
             float l = effectDuration / (n - interval * (n - 1));
             float dl = l * (1 - interval);
             foreach (var node in nodes)
             {
-                 node.start =start;
-                 node.end = start+l;
-                
-                 start += dl;
+                node.start = start;
+                node.end = start + l;
+
+                start += dl;
             }
             //---------------
-            
-            //float t = (Time.time-startTime)%effectDuration;
-            float t = Mathf.Min(effectDuration, GlobalUtility.time-startTime);
-            
+
+            float t = 0.0f;
+            if (loopDebug)
+            {
+                t = (Time.time - startTime) % effectDuration; //Loop
+            }
+            else
+            {
+                t = Mathf.Min(effectDuration, GlobalUtility.time - startTime);
+            }
+
+
             if (t < lastTime)
             {
                 foreach (var node in nodes)
                 {
-                    clip.SampleAnimation(node.obj,0.001f);
+                    clip.SampleAnimation(node.obj, 0.001f);
                     var pos = node.obj.transform.localPosition;
                     pos += node.pos;
                     node.obj.transform.localPosition = pos;
@@ -283,30 +291,31 @@ namespace Packages.FxEditor
                 {
                     if (t < node.start)
                     {
-                        clip.SampleAnimation(node.obj,0.0f);
+                        clip.SampleAnimation(node.obj, 0.0f);
                     }
 
                     if (t > node.end)
                     {
-                        clip.SampleAnimation(node.obj,clip.length);
+                        clip.SampleAnimation(node.obj, clip.length);
                     }
                 }
                 else
                 {
                     float dur = node.end - node.start;
                     float dt = t - node.start;
-                    float dtt = dt*ad / dur;
-                
-                    clip.SampleAnimation(node.obj,dtt);    
+                    float dtt = dt * ad / dur;
+
+                    clip.SampleAnimation(node.obj, dtt);
                 }
 
                 var pos = node.obj.transform.localPosition;
                 pos += node.pos;
                 node.obj.transform.localPosition = pos;
-                
             }
+
             return;
         }
+
         private void Start()
         {
             //transforms = null;
@@ -315,9 +324,9 @@ namespace Packages.FxEditor
             nodes.Clear();
 
             if (clip == null) return;
-            
+
             var pos = GlobalUtility.RandomSample(text.Length);
-            
+
             var t = gameObject.transform;
             for (var i = 0; i < text.Length; i++)
             {
@@ -328,21 +337,19 @@ namespace Packages.FxEditor
                 }
                 else
                 {
-                    node.obj = t.GetChild(i).gameObject;    
+                    node.obj = t.GetChild(i).gameObject;
                 }
-                
+
                 node.pos = node.obj.transform.localPosition;
                 nodes.Add(node);
 
-                clip.SampleAnimation(node.obj,0.001f);
+                clip.SampleAnimation(node.obj, 0.001f);
             }
         }
 
         private void Update()
         {
-            
             ComputeAnimation();
-            
         }
 
         private void OnDrawGizmos()

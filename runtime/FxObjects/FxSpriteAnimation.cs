@@ -62,22 +62,25 @@ namespace Packages.FxEditor
             
             material.SetVector(name+"_ST",new Vector4(delta.x,delta.y,x,y));
             
+            
         }
 
         private void Update()
         {
             UpdateTextureCoord();
+            Debug.Log(spriteIndex);
         }
 
         private void OnDrawGizmos()
         {
             UpdateUI();
-            UpdateTextureCoord();
+            //UpdateTextureCoord();
         }
 
         public override void UpdateAnimation()
         {
             UpdateTextureCoord();
+            
         }
         
     }

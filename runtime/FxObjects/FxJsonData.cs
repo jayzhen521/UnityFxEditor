@@ -57,7 +57,7 @@ namespace Packages.FxEditor
         A_9x16
     }
 
-    public class FxJsonData : MonoBehaviour
+    public class FxJsonData : FxJsonDataBase
     {
         //-----------Json数据--------------
         public int filterId = -1;

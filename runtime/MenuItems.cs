@@ -128,8 +128,11 @@ namespace Packages.FxEditor
         public static void OnCreateNode()
         {
             var obj = new GameObject("Node");
+
+
+            var aspect = 1.0f;
+            if(Camera.main!=null) aspect=Camera.main.aspect;
             
-            var aspect = Camera.main.aspect;
             var cam = obj.AddComponent<Camera>();
             cam.orthographic = true;
             var canvasObject = obj.AddComponent<FxCanvasObject>();
@@ -150,7 +153,8 @@ namespace Packages.FxEditor
 
 
 
-            var aspect = Camera.main.aspect;
+            var aspect = 1.0f;
+            if(Camera.main!=null) aspect=Camera.main.aspect;
             
             var cam = obj.AddComponent<Camera>();
             cam.orthographic = true;
@@ -184,7 +188,8 @@ namespace Packages.FxEditor
         public static void OnCreateFxNodeInput()
         {
             var obj = new GameObject();
-            var aspect = Camera.main.aspect;
+            var aspect = 1.0f;
+            if(Camera.main!=null) aspect=Camera.main.aspect;
 
             var cam = obj.AddComponent<Camera>();
             cam.orthographic = true;

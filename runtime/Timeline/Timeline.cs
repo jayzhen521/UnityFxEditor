@@ -27,6 +27,13 @@ namespace Packages.FxEditor
                 timelineClip.clipTimeRatio = timeScale;
                 
             }
+            
+            var scripts = UnityEngine.Object.FindObjectsOfType<ScriptBase>();
+            foreach (var scriptBase in scripts)
+            {
+                if(scriptBase is Timeline)continue;
+                scriptBase.BeginExport();
+            }
             base.BeginExport();
         }
 
@@ -35,6 +42,23 @@ namespace Packages.FxEditor
             updateCamera();
             updateAnimation();
         }
+
+        public override void UpdateAnimation()
+        {
+            MyUpdate();
+            Debug.Log("uuuuuuuuuuu");
+        }
+
+        public override void EndExport()
+        {
+            var scripts = UnityEngine.Object.FindObjectsOfType<ScriptBase>();
+            foreach (var scriptBase in scripts)
+            {
+                if(scriptBase is Timeline)continue;
+                scriptBase.EndExport();
+            }
+        }
+
         private void Update()
         {
             MyUpdate();
@@ -84,7 +108,14 @@ namespace Packages.FxEditor
                 
                 
                 ComputeAnimationDuration(timelineClip.rootObject,t);
-                
+
+
+                var scripts = UnityEngine.Object.FindObjectsOfType<ScriptBase>();
+                foreach (var scriptBase in scripts)
+                {
+                    if(scriptBase is Timeline)continue;
+                    scriptBase.UpdateAnimation();
+                }
                 starttime = endtime;    
             }
         }
