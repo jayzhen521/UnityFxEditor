@@ -2,6 +2,8 @@ using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.UI;
+using Object = System.Object;
 using Quaternion = System.Numerics.Quaternion;
 using Random = System.Random;
 using Vector3 = UnityEngine.Vector3;
@@ -21,6 +23,9 @@ namespace Packages.FxEditor
         private Vector3 sc = Vector3.zero;
         private UnityEngine.Quaternion rot=UnityEngine.Quaternion.identity;
         private Random rnd = null;
+
+         
+            
         private void Start()
         {
             BeginExport();
@@ -33,6 +38,9 @@ namespace Packages.FxEditor
 
         public override void BeginExport()
         {
+            
+            
+            
             rot = transform.rotation;
             rnd = new Random(seed);
             pos = transform.position;
@@ -62,7 +70,9 @@ namespace Packages.FxEditor
 
         public override void EndExport()
         {
-            base.EndExport();
+            gameObject.transform.position=pos;
+            gameObject.transform.localScale = sc;
+            gameObject.transform.rotation = rot;
         }
     }
 }

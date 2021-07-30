@@ -34,14 +34,14 @@ namespace Packages.FxEditor
             objRGB.transform.parent = obj.transform;
             objRGB.transform.localScale=new Vector3(w,h*2,1);
             objRGB.transform.position=new Vector3(-w*0.5f,0,0);
-            objRGB.GetComponent<MeshRenderer>().sharedMaterial=new Material(Shader.Find("HLFx/TextureColorMask"));
+            objRGB.GetComponent<MeshRenderer>().material=new Material(Shader.Find("HLFx/TextureColorMask"));
             
             GameObject objAlpha=GameObject.CreatePrimitive(PrimitiveType.Quad);
             objAlpha.name = "Alpha";
             objAlpha.transform.parent = obj.transform;
             objAlpha.transform.localScale=new Vector3(w,h*2,1);
             objAlpha.transform.position=new Vector3(w*0.5f,0,0);
-            objAlpha.GetComponent<MeshRenderer>().sharedMaterial=new Material(Shader.Find("HLFx/Tools/AlphaToGray"));
+            objAlpha.GetComponent<MeshRenderer>().material=new Material(Shader.Find("HLFx/Tools/AlphaToGray"));
 
             spliter.rgbObject = objRGB;
             spliter.alphaObject = objAlpha;
@@ -384,10 +384,10 @@ namespace Packages.FxEditor
                 var rs = obj.GetComponentsInChildren<Renderer>();
                 foreach (var r in rs)
                 {
-                    var mat = r.sharedMaterial;
+                    var mat = r.material;
                     var newmat = new Material(mat.shader);
                     newmat.CopyPropertiesFromMaterial(mat);
-                    r.sharedMaterial = newmat;
+                    r.material = newmat;
                     GlobalUtility.SaveNewMaterialFile(newmat);
                 }
             }
@@ -402,7 +402,7 @@ namespace Packages.FxEditor
                 Renderer rnd = gameobject.GetComponent<Renderer>();
                 if (rnd == null) continue;
 
-                Material m = rnd.sharedMaterial;
+                Material m = rnd.material;
 
                 var bd = rnd.bounds;
                 var v1 = bd.min - bound.min;
@@ -464,7 +464,7 @@ namespace Packages.FxEditor
             {
                 var t = r.gameObject.transform;
                 int z = (int) (t.position.z * 10);
-                r.material.renderQueue = 3000 - z;
+                r.material.renderQueue = 4000 - z;
             }
         }
         

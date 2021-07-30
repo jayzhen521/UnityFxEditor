@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using PlasticGui.WorkspaceWindow;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,29 +15,34 @@ namespace Packages.FxEditor
         public Vector3 pos = new Vector3(0, 0, 0);
     }
 
+    
     public class TextFx : MonoBehaviour
     {
-        [Tooltip("编号范围在0-9999之间")] public int soltID = 0;
+        [Tooltip("编号范围在0-9999之间")] 
+        public int soltID = 0;
         public string text = "";
         public float size = 1.0f;
         public TextAlignment align = TextAlignment.Left;
         public Material material = null;
 
 
-        [Header("Time")] public float startTime = 0.0f;
+        [Header("Time")] 
+        public float startTime = 0.0f;
         public float effectDuration = 5;
-        
+
         [Tooltip("用于设置连个字符之间时间重叠率(0-1)")]
-        [Range(0,1)]
+        [Range(0, 1)]
         public float interval = 0.05f;
 
-         // public float overlayFactor = 0;
+        // public float overlayFactor = 0;
 
         [Header("Animation")] public AnimationClip clip = null;
         public TextAnimationType animationType = TextAnimationType.Sequence;
         public bool loopDebug = false;
 
 
+        [Header("Layout")]
+        
         //"Helvetica"
         private Font font = null;
 
@@ -47,6 +53,10 @@ namespace Packages.FxEditor
         private float lastTime = 999.0f;
 
         private List<TextAnimationNode> nodes = new List<TextAnimationNode>();
+
+
+        //-------------property of the text------------
+        private Bounds bounds = new Bounds(Vector3.zero, Vector3.one);
 
         void RebuildMesh()
         {
@@ -132,7 +142,6 @@ namespace Packages.FxEditor
                     MeshRenderer renderer = obj.AddComponent<MeshRenderer>();
                     renderer.material = material;
 
-
                     obj.hideFlags = HideFlags.HideInHierarchy;
                 }
             }
@@ -141,7 +150,13 @@ namespace Packages.FxEditor
                 var c = gameObject.transform.childCount;
                 for (var i = 0; i < c; i++)
                 {
+                    var socket = gameObject.transform.GetChild(i).GetComponent<TextObjectSocket>();
+
                     gameObject.transform.GetChild(i).gameObject.SetActive(false);
+                    if (socket != null)
+                    {
+                        socket.gameObject.SetActive(true);
+                    }
                 }
             }
 
@@ -181,12 +196,18 @@ namespace Packages.FxEditor
                     break;
             }
 
+
+            float tmp = 9999.0f;
+            Vector3 minPoint = new Vector3(tmp, tmp, tmp);
+            Vector3 maxPoint = new Vector3(-tmp, -tmp, -tmp);
             //float s = 0.01f;
             for (int i = 0; i < text.Length; i++)
             {
                 GameObject obj = gameObject.transform.GetChild(i).gameObject;
 
+                if (obj.GetComponent<TextObjectSocket>() != null) continue;
 
+                
                 obj.tag = "EditorOnly";
                 obj.SetActive(true);
 
@@ -229,7 +250,26 @@ namespace Packages.FxEditor
                 obj.transform.localPosition = new Vector3(pos, 0, 0);
                 obj.transform.parent = transform;
 
+                foreach (var vector3 in points)
+                {
+                    var p = vector3 + new Vector3(pos, 0, 0);
+                    minPoint.x = Mathf.Min(minPoint.x, p.x);
+                    minPoint.y = Mathf.Min(minPoint.y, p.y);
+                    minPoint.z = Mathf.Min(minPoint.z, p.z);
+
+
+                    maxPoint.x = Mathf.Max(maxPoint.x, p.x);
+                    maxPoint.y = Mathf.Max(maxPoint.y, p.y);
+                    maxPoint.z = Mathf.Max(maxPoint.z, p.z);
+                }
+
                 pos += ch.advance * size * factor;
+            }
+
+            {
+                var center = (minPoint + maxPoint) * .5f;
+                var size = maxPoint - minPoint;
+                bounds = new Bounds(center, size);
             }
 
             //-----------
@@ -347,6 +387,12 @@ namespace Packages.FxEditor
             }
         }
 
+        //---------------
+        public Bounds getBounds()
+        {
+            return bounds; //GlobalUtility.GetGameObjectBounds(gameObject);
+        }
+
         private void Update()
         {
             ComputeAnimation();
@@ -355,6 +401,10 @@ namespace Packages.FxEditor
         private void OnDrawGizmos()
         {
             UpdateTextNodes();
+
+            var b = getBounds();
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireCube(bounds.center, bounds.size);
         }
     }
 }

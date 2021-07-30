@@ -31,9 +31,7 @@ namespace Packages.FxEditor
             //------------------
             var renderer = gameObject.GetComponent<Renderer>();
             
-            var shader = renderer.sharedMaterial.shader;
-            
-            
+            var shader = renderer.material.shader;
             
             _shaderObject = exporter.GetObject(shader) as ShaderObject;
 
@@ -61,7 +59,7 @@ namespace Packages.FxEditor
                         break;
                     case ShaderParameter.ParameterTypeTexture2D:
                     {
-                        var tex = renderer.sharedMaterial.GetTexture(p.name);
+                        var tex = renderer.material.GetTexture(p.name);
                         if (tex == null) tex = Texture2D.whiteTexture;
                         p.textureValue = exporter.GetObject(tex) as TextureObject;
                     }

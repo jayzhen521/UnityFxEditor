@@ -36,7 +36,7 @@ namespace Packages.FxEditor
             if (channelName >= names.Count) return;
             
             var name = names[channelName];
-            var mat = GetComponent<Renderer>().sharedMaterial;
+            var mat = GetComponent<Renderer>().material;
             var tex = canvas.GetRenderTexture();
             mat.SetTexture(name,tex);
         }

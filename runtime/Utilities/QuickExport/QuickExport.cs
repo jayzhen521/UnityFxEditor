@@ -67,7 +67,8 @@ namespace Packages.FxEditor
                     if (render == null) continue;
                     render.GetPropertyBlock(pb);
 
-                    var shader = render.sharedMaterial.shader;
+                    //var shader = render.sharedMaterial.shader;
+                    var shader = render.material.shader;
                     for (int j = 0; j < shader.GetPropertyCount(); j++)
                     {
                         var type = shader.GetPropertyType(j);

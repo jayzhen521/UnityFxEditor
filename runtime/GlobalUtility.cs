@@ -81,9 +81,9 @@ namespace Packages.FxEditor
         {
             var render = obj.GetComponent<Renderer>();
             
-            var mat = render.sharedMaterial;
-            if (mat == null) mat = render.material;
-            return mat;
+            // var mat = render.sharedMaterial;
+            // if (mat == null) mat = render.material;
+            return render.material;
         }
 
         public static string GetUniqueName(string name)
@@ -170,7 +170,7 @@ namespace Packages.FxEditor
             try
             {
                  
-                materal = renderer.sharedMaterial;
+                materal = renderer.material;
                 //materal = renderer.material;
                 
             }
@@ -190,12 +190,16 @@ namespace Packages.FxEditor
         public static Bounds GetGameObjectBounds(GameObject obj)
         {
             var renders = obj.GetComponentsInChildren<Renderer>();
+            
             float r = 99999.0f;
             Vector3 minPoint=new Vector3(r,r,r);
             Vector3 maxPoint=new Vector3(-r,-r,-r);
             foreach (var render in renders)
             {
                 var bounds = render.bounds;
+                
+                
+                
                 var p = bounds.min;
                 minPoint.x = Mathf.Min(minPoint.x, p.x);
                 minPoint.y = Mathf.Min(minPoint.y, p.y);
@@ -209,6 +213,8 @@ namespace Packages.FxEditor
 
             var center = (minPoint + maxPoint) * .5f;
             var size = maxPoint - minPoint;
+           
+            
             return new Bounds(center,size);
         }
         

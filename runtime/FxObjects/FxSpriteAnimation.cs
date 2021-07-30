@@ -34,7 +34,7 @@ namespace Packages.FxEditor
 
         void UpdateUI()
         {
-            var shader = GetComponent<Renderer>().sharedMaterial.shader;
+            var shader = GetComponent<Renderer>().material.shader;
             UpdateNames(shader);
         }
 

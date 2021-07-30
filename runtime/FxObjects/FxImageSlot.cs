@@ -306,8 +306,8 @@ namespace Packages.FxEditor
             if (Application.isPlaying) return;
             UpdateTextureID();
 
-            var mat = GetComponent<Renderer>().sharedMaterial;
-            if (mat == null)mat = GetComponent<Renderer>().material;
+            var mat = GetComponent<Renderer>().material;
+            // if (mat == null)mat = GetComponent<Renderer>().material;
             
             UpdateNames(mat.shader);
             mat.SetTexture(names[channelName], texture);
@@ -325,8 +325,8 @@ namespace Packages.FxEditor
             
             UpdateTextureID();
 
-            var mat = GetComponent<Renderer>().sharedMaterial;
-            if (mat == null)mat = GetComponent<Renderer>().material;
+            var mat = GetComponent<Renderer>().material;
+            // if (mat == null)mat = GetComponent<Renderer>().material;
             
             UpdateNames(mat.shader);
             mat.SetTexture(names[channelName], texture);

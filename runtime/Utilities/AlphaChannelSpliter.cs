@@ -62,8 +62,8 @@ namespace Packages.FxEditor
             
             EditorUtility.CompressTexture(textureB,TextureFormat.Alpha8,0);
             
-            rgbObject.GetComponent<MeshRenderer>().sharedMaterial.mainTexture = textureA;
-            alphaObject.GetComponent<MeshRenderer>().sharedMaterial.mainTexture=textureB;
+            rgbObject.GetComponent<MeshRenderer>().material.mainTexture = textureA;
+            alphaObject.GetComponent<MeshRenderer>().material.mainTexture=textureB;
             
             
 
