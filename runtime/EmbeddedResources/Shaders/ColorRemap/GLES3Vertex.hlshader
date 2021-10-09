@@ -1,0 +1,28 @@
+#version 300 es
+
+vec4 u_xlat0;
+vec4 u_xlat1;
+
+uniform 	mat4 hlslcc_mtx4x4unity_ObjectToWorld;
+uniform 	mat4 hlslcc_mtx4x4unity_MatrixVP;
+uniform 	vec4 _MainTex_ST;
+uniform 	vec4 _ColorTex_ST;
+
+layout(location=0) in vec3 in_POSITION0;
+layout(location=4) in vec2 in_TEXCOORD0;
+
+out vec2 vs_TEXCOORD0;
+out vec2 vs_TEXCOORD1;
+
+void main()
+{
+    vs_TEXCOORD0.xy = in_TEXCOORD0.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+    vs_TEXCOORD1.xy = in_TEXCOORD0.xy * _ColorTex_ST.xy + _ColorTex_ST.zw;
+	
+	vec4 pos=vec4(in_POSITION0,1.0);
+	pos=pos*hlslcc_mtx4x4unity_ObjectToWorld;
+	pos=pos*hlslcc_mtx4x4unity_MatrixVP;
+	gl_Position=pos;
+
+    return;
+}
