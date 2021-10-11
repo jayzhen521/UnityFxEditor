@@ -1,0 +1,22 @@
+#version 300 es
+//AET/BlendADD
+
+
+precision highp float;
+precision highp int;
+
+uniform mediump sampler2D _MainTex;
+uniform mediump sampler2D _BackTex;
+in highp vec2 vs_TEXCOORD0;
+in highp vec2 vs_TEXCOORD1;
+out highp vec4 SV_Target0;
+vec4 u_xlat0;
+mediump vec4 u_xlat16_0;
+mediump vec4 u_xlat16_1;
+void main()
+{
+    u_xlat16_0 = texture(_MainTex, vs_TEXCOORD0.xy);
+    u_xlat16_1 = texture(_BackTex, vs_TEXCOORD1.xy);
+    SV_Target0 = u_xlat16_0 * u_xlat16_1;
+    return;
+}
