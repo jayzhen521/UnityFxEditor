@@ -34,11 +34,23 @@ namespace Packages.FxEditor
         public int itemID = 0;
         public effectFeaturesListTypes type = effectFeaturesListTypes.none; // 
         public Boolean needPic = false;
+		public Boolean freezeFrame = false;
+	    public int freezeTime = 0;
+		public videoType playtype = videoType.forward; 
+	    public float videoLength = 0.5f;   
     }
+	public enum videoType
+	{
+	  forward = 0,//0：向前播放。
+      backwards,//1：向后播放。
+      all	  //2：前后播放。
+	}
     public enum effectFeaturesListTypes
     {
         none = 0,
-        cutout
+        cutout,
+		cartoon,
+		xqkk
     }
     public enum PlayMode
     {
@@ -138,6 +150,8 @@ namespace Packages.FxEditor
             }
 
             clipNum = clip_duration.Count;
+	
+	
         }
 
 
