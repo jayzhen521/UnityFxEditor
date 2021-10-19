@@ -1,0 +1,72 @@
+#version 300 es
+//AET/MosaicPlus
+
+precision highp float;
+precision highp int;
+
+
+
+uniform 	float _hPixels;
+uniform 	float _vPixels;
+uniform mediump sampler2D _BallsTex;
+uniform mediump sampler2D _MainTex;
+in highp vec2 vs_TEXCOORD0;
+ out mediump vec4 SV_Target0;
+vec4 u_xlat0;
+vec4 u_xlat1;
+vec4 u_xlat2;
+mediump vec4 u_xlat16_2;
+vec4 u_xlat3;
+mediump vec4 u_xlat16_3;
+vec4 u_xlat4;
+mediump vec4 u_xlat16_4;
+vec2 u_xlat10;
+mediump float u_xlat16_10;
+bool u_xlatb10;
+vec2 u_xlat11;
+mediump float u_xlat16_11;
+float u_xlat15;
+mediump float u_xlat16_15;
+float u_xlat16;
+void main()
+{
+    u_xlat0.xy = vec2(1.0, 1.0) / vec2(_hPixels, _vPixels);
+    u_xlat10.xy = vs_TEXCOORD0.xy / u_xlat0.xy;
+    u_xlat1.xy = floor(u_xlat10.xy);
+    u_xlat2.xy = u_xlat10.xy + (-u_xlat1.xy);
+    u_xlat10.x = u_xlat1.y + u_xlat1.y;
+
+    u_xlatb10 = u_xlat10.x>=(-u_xlat10.x);
+
+    u_xlat10.xy = (bool(u_xlatb10)) ? vec2(2.0, 0.5) : vec2(-2.0, -0.5);
+    u_xlat15 = u_xlat10.y * u_xlat1.y;
+    u_xlat15 = fract(u_xlat15);
+    u_xlat10.x = u_xlat15 * u_xlat10.x;
+
+    u_xlatb10 = u_xlat10.x==1.0;
+
+    u_xlat11.x = (-u_xlat2.y) + 1.0;
+    u_xlat11.y = (-u_xlat11.x) + 1.0;
+    u_xlat2.z = (-u_xlat2.y) + 1.0;
+    u_xlat3.zw = (bool(u_xlatb10)) ? u_xlat11.xy : u_xlat2.yz;
+    u_xlat3.xy = u_xlat2.xx + vec2(0.5, -0.5);
+    u_xlat16_10 = texture(_BallsTex, u_xlat3.xw).x;
+    u_xlat16_15 = texture(_BallsTex, u_xlat3.yw).x;
+    u_xlat2.w = u_xlat3.z;
+    u_xlat16_11 = texture(_BallsTex, u_xlat2.xw).x;
+    u_xlat16 = u_xlat0.x * 0.5;
+    u_xlat2.y = u_xlat1.x * u_xlat0.x + (-u_xlat16);
+    u_xlat2.x = u_xlat1.x * u_xlat0.x + u_xlat16;
+    u_xlat2.zw = u_xlat0.xy * u_xlat1.xy;
+    u_xlat16_3 = texture(_MainTex, u_xlat2.xw);
+    u_xlat16_4 = texture(_MainTex, u_xlat2.yw);
+    u_xlat16_2 = texture(_MainTex, u_xlat2.zw);
+    u_xlat4 = vec4(u_xlat16_10) * u_xlat16_4;
+    u_xlat0.x = u_xlat16_10 + u_xlat16_11;
+    u_xlat1 = u_xlat16_2 * vec4(u_xlat16_11) + u_xlat4;
+    u_xlat1 = u_xlat16_3 * vec4(u_xlat16_15) + u_xlat1;
+    u_xlat0.x = u_xlat16_15 + u_xlat0.x;
+    u_xlat0 = u_xlat1 / u_xlat0.xxxx;
+    SV_Target0 = u_xlat0;
+    return;
+}
