@@ -852,6 +852,29 @@ namespace Packages.FxEditor
                 regobject.states[ShaderObject.StateIndexBlendDstFactor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
                 shaders[name] = regobject;
             }
+            startID++;
+            { //AET/DotMatrix
+                var name = "AET/DotMatrix";
+                var regobject=new ShaderRegisterInformation(
+                    startID
+                );
+                
+                //-source
+                var source = GlobalUtility.GetShaderCode("Common/GLES3Vertex.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Vertex] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreVertex] = source.Replace(GLES3Header, GLCoreHeader);
+                
+                source = GlobalUtility.GetShaderCode("AET/DotMatrix/GLES3Fragment.hlshader");
+                regobject.sources[ShaderObject.SourceTypeGLES3Fragment] = source;
+                regobject.sources[ShaderObject.SourceTypeGLCoreFragment] = source.Replace(GLES3Header,GLCoreHeader);
+                
+                //-----------------------------
+
+                regobject.states[ShaderObject.StateIndexBlendEnable] = 1;
+                regobject.states[ShaderObject.StateIndexBlendSrcFactor] = ShaderObject.StateBlendFactorOne;
+                regobject.states[ShaderObject.StateIndexBlendDstFactor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
+                shaders[name] = regobject;
+            }
         }
         //----------------------------------------------------------------------------------------------------------
 
