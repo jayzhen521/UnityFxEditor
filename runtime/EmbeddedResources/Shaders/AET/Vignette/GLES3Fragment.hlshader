@@ -1,0 +1,36 @@
+#version 300 es
+//AET/DotMatrix
+
+
+precision highp float;
+precision highp int;
+
+uniform 	float _Level;
+uniform 	float _LevelInner;
+uniform 	float _posX;
+uniform 	float _posY;
+uniform 	vec4 _color;
+
+uniform mediump sampler2D _MainTex;
+in highp vec2 vs_TEXCOORD0;
+out mediump vec4 SV_Target0;
+vec4 u_xlat0;
+vec4 u_xlat1;
+mediump vec4 u_xlat16_1;
+vec2 u_xlat4;
+void main()
+{
+    u_xlat0.xy = vs_TEXCOORD0.xy + (-vec2(_posX, _posY));
+    u_xlat4.xy = (-vec2(_Level, _LevelInner)) + vec2(5.0, 5.0);
+    u_xlat0.xy = u_xlat4.xx * u_xlat0.xy;
+    u_xlat0.x = dot(u_xlat0.xy, u_xlat0.xy);
+    u_xlat0.x = min(u_xlat0.x, 1.0);
+    u_xlat0.x = (-u_xlat0.x) + 1.0;
+    u_xlat0.x = u_xlat4.y * u_xlat0.x;
+    u_xlat0.x = min(u_xlat0.x, 1.0);
+    u_xlat16_1 = texture(_MainTex, vs_TEXCOORD0.xy);
+    u_xlat1 = u_xlat16_1 + (-_color);
+    u_xlat0 = u_xlat0.xxxx * u_xlat1 + _color;
+    SV_Target0 = u_xlat0;
+    return;
+}

@@ -1,0 +1,45 @@
+#version 300 es
+vec4 u_xlat0;
+vec4 u_xlat1;
+
+uniform 	mat4 hlslcc_mtx4x4unity_ObjectToWorld;
+uniform 	mat4 hlslcc_mtx4x4unity_MatrixVP;
+uniform 	vec4 _MainTex_ST;
+uniform 	vec4 _MaskTex_ST;
+uniform     float _Angle;
+
+layout(location=0) in vec3 in_POSITION0;
+layout(location=4) in vec2 in_TEXCOORD0;
+
+out vec2 vs_TEXCOORD0;
+out vec2 vs_TEXCOORD1;
+
+
+void main()
+{
+    vs_TEXCOORD0.xy = in_TEXCOORD0.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+    vs_TEXCOORD1.xy = in_TEXCOORD0.xy * _MaskTex_ST.xy + _MaskTex_ST.zw;
+	
+	vec4 pos=vec4(in_POSITION0,1.0);
+	pos=pos*hlslcc_mtx4x4unity_ObjectToWorld;
+	pos=pos*hlslcc_mtx4x4unity_MatrixVP;
+	gl_Position=pos;
+	
+	
+	vec2 pc=vec2(0.5,0.5);
+    				vec2 p=in_TEXCOORD0-pc;
+    
+    		
+    				float r=_Angle;
+    
+    				float sc=sin(mod((r*2),3.141592))*0.414214+1;
+    				p/=sc;
+    				p=vec2(
+    					p.x*cos(r)-p.y*sin(r),
+    					p.y*cos(r)+p.x*sin(r)
+    				);
+    				p+=pc;
+    				vs_TEXCOORD1=p;
+
+    return;
+}
