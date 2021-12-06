@@ -122,6 +122,7 @@ namespace Packages.FxEditor
             if (gameObject.transform.childCount < count)
             {
                 var c = count - gameObject.transform.childCount;
+                c = 64;   //number of maximum characters 
                 for (var i = 0; i < c; i++)
                 {
                     var obj = new GameObject("T");
@@ -404,7 +405,9 @@ namespace Packages.FxEditor
 
             var b = getBounds();
             Gizmos.color = Color.blue;
+            Gizmos.matrix=transform.localToWorldMatrix;
             Gizmos.DrawWireCube(bounds.center, bounds.size);
+            
         }
     }
 }

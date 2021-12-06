@@ -1,4 +1,19 @@
 # 日志
+## 2021-10-21 1.1.20
+*修正了TextFx新多出的字符不能适配变换的问题
+*修正了TextFx边框不跟随的问题
+*修复了TextFx材质Clone的问题
+
+## 2021-10-21 1.1.19
++添加了了AET/BrightnessContrast
++添加了了AET/ChannelShift
++添加了了AET/Gamma
++添加了了AET/Mosaic
++添加了了AET/RadialWipe
++添加了了AET/Threshold
++添加了了AET/Twirl
+
+
 ## 2021-10-21 1.1.18
 +添加了AET/LinearWipe
 +添加了AET/Vignette

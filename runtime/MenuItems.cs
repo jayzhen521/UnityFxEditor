@@ -389,6 +389,14 @@ namespace Packages.FxEditor
                     newmat.CopyPropertiesFromMaterial(mat);
                     r.material = newmat;
                     GlobalUtility.SaveNewMaterialFile(newmat);
+                    
+                    //------for text fx
+
+                    var textfx = r.GetComponent<TextFx>();
+                    if (textfx != null)
+                    {
+                        textfx.material = newmat;
+                    }
                 }
             }
         }

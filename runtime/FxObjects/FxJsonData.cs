@@ -34,11 +34,45 @@ namespace Packages.FxEditor
         public int itemID = 0;
         public effectFeaturesListTypes type = effectFeaturesListTypes.none; // 
         public Boolean needPic = false;
+		public FreezeTimeData FreezeTime = new FreezeTimeData();
+	    public kkxqData xqkk = new kkxqData();
+		public List<EffectSpeedFeatures> effectSpeedChangeList = new List<EffectSpeedFeatures>();
+		public selectedCartoonTye cartoonType = selectedCartoonTye.none;
+
+    }
+	[Serializable]
+	 public class EffectSpeedFeatures
+    {
+        public int leftTime = 0;
+	    public int rightTime = 0;
+	    public float playRate = 0.5f;   
+    }
+	
+	[Serializable]
+	 public class FreezeTimeData
+    {
 		public Boolean freezeFrame = false;
-	    public int freezeTime = 0;
-		public videoType playtype = videoType.forward; 
+	    public int freezeTime = 0;  
+    }
+	
+	[Serializable]
+	 public class kkxqData
+    {
+	    public videoType playtype = videoType.forward; 
 	    public float videoLength = 0.5f;   
     }
+	
+	public enum selectedCartoonTye 
+	{
+	   none = 0,
+	   pikaCartoon ,
+	   jpcartoon_head ,
+	   jpcartoon,
+	   hkcartoon,
+	   amcartoon,
+	   classic_cartoon
+	}
+
 	public enum videoType
 	{
 	  forward = 0,//0：向前播放。
@@ -50,7 +84,9 @@ namespace Packages.FxEditor
         none = 0,
         cutout,
 		cartoon,
-		xqkk
+		xqkk,
+		changeFacePic,
+        changeFaceVideo
     }
     public enum PlayMode
     {
@@ -90,11 +126,12 @@ namespace Packages.FxEditor
         public int moveType = 2;
         [Tooltip("新引擎标志")]
         public bool EngineType = true;
-
+        public bool needFull = true;
         public List<int> clip_duration = new List<int>();
 
 
         public List<EffectItemFeatures> effectFeaturesList = new List<EffectItemFeatures>();
+
 
         [Header("用户自定义数据")]
         //--------------------------------------------
