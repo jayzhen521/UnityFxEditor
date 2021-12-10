@@ -737,6 +737,7 @@ namespace Packages.FxEditor
                 shaders[name] = regobject;
             }
             //-------AETBegin---------------------
+            /*
             startID++;
             { //AET/BlendModeADD
                 var name = "AET/BlendModeADD";
@@ -966,7 +967,7 @@ namespace Packages.FxEditor
                 regobject.states[ShaderObject.StateIndexBlendSrcFactor] = ShaderObject.StateBlendFactorOne;
                 regobject.states[ShaderObject.StateIndexBlendDstFactor] = ShaderObject.StateBlendFactorOneMinusSrcAlpha;
                 shaders[name] = regobject;
-            }
+            }*/
             
         }
         //----------------------------------------------------------------------------------------------------------
