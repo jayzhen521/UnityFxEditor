@@ -4,6 +4,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using PlasticGui.WorkspaceWindow;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Packages.FxEditor
 {
@@ -123,6 +124,7 @@ namespace Packages.FxEditor
             {
                 var c = count - gameObject.transform.childCount;
                 c = 64;   //number of maximum characters 
+                
                 for (var i = 0; i < c; i++)
                 {
                     var obj = new GameObject("T");
@@ -408,6 +410,20 @@ namespace Packages.FxEditor
             Gizmos.matrix=transform.localToWorldMatrix;
             Gizmos.DrawWireCube(bounds.center, bounds.size);
             
+        }
+
+        public void Clear()
+        {
+            for (int i = 0; i < gameObject.transform.childCount; i++)
+            {
+                
+                Object.DestroyImmediate(gameObject.transform.GetChild(i).gameObject);
+            }
+            gameObject.transform.DetachChildren();
+            
+            
+            
+            font = null;
         }
     }
 }

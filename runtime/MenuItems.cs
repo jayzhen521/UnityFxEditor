@@ -106,6 +106,18 @@ namespace Packages.FxEditor
             
             spliter.Run();
         }
+
+        [MenuItem("FxEditor/工具/修复文字异常状态")]
+        public static void OnClearTextFxObjectData()
+        {
+            var textset = Object.FindObjectsOfType<TextFx>();
+            foreach (var textFx in textset)
+            {
+                textFx.Clear();
+                
+            }
+        }
+        
         
         
         [MenuItem("FxEditor/创建配置")]
