@@ -158,6 +158,31 @@ namespace Packages.FxEditor
                                     ext = ".png";
                                     data = ImageConversion.EncodeToPNG(tex2d);
                                 }
+                                else if(tex2d.format == TextureFormat.ETC2_RGBA8)
+                                {
+                                    ext = ".pkm";
+                                    var rawDatax = tex2d.GetRawTextureData();
+                                    data = new byte[rawDatax.Length + 16];
+                                    data[0] = (byte)'P';
+                                    data[1] = (byte)'K';
+                                    data[2] = (byte)'M';
+                                    data[3] = (byte)' ';
+                                    data[4] = (byte)'2';
+                                    data[5] = (byte)'0';
+                                    data[6] = (byte)((3 >> 8) & 0xFF);
+                                    data[7] = (byte)((3 >> 0) & 0xFF);
+                                    data[8] = (byte)((tex2d.width >> 8) & 0xFF);
+                                    data[9] = (byte)((tex2d.width >> 0) & 0xFF);
+                                    data[10] = (byte)((tex2d.height >> 8) & 0xFF);
+                                    data[11] = (byte)((tex2d.height >> 0) & 0xFF);
+                                    data[12] = (byte)((tex2d.width >> 8) & 0xFF);
+                                    data[13] = (byte)((tex2d.width >> 0) & 0xFF);
+                                    data[14] = (byte)((tex2d.height >> 8) & 0xFF);
+                                    data[15] = (byte)((tex2d.height >> 0) & 0xFF);
+
+                                    Buffer.BlockCopy(rawDatax, 0, data, 16, rawDatax.Length);
+
+                                }
                                 else
                                 {
                                     data = ImageConversion.EncodeToJPG(tex2d, config.jpegCompressQuality);

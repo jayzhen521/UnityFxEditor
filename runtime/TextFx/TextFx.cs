@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
-using PlasticGui.WorkspaceWindow;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;

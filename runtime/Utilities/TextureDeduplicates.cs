@@ -61,7 +61,9 @@ namespace Packages.FxEditor
             List<FileInfo> imageFiles = new List<FileInfo>();
             foreach (var fileInfo in files)
             {
-                if (fileInfo.Extension == ".jpg" || fileInfo.Extension == ".png") imageFiles.Add(fileInfo);
+                if (fileInfo.Extension == ".jpg"
+                 || fileInfo.Extension == ".png"
+                 || fileInfo.Extension == ".pkm") imageFiles.Add(fileInfo);
             }
 
             //------------------------------------
