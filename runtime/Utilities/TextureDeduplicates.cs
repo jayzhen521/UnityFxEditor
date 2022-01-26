@@ -99,7 +99,7 @@ namespace Packages.FxEditor
                 ImageConversion.LoadImage(imageA, File.ReadAllBytes(imageFile.FullName));
                 foreach (var subimageFile in imageFiles)
                 {
-                    if (subimageFile == imageFile) continue;
+                     if (subimageFile == imageFile || subimageFile.FullName.Substring(subimageFile.FullName.Length - 4, 4) == ".pkm") continue;
                     ImageConversion.LoadImage(imageB, File.ReadAllBytes(subimageFile.FullName));
                     if (ImageCompare(imageA, imageB))
                     {
