@@ -42,6 +42,24 @@ namespace Packages.FxEditor
             return false;
         }
 
+        bool ImageCompareByte(byte[] byteImageA, byte[] byteImageB)
+        {            
+            if (byteImageA.Length != byteImageB.Length) return false;
+
+            int count = byteImageA.Length;
+                       int diffCount = 0;
+            for (int i = 0; i < count; i++)
+            {
+                var c1 = byteImageA[i];
+                var c2 = byteImageB[i];
+                if (c1 != c2) diffCount++;
+
+                if (diffCount > 10) return false;
+            }
+
+            return true;
+        }
+
         public void ScanDirectory(string dir)
         {
             var outdir = dir + "/sharedimages";
@@ -96,12 +114,23 @@ namespace Packages.FxEditor
                 if (have) continue;
                 //----------------------
 
-                ImageConversion.LoadImage(imageA, File.ReadAllBytes(imageFile.FullName));
-                foreach (var subimageFile in imageFiles)
-                {
-                     if (subimageFile == imageFile || subimageFile.FullName.Substring(subimageFile.FullName.Length - 4, 4) == ".pkm") continue;
-                    ImageConversion.LoadImage(imageB, File.ReadAllBytes(subimageFile.FullName));
-                    if (ImageCompare(imageA, imageB))
+                byte[] byteImageA = File.ReadAllBytes(imageFile.FullName);
+                ImageConversion.LoadImage(imageA, byteImageA);
+                
+                foreach (var subimageFile in imageFiles) {
+                    if (subimageFile == imageFile) continue;
+                    byte[] byteImageB = File.ReadAllBytes(subimageFile.FullName);
+                    ImageConversion.LoadImage(imageB, byteImageB);
+                    bool isEqual = false;
+                    if(subimageFile.FullName.Substring(subimageFile.FullName.Length - 4, 4) == ".pkm")
+                    {
+                        isEqual = ImageCompareByte(byteImageA, byteImageB);
+                    }
+                    else
+                    {
+                        isEqual = ImageCompare(imageA, imageB);
+                    }
+                    if (isEqual)
                     {
                         ImageSet imageSet = new ImageSet();
                         imageSet.id = setid;
