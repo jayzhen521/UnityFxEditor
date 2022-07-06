@@ -141,7 +141,7 @@ namespace Packages.FxEditor
 
 
                     //Draw
-                    foreach (var obj in validObjs)
+                    foreach (var obj in objs)
                     {
                         //---------for timeline-------------------
                         if (exporter._Timeline != null)
