@@ -3,8 +3,8 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Power("power",Float)=0.1
-        _Samplers("sampler",Float)=32
+        _Power("power",Float)=0.05
+        _Samplers("sampler",Float)=16
         _Center("center",Vector)=(0.5,0.5,0,0)
     }
     SubShader
@@ -54,22 +54,28 @@
             float4 frag (v2f i) : SV_Target
             {
                 float2 pos=_Center.xy;//float2(0.5,0.5);
+
                 float d=_Power/_Samplers;
                 float4 color=float4(0,0,0,0);
                 float2 rp=i.uv-pos;
                 float2 dir=normalize(i.uv-pos);
                 
                 float2 uv=i.uv;
-                
-                // sample the texture
-                for(int i=0;i<_Samplers;i++)
-                {
-                    float a=i*d-_Power*0.5;
-                    color+= tex2D(_MainTex, (pos-uv)*d*i+uv);    
+
+                if (_Power < 0.000001) {
+                    color = tex2D(_MainTex, uv);
                 }
-                color/=_Samplers;
-                // apply fog
-                
+                else {
+                    // sample the texture
+                    for (int i = 0; i < _Samplers; i++)
+                    {
+                        float a = i * d - _Power * 0.5;
+                        color += tex2D(_MainTex, (pos - uv) * d * i + uv);
+                    }
+                    color /= _Samplers;
+                    // apply fog
+                }
+
                 return color;
             }
             ENDCG

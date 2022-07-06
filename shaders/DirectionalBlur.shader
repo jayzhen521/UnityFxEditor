@@ -3,8 +3,8 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Power("power",Float)=0.1
-        _Samplers("samplers",Float)=32
+        _Power("power",Float)=0.05
+        _Samplers("samplers",Float)=16
         _Angle("angle",Float)=0
     }
     SubShader
@@ -62,14 +62,19 @@
                 float dx=sin(r);
                 float2 dir=normalize(float2(dx,dy));
                 float2 uv=i.uv-_Power*0.5*dir;
-                
-                // sample the texture
-                for(int i=0;i<_Samplers;i++)
-                {   
-                    color+= tex2D(_MainTex, uv+i*d*dir);    
+
+                if (_Power < 0.00001) {
+                    color = tex2D(_MainTex, uv);
                 }
-                color/=_Samplers;
-                // apply fog
+                else {
+                    // sample the texture
+                    for (int i = 0; i < _Samplers; i++)
+                    {
+                        color += tex2D(_MainTex, uv + i * d * dir);
+                    }
+                    color /= _Samplers;
+                    // apply fog
+                }
                 
                 return color;
             }
