@@ -35,10 +35,100 @@ namespace Packages.FxEditor
             Array.Sort(canvases, SortByNodeOrder);
 
             List<GameObject> canvasObjects = new List<GameObject>();
-            
-            if(true){
-                foreach (var c in canvases)
+
+ 
+            //===================================================
+
+            //1.get bounding box of camera
+            Camera curCam = SceneConfig.currentCamera;
+            Vector3 camPos = curCam.transform.position;
+            float size = curCam.orthographicSize;
+            float near = curCam.nearClipPlane;
+            float far = curCam.farClipPlane;
+            //float aspect = curCam.aspect;
+            float fxCamAspect = 1.0f;
+
+            if (curCam != null && curCam.GetComponent<FxCameraProperty>() != null)
+            {
+                fxCamAspect = (int)curCam.GetComponent<FxCameraProperty>().aspect / 10000.0f;
+            }
+
+            Vector3 center = new Vector3(camPos.x, camPos.y, (camPos.z + far - near) / 2.0f);
+            Vector3 boundSize = new Vector3(fxCamAspect * size * 2.0f, size * 2.0f, far - near);
+
+            Bounds curCamBounds = new Bounds(center, boundSize);
+
+            //2.collecting meshRenderer
+            List<GameObject> validObjs = new List<GameObject>();
+
+            for (int idx = 0; idx < objs.Length; idx++)
+            {
+                var aMeshRenderer = objs[idx].GetComponent<MeshRenderer>();
+                if (aMeshRenderer != null && aMeshRenderer.bounds.Intersects(curCamBounds))
                 {
+                    //this obj needs to be rendered
+                    validObjs.Add(objs[idx]);
+                }
+            }
+
+
+            Stack<FxCanvasObject> canvasObjStack = new Stack<FxCanvasObject>();
+            Dictionary<FxCanvasObject, bool> canvasObjStatus = new Dictionary<FxCanvasObject, bool>();
+
+            foreach (var c in canvases)
+            {
+
+                foreach(var obj in validObjs)
+                {
+                    FxCanvasSlot needCanvasSlot = obj.GetComponent<FxCanvasSlot>();
+                    if (needCanvasSlot && needCanvasSlot.canvas == c)
+                    {
+                        canvasObjStack.Push(c);
+                    }
+                }
+            }
+
+            while(canvasObjStack.Count != 0)
+            {
+                FxCanvasObject canvasObj = canvasObjStack.Pop();
+                canvasObjStatus[canvasObj] = true;
+                if(canvasObj.root != null)
+                {
+                    Transform transform = canvasObj.root.GetComponent<Transform>();
+                    if(transform != null)
+                    {
+                        int childCount = transform.GetChildCount();
+
+                        for(int i = 0; i < childCount; i++)
+                        {
+                            Transform childTransform = transform.GetChild(i);
+                            FxCanvasSlot slot = childTransform.gameObject.GetComponent<FxCanvasSlot>();
+                            if (slot != null && slot.canvas != null)
+                            {
+                                canvasObjStack.Push(slot.canvas);
+                            }
+                        }
+                    }
+                }
+
+                FxCanvasSlot needCanvasSlot = canvasObj.gameObject.GetComponent<FxCanvasSlot>();
+                if (needCanvasSlot != null && needCanvasSlot.canvas != null)
+                {
+                    canvasObjStack.Push(needCanvasSlot.canvas);
+                }
+            }
+
+
+
+                //3.
+            if (true)
+            {
+                foreach (var status in canvasObjStatus)
+                {
+                    if (status.Value == false) continue;
+
+                    var c = status.Key;
+                    
                     if (c.root == null) continue;
 
                     if (timelineRoot != null)
@@ -51,7 +141,7 @@ namespace Packages.FxEditor
 
 
                     //Draw
-                    foreach (var obj in objs)
+                    foreach (var obj in validObjs)
                     {
                         //---------for timeline-------------------
                         if (exporter._Timeline != null)
@@ -70,12 +160,25 @@ namespace Packages.FxEditor
                     commandlist.Add(new EndCanvasCommand(c));
                 }
             }
-            //===================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             //===================================================Draw
-            if(true){
-                foreach (var obj in objs)
+            if (true){
+                foreach (var obj in validObjs)
                 {
                     //----------------skip content of canvas----------------
                     bool skip = (canvasObjects.IndexOf(obj) != -1);
@@ -116,7 +219,20 @@ namespace Packages.FxEditor
             }
 
             //===================================================
-//            Debug.Log("DrawCommands:"+commandlist.Count);
+            //            Debug.Log("DrawCommands:"+commandlist.Count);
+
+            //jay-----------------------------------------------------------
+            Rect rect = SceneConfig.currentCamera.rect;
+
+            //1.get camera bounding box
+            Camera currentCamera = SceneConfig.currentCamera;
+            Bounds cameraBounds = new Bounds();
+            //2.get objects in or cross bounding box
+
+
+            //3.get objects depending canvas
+
+
         }
 
 
@@ -131,7 +247,6 @@ namespace Packages.FxEditor
                 var meshrenderer = obj.GetComponent<MeshRenderer>();
                 if (meshrenderer != null)
                     DrawMesh(cam, meshrenderer, exporter);
-                ;
             }
 
             //particle system

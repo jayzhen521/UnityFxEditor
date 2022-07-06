@@ -71,7 +71,9 @@ namespace Packages.FxEditor
                      {
                          if (cs2.canvas == null) continue;
                          if (cs2 == cs) continue;
-                         if(cs2.gameObject.transform.IsChildOf(canvas.root.transform))stack.Push(cs2.canvas);
+                        if (cs2.gameObject.transform.IsChildOf(canvas.root.transform)) {
+                            stack.Push(cs2.canvas);
+                        }
                      }
                  }
             }
