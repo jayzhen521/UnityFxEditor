@@ -123,11 +123,9 @@ namespace Packages.FxEditor
                 //3.
             if (true)
             {
-                foreach (var status in canvasObjStatus)
+                foreach (var c in canvases)
                 {
-                    if (status.Value == false) continue;
-
-                    var c = status.Key;
+                    if (!canvasObjStatus.ContainsKey(c) || canvasObjStatus[c] != true) continue;
                     
                     if (c.root == null) continue;
 
