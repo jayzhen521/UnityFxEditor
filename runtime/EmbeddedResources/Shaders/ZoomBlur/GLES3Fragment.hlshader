@@ -20,6 +20,12 @@ int u_xlati6;
 float u_xlat9;
 void main()
 {
+
+    if(_Power < 0.00001){
+        SV_Target0 = texture(_MainTex, vs_TEXCOORD0.xy);
+        return;
+    }
+
     u_xlat0.x = _Power / _Samplers;
     u_xlat3.xy = (-vs_TEXCOORD0.xy) + _Center.xy;
     u_xlat0.xy = u_xlat0.xx * u_xlat3.xy;

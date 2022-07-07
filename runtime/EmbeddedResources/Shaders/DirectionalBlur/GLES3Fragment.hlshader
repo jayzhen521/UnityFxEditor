@@ -20,6 +20,11 @@ vec2 u_xlat9;
 bool u_xlatb13;
 void main()
 {
+    if(_Power < 0.00001){
+        SV_Target0 = texture(_MainTex, vs_TEXCOORD0.xy);
+        return;
+    }
+
     u_xlat0 = _Power / _Samplers;
     u_xlat4.xy = vec2(_Angle, _Power) * vec2(0.0174532924, 0.5);
     u_xlat1.x = sin(u_xlat4.x);
@@ -34,6 +39,7 @@ void main()
     u_xlat2.z = float(0.0);
     u_xlat2.w = float(0.0);
     u_xlati8 = 0;
+
     while(true){
         u_xlat9.x = float(u_xlati8);
 #ifdef UNITY_ADRENO_ES3

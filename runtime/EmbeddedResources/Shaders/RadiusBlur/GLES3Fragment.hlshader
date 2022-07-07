@@ -23,6 +23,11 @@ bool u_xlatb12;
 float u_xlat15;
 void main()
 {
+    if(_Power < 0.00001){
+        SV_Target0 = texture(_MainTex, vs_TEXCOORD0.xy);
+        return;
+    }
+
     u_xlat0 = _Power / _Samplers;
     u_xlat5.xy = vs_TEXCOORD0.yx + (-_Center.yx);
     u_xlat15 = _Power * 0.5;
@@ -31,6 +36,7 @@ void main()
     u_xlat1.z = float(0.0);
     u_xlat1.w = float(0.0);
     u_xlati2 = 0;
+
     while(true){
         u_xlat7.x = float(u_xlati2);
 #ifdef UNITY_ADRENO_ES3

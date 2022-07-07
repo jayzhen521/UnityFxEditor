@@ -63,12 +63,12 @@ namespace Packages.FxEditor
 
             for (int idx = 0; idx < objs.Length; idx++)
             {
-                var aMeshRenderer = objs[idx].GetComponent<MeshRenderer>();
-                if (aMeshRenderer != null && aMeshRenderer.bounds.Intersects(curCamBounds))
-                {
+                //var aMeshRenderer = objs[idx].GetComponent<MeshRenderer>();
+                //if (aMeshRenderer != null && aMeshRenderer.bounds.Intersects(curCamBounds))
+                //{
                     //this obj needs to be rendered
                     validObjs.Add(objs[idx]);
-                }
+                //}
             }
 
 
