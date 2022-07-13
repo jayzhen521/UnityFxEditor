@@ -8,6 +8,10 @@ namespace Packages.FxEditor
     {
         public int width = 512;
         public int height = 512;
+
+        private int oldWidth = 512;
+        private int oldHeight = 512;
+
         public Color backgroundColor = Color.black;
 
         public bool show_bounds = true;
@@ -22,9 +26,68 @@ namespace Packages.FxEditor
 
         private GameObject titleObject = null;
 
+        public enum Aspect
+        {
+            _16_9,
+            _4_3,
+            _1_1,
+            _9_16,
+            _3_4,
+            _free
+        };
+
+        public Aspect aspectItem = Aspect._16_9;
+        private Aspect oldAspectItem = Aspect._16_9;
+        private float aspect = 1.0f;
+
+        private void UpdateAspect()
+        {
+            switch (aspectItem)
+            {
+                case Aspect._16_9:
+                    {
+                        aspect = 16.0f / 9.0f;
+                        break;
+                    }
+                case Aspect._4_3:
+                    {
+                        aspect = 4.0f / 3.0f;
+                        break;
+                    }
+                case Aspect._1_1:
+                    {
+                        aspect = 1.0f;
+                        break;
+                    }
+                case Aspect._3_4:
+                    {
+                        aspect = 3.0f / 4.0f;
+                        break;
+                    }
+                case Aspect._9_16:
+                    {
+                        aspect = 9.0f / 16.0f;
+                        break;
+                    }
+                case Aspect._free:
+                    {
+                        aspect = 0.0f;
+                        break;
+                    }
+                default:
+                    {
+                        aspect = 1.0f;
+                        break;
+                    }
+            }
+        }
 
         private void UpdateCanvas()
         {
+
+            UpdateAspect();
+
+
             Camera camera = gameObject.GetComponent<Camera>();
             camera.backgroundColor = backgroundColor;
             camera.clearFlags = CameraClearFlags.Color;
@@ -59,6 +122,31 @@ namespace Packages.FxEditor
         public RenderTexture GetRenderTexture()
         {
             return canvasTexture;
+        }
+
+
+        private void OnValidate()
+        {
+            UpdateAspect();
+
+            if(aspectItem == Aspect._free)
+            {
+                return;
+            }
+
+            if (oldAspectItem != aspectItem || oldWidth != width)
+            {
+                height = (int)Mathf.Ceil(width / aspect);
+                oldHeight = height;
+                oldWidth = width;
+                oldAspectItem = aspectItem;
+            }
+            else if(oldHeight != height)
+            {
+                width = (int)Mathf.Ceil(height * aspect);
+                oldHeight = height;
+                oldWidth = width;
+            }
         }
 
         private void Update()
