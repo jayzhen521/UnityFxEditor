@@ -36,8 +36,8 @@ namespace Packages.FxEditor
             _free
         };
 
-        public Aspect aspectItem = Aspect._16_9;
-        private Aspect oldAspectItem = Aspect._16_9;
+        public Aspect aspectItem = Aspect._1_1;
+        private Aspect oldAspectItem = Aspect._1_1;
         private float aspect = 1.0f;
 
         private void UpdateAspect()
